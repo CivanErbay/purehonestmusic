@@ -1,10 +1,11 @@
 <template>
-  <div class="flex justify-between items-center w-full">
-    <div class="tracking-widest">
+  <DefaultGrid :no-spacing="true" class="relative z-10 flex items-center">
+    <!--   <div class="flex justify-between items-center w-full"> -->
+    <div class="lg:col-start-1 lg:col-end-3 tracking-widest">
       <h1 class="text-lg">PURE.HONEST.MUSIC</h1>
       <h2 class="text-xs text-[#454545] w-max">ARTISTS / SHOWS / RECORDS</h2>
     </div>
-    <div class="relative w-full max-w-6xl my-5">
+    <div class="relative w-full lg:col-start-4 lg:col-end-11 my-5">
       <input type="search" id="search-dropdown"
         class="block p-4 w-full z-20 text-sm rounded text-gray-900 bg-[#D3D3D3] rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-[#E77000] focus:border-[#E77000]"
         placeholder="Suche nach Location oder Musikgenre ..." required />
@@ -17,10 +18,11 @@
         <span class="sr-only">Search</span>
       </button>
     </div>
-    <div class="bg-[#242424] px-6 py-4 rounded">
+    <div class="lg:col-start-12 lg:col-end-13 bg-[#242424] px-6 py-4 rounded text-center">
       Login
     </div>
-  </div>
+    <!--     </div> -->
+  </DefaultGrid>
 </template>
 
 <script setup>
