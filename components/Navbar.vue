@@ -5,7 +5,7 @@
       <h1 class="text-lg">PURE.HONEST.MUSIC</h1>
       <h2 class="text-xs text-[#454545] w-max">ARTISTS / SHOWS / RECORDS</h2>
     </div>
-    <div class="relative w-full lg:col-start-4 lg:col-end-11 my-5">
+    <div class="relative w-full lg:col-start-3 lg:col-end-11 my-5">
       <input type="search" id="search-dropdown"
         class="block p-4 w-full z-20 text-sm rounded text-gray-900 bg-[#D3D3D3] rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-[#E77000] focus:border-[#E77000]"
         placeholder="Suche nach Location oder Musikgenre ..." required />
