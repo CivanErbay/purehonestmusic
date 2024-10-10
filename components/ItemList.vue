@@ -1,10 +1,9 @@
 <template>
   <DefaultGrid :no-spacing="true">
-    <div v-for="(group, date) in groupedItems" :key="date" class="lg:col-start-3 lg:col-end-11">
+    <div v-for="(group, date) in filteredGroupedItems" :key="date" class="lg:col-start-3 lg:col-end-11">
       <p class="text-2xl font-semibold mb-6">
         <span class="underline">{{ date }}</span>
       </p>
-
       <div v-for="item in group" :key="item.id"
         class="lg:col-start-3 lg:col-end-11 flex bg-[#242424] mb-5 rounded-lg relative">
         <NuxtImg :src="item.img" class="w-60 lg:w-36 h-auto lg:h-full object-cover rounded-lg" />
@@ -33,15 +32,21 @@
             <NuxtImg class="w-6 h-5 lg:mb-4 absolute top-3 right-4 lg:static" src="/star1.svg" />
             <p class="opacity-40">Eine <span class="underline">{{ item.provider }}</span>-Show</p>
             <p class="text-lg text-[#E77000]">{{ item.price }} €</p>
-            <p class="opacity-40 text-[8px] lg:text-xs">zzgl. Vorverkaufsgebühren <br class="hidden lg:block"> und ggf. Abwicklungskosten</p>
+            <p class="opacity-40 text-[8px] lg:text-xs">zzgl. Vorverkaufsgebühren <br class="hidden lg:block"> und ggf.
+              Abwicklungskosten</p>
           </div>
         </div>
       </div>
     </div>
   </DefaultGrid>
 </template>
-
 <script setup>
+
+const props = defineProps({
+  searchQuery: String
+})
+
+
 const items = [
   {
     id: 1,
@@ -87,7 +92,6 @@ const formattedDate = (date) => {
   return `${dayOfWeek}, ${day}.${month}`
 }
 
-// Group items by formatted date
 const groupedItems = computed(() => {
   return items.reduce((groups, item) => {
     const dateKey = formattedDate(item.date)
@@ -99,5 +103,19 @@ const groupedItems = computed(() => {
   }, {})
 })
 
-console.log(groupedItems)
+const filteredGroupedItems = computed(() => {
+  const query = props.searchQuery.toLowerCase()
+  const filteredItems = items.filter(item =>
+    item.location.toLowerCase().includes(query) || item.genre.toLowerCase().includes(query)
+  )
+
+  return filteredItems.reduce((groups, item) => {
+    const dateKey = formattedDate(item.date)
+    if (!groups[dateKey]) {
+      groups[dateKey] = []
+    }
+    groups[dateKey].push(item)
+    return groups
+  }, {})
+})
 </script>
