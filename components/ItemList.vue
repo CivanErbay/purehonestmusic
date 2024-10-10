@@ -106,7 +106,7 @@ const groupedItems = computed(() => {
 const filteredGroupedItems = computed(() => {
   const query = props.searchQuery.toLowerCase()
   const filteredItems = items.filter(item =>
-    item.location.toLowerCase().includes(query) || item.genre.toLowerCase().includes(query)
+    item.title.toLowerCase().includes(query) ||item.location.toLowerCase().includes(query) || item.genre.toLowerCase().includes(query)
   )
 
   return filteredItems.reduce((groups, item) => {
