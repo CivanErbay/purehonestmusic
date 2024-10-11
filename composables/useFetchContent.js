@@ -1,7 +1,6 @@
 import qs from 'qs';
 
-const backendUrl = import.meta.env.VITE_API_ENDPOINT;
-const API_URL = backendUrl + '/api';
+const API_URL = import.meta.env.VITE_API_ENDPOINT;
 
 export const useFetchPage = async (slug = '') => {
   const query = qs.stringify({
@@ -18,9 +17,9 @@ export const useFetchPage = async (slug = '') => {
 export const useFetchConcerts = async () => {
   const url = `${API_URL}/concerts`;
   const { data, status, error, refresh, clear } = await useFetch(url);
-  const projects = data.value?.docs;
+  const concerts = data.value?.docs;
 
-  return { projects, status };
+  return { concerts, status };
 };
 
 export const useFetchConcert = async (slug) => {
@@ -29,9 +28,9 @@ export const useFetchConcert = async (slug) => {
   });
   const url = `${API_URL}/concerts?${query}`;
   const { data, status, error, refresh, clear } = await useFetch(url);
-  const project = data.value?.docs[0];
+  const concert = data.value?.docs[0];
 
-  return { project, status };
+  return { concert, status };
 };
 
 export const useFetchLanding = async () => {
