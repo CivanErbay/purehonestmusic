@@ -1,7 +1,7 @@
 <template>
   <DefaultGrid :no-spacing="true">
     <div
-      v-for="(group, date) in filteredGroupedItems"
+      v-for="(group, date) in groupedItems"
       :key="date"
       class="lg:col-start-3 lg:col-end-11"
     >
@@ -10,11 +10,11 @@
       </p>
       <div
         v-for="item in group"
-        :key="item.id"
+        :key="item.slug"
         class="lg:col-start-3 lg:col-end-11 flex bg-[#242424] mb-5 rounded-lg relative"
       >
         <NuxtImg
-          :src="item.img"
+          :src="item.heroImage.url"
           class="w-60 lg:w-36 h-auto lg:h-full object-cover rounded-lg"
         />
         <div
@@ -22,9 +22,9 @@
         >
           <div class="flex flex-col justify-between w-full lg:w-2/3">
             <div class="flex flex-col mb-3">
-              <h4 class="text-lg text-[#D3D3D3]">{{ item.title }}</h4>
+              <h4 class="text-lg text-[#D3D3D3]">{{ item.artistName }}</h4>
               <p class="text-sm text-white opacity-40">
-                {{ item.description }}
+                {{ slateToHtml(item.description) }}
               </p>
             </div>
             <div
@@ -32,15 +32,17 @@
             >
               <div class="flex items-center">
                 <NuxtImg class="w-3 h-3" src="/calendar.svg" />
-                <p class="ml-1">{{ formattedDate(item.date) }}</p>
+                <p class="ml-1">{{ formattedDate(item.concertDate) }}</p>
               </div>
               <div class="flex items-center my-2 lg:my-0 lg:ml-6">
                 <NuxtImg class="w-3 h-3" src="/location.svg" />
-                <p class="ml-1">{{ item.location }}</p>
+                <p class="ml-1">{{ item.concertLocation }}</p>
               </div>
               <div class="flex items-center lg:ml-6">
                 <NuxtImg class="w-3 h-3" src="/music.svg" />
-                <p class="ml-1">{{ item.genre }}</p>
+                <p class="ml-1">
+                  {{ item.genres.map((it) => it.name).join(' ') }}
+                </p>
               </div>
             </div>
           </div>
@@ -50,10 +52,10 @@
               src="/star1.svg"
             />
             <p class="opacity-40">
-              Eine <span class="underline">{{ item.provider }}</span
+              Eine <span class="underline">{{ item.concertPromoter }}</span
               >-Show
             </p>
-            <p class="text-lg text-[#E77000]">{{ item.price }} €</p>
+            <p class="text-lg text-[#E77000]">{{ item.concertPrice }} €</p>
             <p class="opacity-40 text-[8px] lg:text-xs">
               zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />
               und ggf. Abwicklungskosten
@@ -73,45 +75,7 @@ const { items, searchQuery } = defineProps({
     default: () => [],
   },
 });
-
-// const items = [
-//   {
-//     id: 1,
-//     img: '/image1.png',
-//     title: 'DEADLETTER',
-//     description:
-//       'DEADLETTER ist eine britische Band, die post-punkige Klänge mit bissigen gesellschaftskritischen Texten kombiniert und durch energiegeladene Live-Auftritte beeindruckt.',
-//     date: new Date(),
-//     location: 'Gebäude 9',
-//     genre: 'Post-Punk, Alternative',
-//     provider: 'Popanz',
-//     price: '24,00',
-//   },
-//   {
-//     id: 2,
-//     img: '/image2.png',
-//     title: 'Tramhaus',
-//     description:
-//       'Die Band Tramhaus aus Rotterdam verbindet kantigen Post-Punk mit rauer Energie und unverblümter Sozialkritik, was sie zu einem aufstrebenden Namen in der alternativen Musikszene macht.',
-//     date: new Date(),
-//     location: 'Artheater',
-//     genre: 'Post-Punk, Alternative',
-//     provider: 'Underdog',
-//     price: '19,00',
-//   },
-//   {
-//     id: 3,
-//     img: '/image3.png',
-//     title: 'Cassels',
-//     description:
-//       'Cassels ist eine britische Band, die intelligenten Noise-Rock mit introspektiven und sozialkritischen Texten zu einem rauen und experimentellen Sound verschmilzt.',
-//     date: new Date(new Date().setDate(new Date().getDate() + 1)),
-//     location: 'Artheater',
-//     genre: 'Post-Punk, Noise-Rock',
-//     provider: 'Popanz',
-//     price: '22,00',
-//   },
-// ];
+console.log(items);
 
 const weekdays = [
   'Sonntag',
@@ -123,7 +87,8 @@ const weekdays = [
   'Samstag',
 ];
 
-const formattedDate = (date) => {
+const formattedDate = (timestamp) => {
+  const date = new Date(timestamp);
   const dayOfWeek = weekdays[date.getDay()];
   const day = date.getDate();
   const month = date.getMonth() + 1;
@@ -132,7 +97,7 @@ const formattedDate = (date) => {
 
 const groupedItems = computed(() => {
   return items.reduce((groups, item) => {
-    const dateKey = formattedDate(item.date);
+    const dateKey = formattedDate(item.concertDate);
     if (!groups[dateKey]) {
       groups[dateKey] = [];
     }
@@ -141,22 +106,22 @@ const groupedItems = computed(() => {
   }, {});
 });
 
-const filteredGroupedItems = computed(() => {
-  const query = searchQuery.toLowerCase();
-  const filteredItems = items.filter(
-    (item) =>
-      item.title.toLowerCase().includes(query) ||
-      item.location.toLowerCase().includes(query) ||
-      item.genre.toLowerCase().includes(query)
-  );
+// const filteredGroupedItems = computed(() => {
+//   const query = searchQuery.toLowerCase();
+//   const filteredItems = items.filter(
+//     (item) =>
+//       item.title.toLowerCase().includes(query) ||
+//       item.location.toLowerCase().includes(query) ||
+//       item.genre.toLowerCase().includes(query)
+//   );
 
-  return filteredItems.reduce((groups, item) => {
-    const dateKey = formattedDate(item.date);
-    if (!groups[dateKey]) {
-      groups[dateKey] = [];
-    }
-    groups[dateKey].push(item);
-    return groups;
-  }, {});
-});
+//   return filteredItems.reduce((groups, item) => {
+//     const dateKey = formattedDate(item.date);
+//     if (!groups[dateKey]) {
+//       groups[dateKey] = [];
+//     }
+//     groups[dateKey].push(item);
+//     return groups;
+//   }, {});
+// });
 </script>
