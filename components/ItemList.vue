@@ -23,10 +23,10 @@
           <div class="flex flex-col justify-between w-full lg:w-2/3">
             <div class="flex flex-col mb-3">
               <h4 class="text-lg text-[#D3D3D3]">{{ item.artistName }}</h4>
-              <div
-                class="text-sm text-white opacity-40"
-                v-html="slateToHtml(item.description)"
-              ></div>
+              <UtilsRichTextRenderer
+                class="text-sm text-white opacity-50"
+                :nodes="item.description"
+              />
             </div>
             <div
               class="flex flex-col lg:flex-row lg:items-center text-white opacity-40 text-sm"
@@ -101,8 +101,6 @@ const groupedItems = computed(() => {
     if (!groups[dateKey]) {
       groups[dateKey] = [];
     }
-    console.log(item.description);
-    console.log(slateToHtml(item.description));
     groups[dateKey].push(item);
     return groups;
   }, {});

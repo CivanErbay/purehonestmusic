@@ -4,7 +4,7 @@ export function slateToHtml(nodes) {
   return nodes
     .map((node) => {
       if (node.type === 'paragraph') {
-        return `<p>${slateToHtml(node.children)}</p>`;
+        return `<p>${node.children}</p>`;
       }
       if (node.type === 'h1') {
         return `<h1>${slateToHtml(node.children)}</h1>`;
@@ -17,6 +17,9 @@ export function slateToHtml(nodes) {
       }
       if (node.type === 'li') {
         return `<li>${slateToHtml(node.children)}</li>`;
+      }
+      if (node.type === 'code') {
+        return `<code>${slateToHtml(node.children)}</code>`;
       }
       if (node.type === 'link') {
         return `<a href="${node.url}">${slateToHtml(node.children)}</a>`;
