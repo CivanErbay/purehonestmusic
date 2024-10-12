@@ -22,22 +22,19 @@
         >
           <div class="flex flex-col justify-between w-full lg:w-2/3">
             <div class="flex flex-col mb-3">
-              <h4 class="text-lg text-[#D3D3D3]">{{ item.artistName }}</h4>
-              <UtilsRichTextRenderer
-                class="text-sm text-white opacity-50"
-                :nodes="item.description"
-              />
+              <h4 class="text-lg text-[#D3D3D3]">{{ item.name }}</h4>
+              <p class="text-sm text-white opacity-50">{{ item.subtitle }}</p>
             </div>
             <div
               class="flex flex-col lg:flex-row lg:items-center text-white opacity-40 text-sm"
             >
               <div class="flex items-center">
                 <NuxtImg class="w-3 h-3" src="/calendar.svg" />
-                <p class="ml-1">{{ formattedDate(item.concertDate) }}</p>
+                <p class="ml-1">{{ formattedDate(item.date) }}</p>
               </div>
               <div class="flex items-center my-2 lg:my-0 lg:ml-6">
                 <NuxtImg class="w-3 h-3" src="/location.svg" />
-                <p class="ml-1">{{ item.concertLocation }}</p>
+                <p class="ml-1">{{ item.location }}</p>
               </div>
               <div class="flex items-center lg:ml-6">
                 <NuxtImg class="w-3 h-3" src="/music.svg" />
@@ -53,10 +50,10 @@
               src="/star1.svg"
             />
             <p class="opacity-40">
-              Eine <span class="underline">{{ item.concertPromoter }}</span
+              Eine <span class="underline">{{ item.promoter }}</span
               >-Show
             </p>
-            <p class="text-lg text-[#E77000]">{{ item.concertPrice }} €</p>
+            <p class="text-lg text-[#E77000]">{{ item.price }} €</p>
             <p class="opacity-40 text-[8px] lg:text-xs">
               zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />
               und ggf. Abwicklungskosten
@@ -117,7 +114,7 @@ const filteredGroupedItems = computed(() => {
   );
 
   return filteredItems.reduce((groups, item) => {
-    const dateKey = formattedDate(item.concertDate);
+    const dateKey = formattedDate(item.date);
     if (!groups[dateKey]) {
       groups[dateKey] = [];
     }
