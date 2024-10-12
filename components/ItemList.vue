@@ -1,7 +1,7 @@
 <template>
   <DefaultGrid :no-spacing="true">
     <div
-      v-for="(group, date) in groupedItems"
+      v-for="(group, date) in filteredGroupedItems"
       :key="date"
       class="lg:col-start-3 lg:col-end-11"
     >
@@ -95,8 +95,28 @@ const formattedDate = (timestamp) => {
   return `${dayOfWeek}, ${day}.${month}`;
 };
 
-const groupedItems = computed(() => {
-  return items.reduce((groups, item) => {
+// const groupedItems = computed(() => {
+//   return items.reduce((groups, item) => {
+//     const dateKey = formattedDate(item.concertDate);
+//     if (!groups[dateKey]) {
+//       groups[dateKey] = [];
+//     }
+//     console.log(item.description);
+//     console.log(slateToHtml(item.description));
+//     groups[dateKey].push(item);
+//     return groups;
+//   }, {});
+// });
+
+const filteredGroupedItems = computed(() => {
+  const query = searchQuery.toLowerCase();
+  const filteredItems = items.filter(
+    (item) =>
+      item.artistName.toLowerCase().includes(query) ||
+      item.concertLocation.toLowerCase().includes(query)
+  );
+
+  return filteredItems.reduce((groups, item) => {
     const dateKey = formattedDate(item.concertDate);
     if (!groups[dateKey]) {
       groups[dateKey] = [];
@@ -105,23 +125,4 @@ const groupedItems = computed(() => {
     return groups;
   }, {});
 });
-
-// const filteredGroupedItems = computed(() => {
-//   const query = searchQuery.toLowerCase();
-//   const filteredItems = items.filter(
-//     (item) =>
-//       item.title.toLowerCase().includes(query) ||
-//       item.location.toLowerCase().includes(query) ||
-//       item.genre.toLowerCase().includes(query)
-//   );
-
-//   return filteredItems.reduce((groups, item) => {
-//     const dateKey = formattedDate(item.date);
-//     if (!groups[dateKey]) {
-//       groups[dateKey] = [];
-//     }
-//     groups[dateKey].push(item);
-//     return groups;
-//   }, {});
-// });
 </script>

@@ -6,7 +6,7 @@
     </div>
     <div class="relative w-full lg:col-start-3 lg:col-end-11 my-5">
       <input v-model="localSearchQuery" type="search" id="search-dropdown"
-        class="block p-4 w-full z-20 text-sm rounded text-gray-900 bg-[#D3D3D3] rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-[#E77000] focus:border-[#E77000]"
+        class="block p-4 w-full z-20 text-sm rounded text-gray-900 bg-[#D3D3D3] rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-[#E77000] focus:border-[#E77000] focus:outline-none"
         placeholder="Suche nach Location oder Musikgenre ..." required />
       <button type="submit"
         class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-[#E77000] rounded border border-[#E77000] hover:bg-[#E77000] focus:ring-4 focus:outline-none focus:ring-[#E77000] dark:bg-[#E77000]">
