@@ -1,36 +1,19 @@
 <template>
   <DefaultGrid :no-spacing="true">
-    <div
-      v-for="(group, date) in groupedItems"
-      :key="date"
-      class="lg:col-start-3 lg:col-end-11"
-    >
+    <div v-for="(group, date) in filteredGroupedItems" :key="date" class="lg:col-start-3 lg:col-end-11">
       <p class="text-2xl font-semibold mb-6">
         <span class="underline">{{ date }}</span>
       </p>
-      <div
-        v-for="item in group"
-        :key="item.slug"
-        class="lg:col-start-3 lg:col-end-11 flex bg-[#242424] mb-5 rounded-lg relative"
-      >
-        <NuxtImg
-          :src="item.heroImage.url"
-          class="w-60 lg:w-36 h-auto lg:h-full object-cover rounded-lg"
-        />
-        <div
-          class="flex flex-col lg:flex-row justify-between px-4 py-3 lg:px-6 lg:py-4 w-full"
-        >
+      <div v-for="item in group" :key="item.slug"
+        class="lg:col-start-3 lg:col-end-11 flex bg-[#242424] mb-5 rounded-lg relative">
+        <NuxtImg :src="item.heroImage.url" class="w-60 lg:w-36 h-auto lg:h-full object-cover rounded-lg" />
+        <div class="flex flex-col lg:flex-row justify-between px-4 py-3 lg:px-6 lg:py-4 w-full">
           <div class="flex flex-col justify-between w-full lg:w-2/3">
             <div class="flex flex-col mb-3">
               <h4 class="text-lg text-[#D3D3D3]">{{ item.artistName }}</h4>
-              <div
-                class="text-sm text-white opacity-40"
-                v-html="slateToHtml(item.description)"
-              ></div>
+              <div class="text-sm text-white opacity-40" v-html="slateToHtml(item.description)"></div>
             </div>
-            <div
-              class="flex flex-col lg:flex-row lg:items-center text-white opacity-40 text-sm"
-            >
+            <div class="flex flex-col lg:flex-row lg:items-center text-white opacity-40 text-sm">
               <div class="flex items-center">
                 <NuxtImg class="w-3 h-3" src="/calendar.svg" />
                 <p class="ml-1">{{ formattedDate(item.concertDate) }}</p>
@@ -48,13 +31,9 @@
             </div>
           </div>
           <div class="flex flex-col lg:items-end text-white text-sm mt-4">
-            <NuxtImg
-              class="w-6 h-5 lg:mb-4 absolute top-3 right-4 lg:static"
-              src="/star1.svg"
-            />
+            <NuxtImg class="w-6 h-5 lg:mb-4 absolute top-3 right-4 lg:static" src="/star1.svg" />
             <p class="opacity-40">
-              Eine <span class="underline">{{ item.concertPromoter }}</span
-              >-Show
+              Eine <span class="underline">{{ item.concertPromoter }}</span>-Show
             </p>
             <p class="text-lg text-[#E77000]">{{ item.concertPrice }} €</p>
             <p class="opacity-40 text-[8px] lg:text-xs">
@@ -95,35 +74,34 @@ const formattedDate = (timestamp) => {
   return `${dayOfWeek}, ${day}.${month}`;
 };
 
-const groupedItems = computed(() => {
-  return items.reduce((groups, item) => {
-    const dateKey = formattedDate(item.concertDate);
-    if (!groups[dateKey]) {
-      groups[dateKey] = [];
-    }
-    console.log(item.description);
-    console.log(slateToHtml(item.description));
-    groups[dateKey].push(item);
-    return groups;
-  }, {});
-});
-
-// const filteredGroupedItems = computed(() => {
-//   const query = searchQuery.toLowerCase();
-//   const filteredItems = items.filter(
-//     (item) =>
-//       item.title.toLowerCase().includes(query) ||
-//       item.location.toLowerCase().includes(query) ||
-//       item.genre.toLowerCase().includes(query)
-//   );
-
-//   return filteredItems.reduce((groups, item) => {
-//     const dateKey = formattedDate(item.date);
+// const groupedItems = computed(() => {
+//   return items.reduce((groups, item) => {
+//     const dateKey = formattedDate(item.concertDate);
 //     if (!groups[dateKey]) {
 //       groups[dateKey] = [];
 //     }
+//     console.log(item.description);
+//     console.log(slateToHtml(item.description));
 //     groups[dateKey].push(item);
 //     return groups;
 //   }, {});
 // });
+
+const filteredGroupedItems = computed(() => {
+  const query = searchQuery.toLowerCase();
+  const filteredItems = items.filter(
+    (item) =>
+      item.artistName.toLowerCase().includes(query) ||
+      item.concertLocation.toLowerCase().includes(query)
+  );
+
+  return filteredItems.reduce((groups, item) => {
+    const dateKey = formattedDate(item.concertDate);
+    if (!groups[dateKey]) {
+      groups[dateKey] = [];
+    }
+    groups[dateKey].push(item);
+    return groups;
+  }, {});
+});
 </script>

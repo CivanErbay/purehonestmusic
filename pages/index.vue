@@ -6,15 +6,9 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
 
-const route = useRoute();
 
-const { concerts, status } = await useFetchConcerts();
+const { concerts } = await useFetchConcerts();
 
-const searchQuery = ref('');
-
-const updateSearchQuery = (newQuery) => {
-  searchQuery.value = newQuery;
-};
+const searchQuery = useState('searchQuery');
 </script>
