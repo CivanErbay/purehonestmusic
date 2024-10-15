@@ -15,7 +15,7 @@
       >
         <NuxtImg
           :src="item.heroImage.url"
-          class="w-60 lg:w-36 h-auto lg:h-full object-cover rounded-lg"
+          class="w-60 lg:w-36 h-auto object-cover rounded-lg"
         />
         <div
           class="flex flex-col lg:flex-row justify-between px-4 py-3 lg:px-6 lg:py-4 w-full"
