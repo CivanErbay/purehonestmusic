@@ -109,8 +109,8 @@ const filteredGroupedItems = computed(() => {
   const query = searchQuery.toLowerCase();
   const filteredItems = items.filter(
     (item) =>
-      item.artistName.toLowerCase().includes(query) ||
-      item.concertLocation.toLowerCase().includes(query)
+      item.name.toLowerCase().includes(query) ||
+      item.location.toLowerCase().includes(query)
   );
 
   return filteredItems.reduce((groups, item) => {
