@@ -1,6 +1,6 @@
 <template>
   <DefaultGrid :no-spacing="true">
-    <div class="lg:col-start-3 lg:col-end-11 break-all">
+    <div class="lg:col-start-3 lg:col-end-11">
       <div v-for="(group, date, index) in visibleGroupedItems" :key="date" class="mb-16">
         <p class="text-2xl font-semibold mb-6">
           <span :class="{ 'underline': weekDay(group[0].date) === 'Heute' }">{{ weekDay(group[0].date) }},</span> {{
@@ -8,7 +8,7 @@
           }}
         </p>
         <div v-for="item in group" :key="item.slug"
-          class="lg:col-start-3 lg:col-end-11 flex bg-[#242424] mb-5 rounded-lg relative">
+          class="lg:col-start-3 lg:col-end-11 flex bg-[#242424] mb-5 rounded-lg relative break-all">
           <NuxtImg :src="item.heroImage.url" class="w-60 lg:w-36 h-auto object-cover rounded-l-lg" />
           <div class="flex flex-col lg:flex-row justify-between px-4 py-3 lg:px-6 lg:py-4 w-full">
             <div class="flex flex-col justify-between w-full lg:w-2/3">
@@ -54,7 +54,7 @@
         </div>
       </div>
       <div v-if="showMoreButton" class="flex justify-center">
-        <button @click="showMoreDays" class="px-8 py-2 bg-orange-500 text-white rounded">Mehr Konzerte anzeigen</button>
+        <button @click="showMoreDays" class="px-8 py-2 bg-orange-500 text-white rounded" :class="{ 'opacity-50 pointer-events-none': totalVisibleConcerts >= totalConcerts }">Mehr Konzerte anzeigen</button>
       </div>
 
       <div class="flex justify-center mt-2 text-gray-400 mb-16">

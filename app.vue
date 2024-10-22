@@ -1,6 +1,6 @@
 <template>
   <div class="mx-4 lg:mx-0 font-josefin">
-    <div class="max-w-[2056px] mx-auto px-16">
+    <div class="max-w-[2056px] mx-auto lg:px-16">
       <Navbar
         :searchQuery="searchQuery"
         @updateSearchQuery="updateSearchQuery"
