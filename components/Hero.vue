@@ -1,5 +1,5 @@
 <template>
-  <DefaultGrid>
+  <DefaultGrid :no-spacing="true">
     <div class="lg:col-start-1 lg:col-end-13 relative">
       <div class="bg-cover bg-bottom h-[167px] lg:h-[361px] contrast-125 flex items-center rounded" :style="backgroundStyles">
         <div class="absolute inset-0 bg-black opacity-50 rounded"></div>

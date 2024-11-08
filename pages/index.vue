@@ -1,6 +1,7 @@
 <template>
   <div class="w-full">
     <Hero />
+    <Recommendations :items="concerts" />
     <ItemList :searchQuery="searchQuery" :items="concerts" />
   </div>
 </template>

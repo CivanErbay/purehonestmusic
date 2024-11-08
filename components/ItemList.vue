@@ -14,7 +14,7 @@
             <div class="flex flex-col justify-between w-full lg:w-2/3">
               <div class="flex flex-col mb-3">
                 <h4 class="text-lg text-[#D3D3D3]">{{ item.name }}</h4>
-                <p class="text-sm text-white opacity-50">{{ item.subtitle }}</p>
+                <p class="text-sm text-white opacity-50">{{ truncateSubtitle(item.subtitle) }}</p>
               </div>
               <div class="flex flex-col lg:flex-row lg:items-center text-white opacity-40 text-sm">
                 <div class="flex ">
@@ -54,7 +54,9 @@
         </div>
       </div>
       <div v-if="showMoreButton" class="flex justify-center">
-        <button @click="showMoreDays" class="px-8 py-2 bg-orange-500 text-white rounded" :class="{ 'opacity-50 pointer-events-none': totalVisibleConcerts >= totalConcerts }">Mehr Konzerte anzeigen</button>
+        <button @click="showMoreDays" class="px-8 py-2 bg-orange-500 text-white rounded"
+          :class="{ 'opacity-50 pointer-events-none': totalVisibleConcerts >= totalConcerts }">Mehr Konzerte
+          anzeigen</button>
       </div>
 
       <div class="flex justify-center mt-2 text-gray-400 mb-16">
@@ -73,41 +75,8 @@ const { items, searchQuery } = defineProps({
   },
 });
 
-const maxDays = ref(3);  // Limit the number of days initially shown
+const maxDays = ref(3);  
 const showMoreButton = ref(false);
-
-const weekdays = [
-  'Sonntag',
-  'Montag',
-  'Dienstag',
-  'Mittwoch',
-  'Donnerstag',
-  'Freitag',
-  'Samstag',
-];
-
-const weekDay = (timestamp) => {
-  const date = new Date(timestamp);
-  const today = new Date();
-  const dayOfWeek = weekdays[date.getDay()];
-
-  if (
-    date.getDate() === today.getDate() &&
-    date.getMonth() === today.getMonth() &&
-    date.getFullYear() === today.getFullYear()
-  ) {
-    return `Heute`;
-  } else {
-    return `${dayOfWeek}`;
-  }
-};
-
-const formattedDate = (timestamp) => {
-  const date = new Date(timestamp);
-  const day = date.getDate();
-  const month = date.getMonth() + 1;
-  return `${day}.${month}`;
-};
 
 const filteredGroupedItems = computed(() => {
   const query = searchQuery.toLowerCase();
@@ -149,12 +118,10 @@ const visibleGroupedItems = computed(() => {
   }, {});
 });
 
-// Total number of visible concerts
 const totalVisibleConcerts = computed(() => {
   return Object.values(visibleGroupedItems.value).flat().length;
 });
 
-// Total number of concerts (all days)
 const totalConcerts = computed(() => {
   return Object.values(filteredGroupedItems.value).flat().length;
 });
