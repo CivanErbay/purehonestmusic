@@ -36,7 +36,7 @@
             <div class="flex flex-col lg:items-end lg:justify-between text-white text-sm">
               <div
                 class="h-7 w-7 flex absolute top-3 right-4 lg:static items-center justify-center rounded-full bg-[#E77000] bg-opacity-15 mb-2">
-                <NuxtImg class="w-4 h-4 mb-0.5" src="/heart.svg" />
+                <NuxtImg class="w-4 h-4" src="/heart.svg" />
               </div>
 
               <div class="flex flex-col items-end">

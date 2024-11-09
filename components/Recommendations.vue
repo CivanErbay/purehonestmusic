@@ -1,11 +1,10 @@
 <template>
-
   <DefaultGrid>
     <div class="lg:col-start-3 lg:col-end-11 mt-5 lg:mt-10">
       <h4 class="text-2xl font-semibold mb-6">{{ headline }}
       </h4>
       <div class="flex flex-col lg:flex-row gap-x-8 relative">
-        <div v-for="item in filteredGroupedItems" :key="item.slug"
+        <div  v-for="item in filteredGroupedItems.slice(0, 3)" :key="item.slug"
           class="flex flex-col bg-[#242424] rounded-xl relative mb-5 lg:mb-0">
           <div class="absolute top-0 left-0 bg-[#E77000] bg-opacity-50 py-1 px-3 h-fit rounded-br-xl rounded-tl-xl">🔥
             Empfohlen</div>
@@ -14,7 +13,7 @@
             <div class="flex flex-col mb-3 p-3 pb-0 w-11/12">
               <div
                 class="h-7 w-7 flex absolute top-3 right-3 items-center justify-center rounded-full bg-[#E77000] bg-opacity-15 mb-2">
-                <NuxtImg class="w-4 h-4 mb-0.5" src="/heart.svg" />
+                <NuxtImg class="w-4 h-4" src="/heart.svg" />
               </div>
               <h4 class="text-lg text-[#D3D3D3]">{{ item.name }}</h4>
               <p class="text-sm text-white opacity-50 overflow-hidden">{{ truncateSubtitle(item.subtitle) }}</p>
@@ -53,13 +52,8 @@
           <NuxtImg src="/arrow-right.svg" class="" />
         </div>
       </div>
-
     </div>
-
   </DefaultGrid>
-
-
-
 </template>
 
 <script setup>
