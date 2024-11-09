@@ -6,9 +6,13 @@
 </template>
 
 <script setup>
+const [concerts, venues, genres] = await Promise.all([
+  fetchCollectionHandler('concerts'),
+  fetchCollectionHandler('venues'),
+  fetchCollectionHandler('genres'),
+]).then((responses) => responses.map((response) => response.data));
 
-
-const { concerts } = await useFetchConcerts();
+console.log({ concerts, venues, genres });
 
 const searchQuery = useState('searchQuery');
 </script>

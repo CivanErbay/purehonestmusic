@@ -9,5 +9,8 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute();
 
-const { concert, status } = await useFetchConcert(route.params.slug);
+const { data: concert } = await fetchCollectionHandler(
+  'concerts',
+  route.params.slug
+);
 </script>
