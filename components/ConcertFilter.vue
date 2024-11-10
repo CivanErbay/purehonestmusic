@@ -127,7 +127,9 @@ const handleClickOutside = (event) => {
   }
 };
 
-document.addEventListener('click', handleClickOutside);
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside);
+});
 
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside);
