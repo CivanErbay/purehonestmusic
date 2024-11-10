@@ -51,7 +51,7 @@ const props = defineProps({
   items: Array,
 });
 
-const emit = defineEmits(['update:selectedItems']);
+const emit = defineEmits(['update:selectedItems', 'update:toggle']);
 
 const toggleItem = (item) => {
   emit('update:selectedItems', props.slug, item);

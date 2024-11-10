@@ -120,6 +120,18 @@ const handleSelectedItem = (category, selectedItem) => {
 
   router.push({ query });
 };
+
+const handleClickOutside = (event) => {
+  if (!event.target.closest('.dropdown')) {
+    openDropdown.value = null;
+  }
+};
+
+document.addEventListener('click', handleClickOutside);
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
 </script>
 
 <style lang="scss" scoped></style>
