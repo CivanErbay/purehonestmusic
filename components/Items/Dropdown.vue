@@ -72,6 +72,7 @@ const toggleDropdown = () => {
   display: flex;
   flex-direction: column;
   position: absolute;
+  top: calc(100% + 4px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
@@ -84,7 +85,7 @@ const toggleDropdown = () => {
 
 .item-count {
   margin-left: auto;
-  padding-left: 12px;
+  padding-left: 24px;
 }
 
 .dropdown-enter-active,

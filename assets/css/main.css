@@ -6,3 +6,33 @@ body {
 .font-josefin {
   font-family: 'Josefin Sans', sans-serif;
 }
+/* For WebKit browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(136, 136, 136, 0.8); /* Semi-transparent thumb */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(85, 85, 85, 0.8); /* Semi-transparent thumb on hover */
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(136, 136, 136, 0.8) transparent; /* Semi-transparent thumb and transparent track */
+}
+
+/* For Edge and IE */
+* {
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
