@@ -51,8 +51,8 @@
               <div
                 class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-5 rounded-tl-xl rounded-br-xl"
               >
-                <p class="opacity-40">
-                  Eine <span class="underline">{{ item.promoter }}</span
+                <p v-if="item.promoter" class="opacity-40">
+                  Eine <span class="underline">{{ item.promoter.name }}</span
                   >-Show
                 </p>
                 <p class="text-lg text-[#E77000]">{{ item.price }} €</p>

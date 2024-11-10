@@ -1,23 +1,34 @@
 <template>
   <div class="w-full">
     <Hero />
-    <Recommendations :items="concerts" headline="Unsere
-        Konzertempfehlungen" />
+    <Recommendations
+      :items="concerts"
+      headline="Unsere
+        Konzertempfehlungen"
+    />
+    <ConcertFilter :venues="venues" :genres="genres" :promoters="promoters" />
     <ItemList :searchQuery="searchQuery" :items="concerts" />
-    <Recommendations :items="concerts" headline="Top Konzerte aus dem Genre: Alternative" />
-    <Recommendations :items="concerts" headline="Top Konzerte aus dem Genre: Post Punk" />
+    <Recommendations
+      :items="concerts"
+      headline="Top Konzerte aus dem Genre: Alternative"
+    />
+    <Recommendations
+      :items="concerts"
+      headline="Top Konzerte aus dem Genre: Post Punk"
+    />
     <AboutBox />
   </div>
 </template>
 
 <script setup>
-const [concerts, venues, genres] = await Promise.all([
+const [concerts, venues, genres, promoters] = await Promise.all([
   fetchCollectionHandler('concerts'),
   fetchCollectionHandler('venues'),
   fetchCollectionHandler('genres'),
+  fetchCollectionHandler('promoters'),
 ]).then((responses) => responses.map((response) => response.data));
 
-console.log({ concerts, venues, genres });
+console.log({ concerts, venues, genres, promoters });
 
 const searchQuery = useState('searchQuery');
 </script>
