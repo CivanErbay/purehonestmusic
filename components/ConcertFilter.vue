@@ -4,32 +4,51 @@
       <div class="text-2xl">Filter:</div>
       <ItemsDropdown
         title="Location"
+        slug="venues"
         :items="filters.venues"
-        @update:selected-items="handleSelectedItem('venues', $event)"
+        :open="openDropdown === 'venues'"
+        @update:selected-items="handleSelectedItem"
+        @update:toggle="handleDropdownToggle"
       />
       <ItemsDropdown
         title="Genre"
+        slug="genres"
         :items="filters.genres"
-        @update:selected-items="handleSelectedItem('genres', $event)"
+        :open="openDropdown === 'genres'"
+        @update:selected-items="handleSelectedItem"
+        @update:toggle="handleDropdownToggle"
       />
       <ItemsDropdown
         title="Veranstaler"
+        slug="promoters"
         :items="filters.promoters"
-        @update:selected-items="handleSelectedItem('promoters', $event)"
+        :open="openDropdown === 'promoters'"
+        @update:selected-items="handleSelectedItem"
+        @update:toggle="handleDropdownToggle"
       />
     </div>
   </DefaultGrid>
 </template>
 
 <script setup>
-import { reactive, watch } from 'vue';
+import { reactive, watch, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-const props = defineProps({ venues: Array, genres: Array, promoters: Array });
-console.log(props);
+const props = defineProps({
+  venues: Array,
+  genres: Array,
+  promoters: Array,
+  concerts: Array,
+});
 
 const route = useRoute();
 const router = useRouter();
+
+const openDropdown = ref(null);
+
+const handleDropdownToggle = (dropdown) => {
+  openDropdown.value = openDropdown.value === dropdown ? null : dropdown;
+};
 
 const filters = reactive({
   venues: props.venues.map(({ name, slug }) => ({
@@ -38,13 +57,18 @@ const filters = reactive({
     selected: route.query.venues
       ? route.query.venues.split(',').includes(slug)
       : false,
+    count: props.concerts.filter((concert) => concert.venue?.slug === slug)
+      .length,
   })),
-  genres: props.genres.map(({ name, slug }) => ({
+  genres: props.genres.map(({ name }) => ({
     name: name,
     slug: name, // genres have no slug
     selected: route.query.genres
-      ? route.query.genres.split(',').includes(slug)
+      ? route.query.genres.split(',').includes(name)
       : false,
+    count: props.concerts.filter(
+      (concert) => concert.genres.some((it) => it.name === name) // TODO check
+    ).length,
   })),
   promoters: props.promoters.map(({ name, slug }) => ({
     name,
@@ -52,6 +76,8 @@ const filters = reactive({
     selected: route.query.promoters
       ? route.query.promoters.split(',').includes(slug)
       : false,
+    count: props.concerts.filter((concert) => concert.promoter?.slug === slug)
+      .length,
   })),
 });
 

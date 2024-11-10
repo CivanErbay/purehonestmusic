@@ -6,7 +6,7 @@
     >
       {{ title }}
       <svg
-        :class="{ 'rotate-180': isOpen, 'rotate-0': !isOpen }"
+        :class="{ 'rotate-180': open, 'rotate-0': !open }"
         class="inline-block w-4 h-4 ml-2 transition-transform duration-200"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -23,7 +23,7 @@
     </button>
     <transition name="dropdown">
       <div
-        v-if="isOpen"
+        v-if="open"
         class="dropdown-menu max-h-[230px] w-max overflow-y-auto bg-bg-2 p-4 rounded-lg"
       >
         <div v-for="(item, index) in items" :key="index" class="dropdown-item">
@@ -36,7 +36,7 @@
             />
             {{ item.name }}
           </label>
-          <span class="item-count">{{ item.count }}</span>
+          <span class="item-count text-slate-400">{{ item.count }}</span>
         </div>
       </div>
     </transition>
@@ -44,23 +44,21 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
-
 const props = defineProps({
   title: String,
+  slug: String,
+  open: Boolean,
   items: Array,
 });
 
 const emit = defineEmits(['update:selectedItems']);
 
-const isOpen = ref(false);
-
-const toggleDropdown = () => {
-  isOpen.value = !isOpen.value;
+const toggleItem = (item) => {
+  emit('update:selectedItems', props.slug, item);
 };
 
-const toggleItem = (item) => {
-  emit('update:selectedItems', item);
+const toggleDropdown = () => {
+  emit('update:toggle', props.slug);
 };
 </script>
 
@@ -86,7 +84,7 @@ const toggleItem = (item) => {
 
 .item-count {
   margin-left: auto;
-  padding-left: 8px;
+  padding-left: 12px;
 }
 
 .dropdown-enter-active,

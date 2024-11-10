@@ -6,7 +6,12 @@
       headline="Unsere
         Konzertempfehlungen"
     />
-    <ConcertFilter :venues="venues" :genres="genres" :promoters="promoters" />
+    <ConcertFilter
+      :venues="venues"
+      :genres="genres"
+      :promoters="promoters"
+      :concerts="concerts"
+    />
     <ItemList :items="concerts" />
     <Recommendations
       :items="concerts"
