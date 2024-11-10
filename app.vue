@@ -1,10 +1,7 @@
 <template>
   <div class="mx-4 lg:mx-0 font-josefin">
     <div class="max-w-[2056px] mx-auto lg:px-16">
-      <Navbar
-        :searchQuery="searchQuery"
-        @updateSearchQuery="updateSearchQuery"
-      />
+      <Navbar />
       <Suspense>
         <NuxtPage />
       </Suspense>
@@ -13,10 +10,4 @@
   </div>
 </template>
 
-<script setup>
-const searchQuery = useState('searchQuery', () => '')
-
-const updateSearchQuery = (newQuery) => {
-  searchQuery.value = newQuery;
-};
-</script>
+<script setup></script>

@@ -42,8 +42,8 @@
   </DefaultGrid>
 </template>
 <script setup>
-const { items, searchQuery } = defineProps({
-  searchQuery: String,
+import { useRoute } from 'vue-router';
+const { items } = defineProps({
   items: {
     type: Array,
     required: true,
@@ -54,21 +54,52 @@ const { items, searchQuery } = defineProps({
 const maxDays = ref(3);
 const showMoreButton = ref(false);
 
+const route = useRoute();
+
 const filteredGroupedItems = computed(() => {
-  const query = searchQuery.toLowerCase();
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+
+  const query = route.query.q ? route.query.q.toLowerCase() : '';
+  const selectedVenues = route.query.venues
+    ? route.query.venues.split(',')
+    : [];
+  const selectedPromoters = route.query.promoters
+    ? route.query.promoters.split(',')
+    : [];
+  const selectedGenres = route.query.genres
+    ? route.query.genres.split(',')
+    : [];
+
+  console.log(selectedGenres);
 
   const filteredItems = items
     .filter(
       (item) =>
         item.name.toLowerCase().includes(query) ||
-        item.location.toLowerCase().includes(query)
+        item.city.toLowerCase().includes(query) ||
+        item.venue.name.toLowerCase().includes(query) ||
+        item.promoter.name.toLowerCase().includes(query) ||
+        item.genres.some((genre) => genre.name.toLowerCase().includes(query))
     )
     .filter((item) => {
       const itemDate = new Date(item.date);
       itemDate.setHours(0, 0, 0, 0);
       return itemDate >= today;
+    })
+    .filter((item) => {
+      const venueMatch =
+        selectedVenues.length === 0 ||
+        selectedVenues.includes(item.venue?.slug);
+      const promoterMatch =
+        selectedPromoters.length === 0 ||
+        selectedPromoters.includes(item.promoter?.slug);
+      const genreMatch =
+        selectedGenres.length === 0 ||
+        selectedGenres.some((genre) =>
+          item.genres.map((g) => g.name).includes(genre)
+        );
+      return venueMatch && promoterMatch && genreMatch;
     })
     .sort((a, b) => new Date(a.date) - new Date(b.date));
 

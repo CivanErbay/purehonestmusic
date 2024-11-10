@@ -7,7 +7,7 @@
         Konzertempfehlungen"
     />
     <ConcertFilter :venues="venues" :genres="genres" :promoters="promoters" />
-    <ItemList :searchQuery="searchQuery" :items="concerts" />
+    <ItemList :items="concerts" />
     <Recommendations
       :items="concerts"
       headline="Top Konzerte aus dem Genre: Alternative"
@@ -29,6 +29,4 @@ const [concerts, venues, genres, promoters] = await Promise.all([
 ]).then((responses) => responses.map((response) => response.data));
 
 console.log({ concerts, venues, genres, promoters });
-
-const searchQuery = useState('searchQuery');
 </script>
