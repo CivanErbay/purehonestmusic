@@ -33,5 +33,5 @@ const [concerts, venues, genres, promoters] = await Promise.all([
   fetchCollectionHandler('promoters'),
 ]).then((responses) => responses.map((response) => response.data));
 
-console.log({ concerts, venues, genres, promoters });
+// console.log({ concerts, venues, genres, promoters });
 </script>
