@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>{{ concert.artistName }}</h2>
+    <h2>{{ concert.name }}</h2>
   </div>
 </template>
 
@@ -13,4 +13,5 @@ const { data: concert } = await fetchCollectionHandler(
   'concerts',
   route.params.slug
 );
+console.log(concert);
 </script>
