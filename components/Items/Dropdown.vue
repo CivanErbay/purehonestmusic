@@ -27,14 +27,15 @@
         class="dropdown-menu max-h-[230px] w-max overflow-y-auto bg-bg-2 p-4 rounded-lg"
       >
         <div v-for="(item, index) in items" :key="index" class="dropdown-item">
-          <input
-            type="checkbox"
-            :id="'item-' + index"
-            v-model="selectedItems"
-            :value="item.name"
-            class="mr-4"
-          />
-          <label :for="'item-' + index">{{ item.name }}</label>
+          <label>
+            <input
+              type="checkbox"
+              :value="item"
+              @change="toggleItem(item)"
+              :checked="item.selected"
+            />
+            {{ item.name }}
+          </label>
           <span class="item-count">{{ item.count }}</span>
         </div>
       </div>
@@ -53,15 +54,14 @@ const props = defineProps({
 const emit = defineEmits(['update:selectedItems']);
 
 const isOpen = ref(false);
-const selectedItems = ref([]);
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
 };
 
-watch(selectedItems, (newVal) => {
-  emit('update:selectedItems', newVal);
-});
+const toggleItem = (item) => {
+  emit('update:selectedItems', item);
+};
 </script>
 
 <style scoped>

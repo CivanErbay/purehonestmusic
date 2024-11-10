@@ -32,22 +32,25 @@ const route = useRoute();
 const router = useRouter();
 
 const filters = reactive({
-  venues: props.venues.map((venue) => ({
-    name: venue.name,
+  venues: props.venues.map(({ name, slug }) => ({
+    name,
+    slug,
     selected: route.query.venues
-      ? route.query.venues.split(',').includes(venue)
+      ? route.query.venues.split(',').includes(slug)
       : false,
   })),
-  genres: props.genres.map((genre) => ({
-    name: genre.name,
+  genres: props.genres.map(({ name, slug }) => ({
+    name: name,
+    slug: name, // genres have no slug
     selected: route.query.genres
-      ? route.query.genres.split(',').includes(genre)
+      ? route.query.genres.split(',').includes(slug)
       : false,
   })),
-  promoters: props.promoters.map((promoter) => ({
-    name: promoter.name,
+  promoters: props.promoters.map(({ name, slug }) => ({
+    name,
+    slug,
     selected: route.query.promoters
-      ? route.query.promoters.split(',').includes(promoter)
+      ? route.query.promoters.split(',').includes(slug)
       : false,
   })),
 });
@@ -57,7 +60,7 @@ watch(
   (newQuery) => {
     filters.venues.forEach((venue) => {
       venue.selected = newQuery.venues
-        ? newQuery.venues.split(',').includes(venue.name)
+        ? newQuery.venues.split(',').includes(venue.slug)
         : false;
     });
     filters.genres.forEach((genre) => {
@@ -67,15 +70,28 @@ watch(
     });
     filters.promoters.forEach((promoter) => {
       promoter.selected = newQuery.promoters
-        ? newQuery.promoters.split(',').includes(promoter.name)
+        ? newQuery.promoters.split(',').includes(promoter.slug)
         : false;
     });
   }
 );
-
-const handleSelectedItem = (category, selectedItems) => {
+const handleSelectedItem = (category, selectedItem) => {
   const query = { ...route.query };
-  query[category] = selectedItems.map((item) => item.name).join(',');
+  const selectedItems = query[category] ? query[category].split(',') : [];
+
+  if (selectedItems.includes(selectedItem.slug)) {
+    const index = selectedItems.indexOf(selectedItem.slug);
+    selectedItems.splice(index, 1);
+  } else {
+    selectedItems.push(selectedItem.slug);
+  }
+
+  if (selectedItems.length > 0) {
+    query[category] = selectedItems.join(',');
+  } else {
+    delete query[category];
+  }
+
   router.push({ query });
 };
 </script>
