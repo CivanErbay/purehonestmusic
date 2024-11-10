@@ -3,10 +3,11 @@
     <div class="lg:col-start-3 lg:col-end-11 mt-5 lg:mt-10">
       <h4 class="text-2xl font-semibold mb-6">{{ headline }}</h4>
       <div class="flex flex-col lg:flex-row gap-x-8 relative">
-        <div
+        <NuxtLink
           v-for="item in filteredGroupedItems.slice(0, 3)"
           :key="item.slug"
           class="flex flex-1 flex-col bg-[#242424] rounded-xl relative mb-5 lg:mb-0"
+          :to="`concerts/${item.slug}`"
         >
           <div
             class="absolute top-0 left-0 bg-[#E77000] bg-opacity-50 py-1 px-3 h-fit rounded-br-xl rounded-tl-xl"
@@ -65,7 +66,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </NuxtLink>
         <div
           class="absolute h-full w-10 bg-[#242424] -right-12 top-0 hidden lg:flex items-center justify-center rounded-xl cursor-pointer"
         >
