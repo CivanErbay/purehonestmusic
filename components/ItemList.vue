@@ -71,16 +71,14 @@ const filteredGroupedItems = computed(() => {
     ? route.query.genres.split(',')
     : [];
 
-  console.log(selectedGenres);
-
   const filteredItems = items
     .filter(
       (item) =>
         item.name.toLowerCase().includes(query) ||
-        item.city.toLowerCase().includes(query) ||
-        item.venue.name.toLowerCase().includes(query) ||
-        item.promoter.name.toLowerCase().includes(query) ||
-        item.genres.some((genre) => genre.name.toLowerCase().includes(query))
+        item.venue?.address.city.toLowerCase().includes(query) ||
+        item.venue?.name.toLowerCase().includes(query) ||
+        item.promoter?.name.toLowerCase().includes(query) ||
+        item.genres.some((genre) => genre.name?.toLowerCase().includes(query))
     )
     .filter((item) => {
       const itemDate = new Date(item.date);
