@@ -1,9 +1,12 @@
 <template>
   <DefaultGrid :no-spacing="true" class="relative flex items-center">
-    <div class="lg:col-start-1 lg:col-end-3 tracking-widest mt-6 lg:mt-0">
+    <NuxtLink
+      to="/"
+      class="lg:col-start-1 lg:col-end-3 tracking-widest mt-6 lg:mt-0"
+    >
       <h1 class="text-lg">PURE.HONEST.MUSIC</h1>
       <h2 class="text-xs text-[#454545] w-max">ARTISTS / SHOWS / RECORDS</h2>
-    </div>
+    </NuxtLink>
     <div class="relative w-full lg:col-start-3 lg:col-end-11 my-5">
       <input
         v-model="localSearchQuery"
