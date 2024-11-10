@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>{{ concert.name }}</h2>
+    <ConcertDetail :item="concert" />
   </div>
 </template>
 
