@@ -1,14 +1,14 @@
 <template>
-  <div class="dropdown text-lg font-thin">
+  <div class="dropdown sm:relative text-lg font-thin">
     <button
-      class="px-6 py-4 bg-bg-light rounded-lg align-middle border"
+      class="p-4 sm:px-6 sm:py-4 bg-bg-light rounded-lg align-middle border"
       :class="{ ' border-primary': open, 'border-bg-light': !open }"
       @click="toggleDropdown"
     >
       {{ title }}
       <svg
         :class="{ 'rotate-180': open, 'rotate-0': !open }"
-        class="inline-block w-4 h-4 ml-2 transition-transform duration-200"
+        class="inline-block w-4 h-4 sm:ml-2 transition-transform duration-200"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
@@ -25,7 +25,7 @@
     <transition name="dropdown">
       <div
         v-if="open"
-        class="dropdown-menu max-h-[360px] w-max overflow-y-auto bg-bg-light p-4 rounded-lg"
+        class="dropdown-menu max-h-[360px] left-0 max-w-screen sm:w-max overflow-y-auto bg-bg-light p-4 rounded-lg"
       >
         <div v-for="(item, index) in items" :key="index" class="dropdown-item">
           <label>
@@ -65,7 +65,6 @@ const toggleDropdown = () => {
 
 <style scoped>
 .dropdown {
-  position: relative;
   display: inline-block;
 }
 

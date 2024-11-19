@@ -13,5 +13,5 @@ const { data: concert } = await fetchCollectionHandler(
   'concerts',
   route.params.slug
 );
-console.log(concert);
+// console.log(concert);
 </script>
