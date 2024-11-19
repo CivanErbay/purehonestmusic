@@ -10,7 +10,7 @@
       >
         <div class="flex flex-col justify-between w-full lg:w-2/3">
           <div class="flex flex-col mb-3">
-            <h4 class="text-lg text-[#D3D3D3]">{{ item.name }}</h4>
+            <h4 class="text-lg text-text">{{ item.name }}</h4>
             <p class="text-sm text-white opacity-50">
               {{ truncateSubtitle(item.subtitle) }}
             </p>
@@ -40,7 +40,7 @@
           class="flex flex-col lg:items-end lg:justify-between text-white text-sm"
         >
           <div
-            class="h-7 w-7 flex absolute top-3 right-4 lg:static items-center justify-center rounded-full bg-[#E77000] bg-opacity-15 mb-2"
+            class="h-7 w-7 flex absolute top-3 right-4 lg:static items-center justify-center rounded-full bg-primary bg-opacity-15 mb-2"
           >
             <NuxtImg class="w-4 h-4" src="/heart.svg" />
           </div>
@@ -50,7 +50,7 @@
               Eine <span class="underline">{{ item.promoter.name }}</span
               >-Show
             </p>
-            <p class="text-lg text-[#E77000]">{{ item.price }} €</p>
+            <p class="text-lg text-primary">{{ item.price }} €</p>
             <p class="opacity-40 text-[8px] lg:text-xs text-right">
               zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />
               und ggf. Abwicklungskosten

@@ -10,3 +10,9 @@
     @apply list-disc list-inside;
   }
 }
+
+@layer components {
+  .btn {
+    @apply px-8 py-2 bg-orange-500 text-white rounded;
+  }
+}

@@ -22,7 +22,7 @@
       <div v-if="showMoreButton" class="flex justify-center">
         <button
           @click="showMoreDays"
-          class="px-8 py-2 bg-orange-500 text-white rounded"
+          class="btn"
           :class="{
             'opacity-50 pointer-events-none':
               totalVisibleConcerts >= totalConcerts,
