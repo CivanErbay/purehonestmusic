@@ -34,7 +34,7 @@
           </div>
           <div class="flex my-4">
             <NuxtImg class="w-4 h-4" src="/location.svg" />
-            <p class="ml-1 opacity-40">{{ item.location }}</p>
+            <p class="ml-1 opacity-40">{{ item.venue.name }}</p>
           </div>
           <div class="flex">
             <NuxtImg class="w-4 h-4" src="/music.svg" />
