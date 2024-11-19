@@ -1,7 +1,8 @@
 <template>
   <div class="dropdown text-lg font-thin">
     <button
-      class="px-6 py-4 bg-bg-2 rounded-lg align-middle"
+      class="px-6 py-4 bg-bg-light rounded-lg align-middle border"
+      :class="{ ' border-primary': open, 'border-bg-light': !open }"
       @click="toggleDropdown"
     >
       {{ title }}
@@ -24,7 +25,7 @@
     <transition name="dropdown">
       <div
         v-if="open"
-        class="dropdown-menu max-h-[230px] w-max overflow-y-auto bg-bg-2 p-4 rounded-lg"
+        class="dropdown-menu max-h-[360px] w-max overflow-y-auto bg-bg-light p-4 rounded-lg"
       >
         <div v-for="(item, index) in items" :key="index" class="dropdown-item">
           <label>

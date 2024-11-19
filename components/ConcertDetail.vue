@@ -18,7 +18,7 @@
               {{ item.subtitle }}
             </p>
           </div>
-          <div class="flex items-center text-white text-xs bg-bg-2">
+          <div class="flex items-center text-white text-xs bg-bg-light">
             <div class="w-1/2 px-10 py-4">
               <div class="flex">
                 <NuxtImg class="w-4 h-4" src="/calendar.svg" />
