@@ -51,18 +51,17 @@ const declineCookies = () => {
 };
 
 const loadGoogleAnalytics = () => {
-  // TODO
-  // const script = document.createElement('script');
-  // script.async = true;
-  // script.src = `https://www.googletagmanager.com/gtag/js?id=`;
-  // document.head.appendChild(script);
-  // window.dataLayer = window.dataLayer || [];
-  // function gtag() {
-  //   window.dataLayer.push(arguments);
-  // }
-  // gtag('js', new Date());
-  // gtag('config', '', {
-  //   page_path: window.location.pathname,
-  // });
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=G-BWMWPYMSMH`;
+  document.head.appendChild(script);
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    window.dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
+  gtag('config', 'G-BWMWPYMSMH', {
+    page_path: window.location.pathname,
+  });
 };
 </script>
