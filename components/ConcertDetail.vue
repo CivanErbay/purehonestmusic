@@ -74,15 +74,15 @@
       </div>
     </div>
     <div class="lg:col-start-9 lg:col-end-11">
-      <div class="rounded-xl overflow-hidden bg-bg-light h-full flex flex-col">
+      <div class="rounded-xl overflow-hidden h-full flex flex-col">
         <div class="h-24 w-full relative">
           <AtomMedia
-            class="w-full h-full blur-md scale-110"
+            class="w-full h-full blur-sm relative"
             :isCover="true"
             v-bind="item.heroImage"
           />
           <div
-            class="w-24 h-24 overflow-hidden rounded-full top-full absolute left-1/2 -translate-x-1/2 -translate-y-1/2"
+            class="w-24 z-20 h-24 overflow-hidden rounded-full top-full absolute left-1/2 -translate-x-1/2 -translate-y-1/2"
           >
             <AtomMedia
               class="w-full h-full"
@@ -92,7 +92,7 @@
           </div>
         </div>
 
-        <div class="mt-12 flex flex-col h-full flex-1">
+        <div class="pt-12 z-0 flex flex-col h-full flex-1 z-10 bg-bg-light">
           <h6 class="text-center px-3 pt-3">{{ item.name }}</h6>
           <h5 class="opacity-70 text-sm text-center px-3">
             {{ item.genres.map((it) => it.name).join(', ') }}
