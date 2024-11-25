@@ -8,8 +8,9 @@
     >
       🔥 Empfohlen
     </div>
-    <NuxtImg
-      :src="item.heroImage.url"
+    <AtomMedia
+      v-bind="item.heroImage"
+      :isCover="true"
       class="w-full h-24 object-cover rounded-t-xl"
     />
     <div class="h-full flex flex-col justify-between relative">

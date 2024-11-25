@@ -1,19 +1,31 @@
 <template>
-  <DefaultGrid :no-spacing="true">
-    <div class="lg:col-start-3 lg:col-end-9 mt-5 lg:mt-10">
-      <div class="flex bg-[#242424] mb-5 rounded-lg relative">
-        <NuxtImg
-          :src="item.heroImage.url"
-          class="w-60 lg:w-36 h-auto object-cover rounded-l-lg"
+  <DefaultGrid :no-spacing="true" class="mb-5 mt-5 lg:mt-10">
+    <div
+      class="lg:col-start-3 lg:col-end-9 rounded-xl overflow-hidden lg:mr-4 mb-8 lg:mb-0"
+    >
+      <div class="flex bg-[#242424] rounded-lg">
+        <AtomMedia
+          v-bind="item.heroImage"
+          :isCover="true"
+          class="w-60 lg:w-36 h-auto hidden md:block"
         />
-        <div class="h-full flex flex-col justify-between relative">
-          <div class="flex flex-col p-10 w-11/12">
-            <div
-              class="h-7 w-7 flex absolute top-3 right-3 items-center justify-center rounded-full bg-primary bg-opacity-15 mb-2"
-            >
-              <NuxtImg class="w-4 h-4" src="/heart.svg" />
+
+        <div class="h-full flex flex-1 flex-col justify-between relative">
+          <div class="flex flex-col py-10 px-6">
+            <div class="relative w-full mb-4">
+              <h4 class="text-3xl font-semibold text-text">
+                {{ item.name }}
+              </h4>
+              <div
+                class="flex absolute top-1/2 -translate-y-1/2 right-3 items-center justify-center"
+              >
+                <button
+                  class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center"
+                >
+                  <NuxtImg class="w-4 h-4" src="/heart.svg" />
+                </button>
+              </div>
             </div>
-            <h4 class="text-lg text-text">{{ item.name }}</h4>
             <p class="text-sm text-white opacity-50 overflow-hidden">
               {{ item.subtitle }}
             </p>
@@ -37,7 +49,7 @@
                 </p>
               </div>
             </div>
-            <div class="flex flex-col items-end w-1/2 px-10 py-5 rounded-br-xl">
+            <div class="flex flex-col items-end w-1/2 px-10 py-5">
               <p v-if="item.promoter" class="opacity-40">
                 Eine <span class="underline">{{ item.promoter.name }}</span
                 >-Show
@@ -59,16 +71,32 @@
         </div>
       </div>
     </div>
-    <div class="lg:col-start-9 lg:col-end-11 mt-5 lg:mt-10">
-      <div class="flex flex-col items-center relative">
-        <NuxtImg class="w-full h-22 blur-md" :src="item.heroImage.url" />
-        <NuxtImg
-          class="w-24 h-24 rounded-full top-20 absolute left-1/2 transform -translate-x-1/2 object-cover"
-          :src="item.heroImage.url"
-        />
-        <div class="flex flex-col">
-          <h5>{{ item.name }}</h5>
-          <h6>{{ item.genres.map((it) => it.name).join(' ') }}</h6>
+    <div class="lg:col-start-9 lg:col-end-11">
+      <div class="rounded-xl overflow-hidden bg-bg-light h-full flex flex-col">
+        <div class="h-24 w-full relative">
+          <AtomMedia
+            class="w-full h-full blur-md scale-110"
+            :isCover="true"
+            v-bind="item.heroImage"
+          />
+          <div
+            class="w-24 h-24 overflow-hidden rounded-full top-full absolute left-1/2 -translate-x-1/2 -translate-y-1/2"
+          >
+            <AtomMedia
+              class="w-full h-full"
+              v-bind="item.heroImage"
+              :isCover="true"
+            />
+          </div>
+        </div>
+
+        <div class="mt-12 flex flex-col h-full flex-1">
+          <h6 class="text-center px-3 pt-3">{{ item.name }}</h6>
+          <h5 class="opacity-70 text-sm text-center px-3">
+            {{ item.genres.map((it) => it.name).join(', ') }}
+          </h5>
+          <div class="flex-1 px-3 mt-8 text-faded">Content</div>
+          <div class="bg-red-400 h-36 p-3">Spotify embed</div>
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import qs from 'qs';
 
-const API_URL = import.meta.env.VITE_API_ENDPOINT;
+const API_URL = import.meta.env.VITE_API_ENDPOINT + '/api';
 
 export const fetchCollectionHandler = async (
   collection,

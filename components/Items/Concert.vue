@@ -1,8 +1,9 @@
 <template>
   <NuxtLink :to="`concerts/${item.slug}`">
     <div class="flex bg-[#242424] mb-5 rounded-lg relative break-all">
-      <NuxtImg
-        :src="item.heroImage.url"
+      <AtomMedia
+        v-bind="item.heroImage"
+        :isCover="true"
         class="w-60 lg:w-36 h-auto object-cover rounded-l-lg"
       />
       <div
