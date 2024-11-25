@@ -1,10 +1,12 @@
 <template>
   <NuxtLink :to="`concerts/${item.slug}`">
-    <div class="flex bg-[#242424] mb-5 rounded-lg relative break-all">
+    <div
+      class="flex bg-[#242424] mb-5 rounded-xl overflow-hidden relative break-all min-h-52"
+    >
       <AtomMedia
         v-bind="item.heroImage"
         :isCover="true"
-        class="w-60 lg:w-36 h-auto object-cover rounded-l-lg"
+        class="w-60 lg:w-36 h-auto object-cover"
       />
       <div
         class="flex flex-col lg:flex-row justify-between px-4 py-3 lg:px-6 lg:py-4 w-full"
