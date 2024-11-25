@@ -4,9 +4,9 @@
       class="lg:col-start-3 lg:col-end-9 rounded-xl overflow-hidden lg:mr-4 mb-8 lg:mb-0"
     >
       <div class="flex bg-[#242424] rounded-lg relative h-full">
-        <div class="w-36 h-full">
+        <div class="w-56 h-full">
           <div
-            class="absolute z-10 left-0 inset-y-0 hidden md:block w-36 hover:w-full duration-300 transition-all"
+            class="absolute z-10 left-0 inset-y-0 hidden md:block w-56 hover:w-full duration-300 transition-all"
           >
             <AtomMedia v-bind="item.heroImage" :isCover="true" class="h-full" />
           </div>
