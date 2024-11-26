@@ -23,7 +23,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(85, 85, 85, 0.8); /* Semi-transparent thumb on hover */
+  background: rgba(
+    85,
+    85,
+    85,
+    0.8
+  ); /* Semi-transparent thumb on hover */
 }
 
 /* For Firefox */
@@ -45,4 +50,10 @@ body {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.hyphenated-text {
+  hyphens: auto;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }

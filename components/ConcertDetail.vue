@@ -1,13 +1,9 @@
 <template>
   <DefaultGrid :no-spacing="true" class="mb-5 mt-5 lg:mt-10">
-    <div
-      class="lg:col-start-3 lg:col-end-9 rounded-xl overflow-hidden lg:mr-4 mb-8 lg:mb-0"
-    >
+    <div class="lg:col-start-3 lg:col-end-9 rounded-xl overflow-hidden lg:mr-4 mb-8 lg:mb-0">
       <div class="flex bg-[#242424] rounded-lg relative h-full">
         <div class="w-56 h-full">
-          <div
-            class="absolute z-10 left-0 inset-y-0 hidden md:block w-56 hover:w-full duration-300 transition-all"
-          >
+          <div class="absolute z-10 left-0 inset-y-0 hidden md:block w-56 hover:w-full duration-300 transition-all">
             <AtomMedia v-bind="item.heroImage" :isCover="true" class="h-full" />
           </div>
         </div>
@@ -18,12 +14,15 @@
               <h4 class="text-3xl font-semibold text-text">
                 {{ item.name }}
               </h4>
-              <div
-                class="flex absolute top-1/2 -translate-y-1/2 right-3 items-center justify-center"
-              >
-                <button
-                  class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center"
-                >
+              <p class="text-primary"> {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}</p>
+              <div class="flex absolute top-1/2 -translate-y-1/2 right-3 items-center justify-center">
+                <button class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2">
+                  <NuxtImg class="w-4 h-4" src="/share.svg" />
+                </button>
+                <button class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2">
+                  <NuxtImg class="w-4 h-4" src="/addCalendar.svg" />
+                </button>
+                <button class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center">
                   <NuxtImg class="w-4 h-4" src="/heart.svg" />
                 </button>
               </div>
@@ -47,21 +46,18 @@
               <div class="flex">
                 <NuxtImg class="w-4 h-4" src="/music.svg" />
                 <p class="ml-1 opacity-40">
-                  {{ item.genres.map((it) => it.name).join(' ') }}
+                  {{ item.genres.map((it) => it.name).join(', ') }}
                 </p>
               </div>
             </div>
             <div class="flex flex-col items-end w-1/2 px-10 py-5">
               <p v-if="item.promoter" class="opacity-40">
-                Eine <span class="underline">{{ item.promoter.name }}</span
-                >-Show
+                Eine <NuxtLink :to="item.promoter.website" class="underline">{{ item.promoter.name }}</NuxtLink>-Show
               </p>
               <p class="text-lg text-primary">{{ item.price }} €</p>
-              <p
-                class="opacity-40 text-[8px] lg:text-[10p] text-right leading-3"
-              >
-                zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />
-                und ggf. Abwicklungskosten
+              <p class="opacity-40 text-[8px] lg:text-[10p] text-right leading-3">
+                ggf. zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />
+                und Abwicklungskosten
               </p>
               <div class="flex justify-center mt-3">
                 <button @click="redirectToTicket" class="btn">
@@ -76,23 +72,14 @@
     <div class="lg:col-start-9 lg:col-end-11">
       <div class="rounded-xl overflow-hidden h-full flex flex-col">
         <div class="h-24 w-full relative">
-          <AtomMedia
-            class="w-full h-full blur-sm relative"
-            :isCover="true"
-            v-bind="item.heroImage"
-          />
+          <AtomMedia class="w-full h-full blur-sm relative" :isCover="true" v-bind="item.heroImage" />
           <div
-            class="w-24 z-20 h-24 overflow-hidden rounded-full top-full absolute left-1/2 -translate-x-1/2 -translate-y-1/2"
-          >
-            <AtomMedia
-              class="w-full h-full"
-              v-bind="item.heroImage"
-              :isCover="true"
-            />
+            class="w-24 z-20 h-24 overflow-hidden rounded-full top-full absolute left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <AtomMedia class="w-full h-full" v-bind="item.heroImage" :isCover="true" />
           </div>
         </div>
 
-        <div class="pt-12 z-0 flex flex-col h-full flex-1 z-10 bg-bg-light">
+        <div class="pt-12 flex flex-col h-full flex-1 z-10 bg-bg-light">
           <h6 class="text-center px-3 pt-3">{{ item.name }}</h6>
           <h5 class="opacity-70 text-sm text-center px-3">
             {{ item.genres.map((it) => it.name).join(', ') }}
@@ -106,8 +93,9 @@
 </template>
 
 <script setup>
-defineProps({ item: Object });
+const props =defineProps({ item: Object });
 
+console.log(props.item)
 const redirectToTicket = () => {
   console.log('blub');
 };

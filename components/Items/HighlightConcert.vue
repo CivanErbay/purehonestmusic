@@ -1,23 +1,13 @@
 <template>
-  <NuxtLink
-    class="flex flex-1 flex-col bg-[#242424] rounded-xl relative mb-5 lg:mb-0"
-    :to="`concerts/${item.slug}`"
-  >
-    <div
-      class="absolute top-0 left-0 bg-primary bg-opacity-50 py-1 px-3 h-fit rounded-br-xl rounded-tl-xl"
-    >
+  <NuxtLink class="flex flex-1 flex-col bg-[#242424] rounded-xl relative mb-5 lg:mb-0" :to="`concerts/${item.slug}`">
+    <div class="absolute top-0 left-0 bg-primary bg-opacity-50 py-1 px-3 h-fit rounded-br-xl rounded-tl-xl">
       🔥 Empfohlen
     </div>
-    <AtomMedia
-      v-bind="item.heroImage"
-      :isCover="true"
-      class="w-full h-24 object-cover rounded-t-xl"
-    />
+    <AtomMedia v-bind="item.heroImage" :isCover="true" class="w-full h-24 object-cover rounded-t-xl" />
     <div class="h-full flex flex-col justify-between relative">
       <div class="flex flex-col mb-3 p-3 pb-0 w-11/12">
         <div
-          class="h-7 w-7 flex absolute top-3 right-3 items-center justify-center rounded-full bg-primary bg-opacity-15 mb-2"
-        >
+          class="h-7 w-7 flex absolute top-3 right-3 items-center justify-center rounded-full bg-primary bg-opacity-15 mb-2">
           <NuxtImg class="w-4 h-4" src="/heart.svg" />
         </div>
         <h4 class="text-lg text-text">{{ item.name }}</h4>
@@ -40,21 +30,18 @@
           <div class="flex">
             <NuxtImg class="w-4 h-4" src="/music.svg" />
             <p class="ml-1 opacity-40">
-              {{ item.genres.map((it) => it.name).join(' ') }}
+              {{ item.genres.map((it) => it.name).join(', ') }}
             </p>
           </div>
         </div>
-        <div
-          class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-5 rounded-tl-xl rounded-br-xl"
-        >
+        <div class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-5 rounded-tl-xl rounded-br-xl">
           <p v-if="item.promoter" class="opacity-40">
-            Eine <span class="underline">{{ item.promoter.name }}</span
-            >-Show
+            Eine <span class="underline">{{ item.promoter.name }}</span>-Show
           </p>
           <p class="text-lg text-primary">{{ item.price }} €</p>
           <p class="opacity-40 text-[8px] lg:text-[10p] text-right leading-3">
-            zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />
-            und ggf. Abwicklungskosten
+            ggf. zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />
+            und Abwicklungskosten
           </p>
         </div>
       </div>

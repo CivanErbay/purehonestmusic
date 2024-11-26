@@ -1,26 +1,12 @@
 <template>
-  <div class="w-full">
+  <div class="w-full hyphenated-text">
     <Hero />
-    <Recommendations
-      :items="concerts"
-      headline="Unsere
-        Konzertempfehlungen"
-    />
-    <ConcertFilter
-      :venues="venues"
-      :genres="genres"
-      :promoters="promoters"
-      :concerts="concerts"
-    />
+    <Recommendations :items="concerts" headline="Unsere
+        Konzertempfehlungen" />
+    <ConcertFilter :venues="venues" :genres="genres" :promoters="promoters" :concerts="concerts" />
     <ItemList :items="concerts" />
-    <Recommendations
-      :items="concerts"
-      headline="Top Konzerte aus dem Genre: Alternative"
-    />
-    <Recommendations
-      :items="concerts"
-      headline="Top Konzerte aus dem Genre: Post Punk"
-    />
+    <Recommendations :items="concerts" headline="Top Konzerte aus dem Genre: Alternative" />
+    <Recommendations :items="concerts" headline="Top Konzerte aus dem Genre: Post Punk" />
     <AboutBox />
   </div>
 </template>
