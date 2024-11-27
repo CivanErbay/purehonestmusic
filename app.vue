@@ -11,6 +11,7 @@
           v-if="showBanner"
           @acceptCookies="acceptCookies"
           @declineCookies="declineCookies"
+          :data="data"
         />
       </transition>
     </div>
@@ -18,11 +19,13 @@
 </template>
 
 <script setup>
+const { data, status } = await fetchGlobalHandler('settings');
+
 useSeoMeta({
-  title: 'PHM',
-  ogTitle: 'Pure Honest Music',
-  description: 'Pure Honest Music',
-  ogDescription: 'Pure Honest Music',
+  title: data.value.seoTitle,
+  ogTitle: data.value.seoTitle,
+  description: data.value.seoDescription,
+  ogDescription: data.value.seoDescription,
   // ogImage: '',
 });
 

@@ -31,7 +31,9 @@
 </template>
 
 <script setup>
-const { data, status } = await fetchGlobalHandler('settings');
+defineProps({
+  data: Object,
+});
 
 defineEmits(['acceptCookies', 'declineCookies']);
 </script>
