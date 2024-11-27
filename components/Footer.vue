@@ -26,9 +26,13 @@
         <NuxtLink class="py-1" to="">AGB</NuxtLink>
         <NuxtLink class="py-1" to="">Impressum</NuxtLink>
       </div>
-      <p class="py-4 text-text text-sm">
-        © 2024 Pure.Honest.Music. Alle Rechte vorbehalten.
-      </p>
+      <p class="py-4 text-text text-sm">{{ settings.copyright }}.</p>
     </div>
   </DefaultGrid>
 </template>
+
+<script setup>
+defineProps({
+  settings: Object,
+});
+</script>

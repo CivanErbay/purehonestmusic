@@ -5,25 +5,25 @@
   >
     <div class="">
       <div class="flex flex-col flex-1">
-        <p class="font-semibold">{{ data.cookieHeadline }}</p>
+        <p class="font-semibold">{{ settings.cookieHeadline }}</p>
         <p class="text-sm lg:text-base font-light py-2">
-          {{ data.cookieDescription }}
+          {{ settings.cookieDescription }}
         </p>
       </div>
       <div class="flex justify-end gap-6">
         <button
           class="btn"
-          :text="data.cookieAccept"
+          :text="settings.cookieAccept"
           @click="$emit('acceptCookies')"
         >
-          {{ data.cookieAccept }}
+          {{ settings.cookieAccept }}
         </button>
         <button
           variant="secondary"
           class="btn"
           @click="$emit('declineCookies')"
         >
-          {{ data.cookieDecline }}
+          {{ settings.cookieDecline }}
         </button>
       </div>
     </div>
@@ -31,7 +31,9 @@
 </template>
 
 <script setup>
-const { data, status } = await fetchGlobalHandler('settings');
+defineProps({
+  settings: Object,
+});
 
 defineEmits(['acceptCookies', 'declineCookies']);
 </script>

@@ -5,12 +5,13 @@
       <Suspense>
         <NuxtPage />
       </Suspense>
-      <Footer />
+      <Footer :settings="settings" />
       <transition name="fade">
         <CookieBanner
           v-if="showBanner"
           @acceptCookies="acceptCookies"
           @declineCookies="declineCookies"
+          :settings="settings"
         />
       </transition>
     </div>
@@ -18,15 +19,18 @@
 </template>
 
 <script setup>
+const { data: settings, status } = await fetchGlobalHandler('settings');
+
 useSeoMeta({
-  title: 'PHM',
-  ogTitle: 'Pure Honest Music',
-  description: 'Pure Honest Music',
-  ogDescription: 'Pure Honest Music',
+  title: settings.value.seoTitle,
+  ogTitle: settings.value.seoTitle,
+  description: settings.value.seoDescription,
+  ogDescription: settings.value.seoDescription,
   // ogImage: '',
 });
 
 const showBanner = ref(false);
+const usersStore = useUsersStore();
 
 onMounted(() => {
   if (localStorage.getItem('acceptedCookies')) {

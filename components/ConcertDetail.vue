@@ -1,9 +1,14 @@
 <template>
   <DefaultGrid :no-spacing="true" class="mb-5 mt-5 lg:mt-10">
-    <div class="lg:col-start-3 lg:col-end-9 rounded-xl overflow-hidden lg:mr-4 mb-8 lg:mb-0">
+    <div
+      class="lg:col-start-3 lg:col-end-9 rounded-xl overflow-hidden lg:mr-4 mb-8 lg:mb-0"
+    >
       <div class="flex bg-[#242424] rounded-lg relative h-full">
         <div class="w-56 h-full">
-          <div class="absolute z-10 left-0 inset-y-0 hidden md:block w-56 hover:w-full duration-300 transition-all">
+          <!--  add hover:w-full for animation -->
+          <div
+            class="absolute z-10 left-0 inset-y-0 hidden md:block w-56 duration-300 transition-all"
+          >
             <AtomMedia v-bind="item.heroImage" :isCover="true" class="h-full" />
           </div>
         </div>
@@ -14,16 +19,32 @@
               <h4 class="text-3xl font-semibold text-text">
                 {{ item.name }}
               </h4>
-              <p class="text-primary"> {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}</p>
-              <div class="flex absolute top-1/2 -translate-y-1/2 right-3 items-center justify-center">
-                <button class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2">
+              <p class="text-primary">
+                {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
+              </p>
+              <div
+                class="flex absolute top-1/2 -translate-y-1/2 right-3 items-center justify-center"
+              >
+                <button
+                  class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2"
+                >
                   <NuxtImg class="w-4 h-4" src="/share.svg" />
                 </button>
-                <button class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2">
+                <button
+                  class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2"
+                >
                   <NuxtImg class="w-4 h-4" src="/addCalendar.svg" />
                 </button>
-                <button class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center">
-                  <NuxtImg class="w-4 h-4" src="/heart.svg" />
+                <button
+                  class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center"
+                  @click="() => toggleFavoriteConcert(item.id)"
+                >
+                  <NuxtImg
+                    v-if="isConcertFavorite(item.id)"
+                    class="w-4 h-4"
+                    src=""
+                  />
+                  <NuxtImg v-else class="w-4 h-4" src="/heart.svg" />
                 </button>
               </div>
             </div>
@@ -52,10 +73,16 @@
             </div>
             <div class="flex flex-col items-end w-1/2 px-10 py-5">
               <p v-if="item.promoter" class="opacity-40">
-                Eine <NuxtLink :to="item.promoter.website" class="underline">{{ item.promoter.name }}</NuxtLink>-Show
+                Eine
+                <NuxtLink :to="item.promoter.website" class="underline">{{
+                  item.promoter.name
+                }}</NuxtLink
+                >-Show
               </p>
               <p class="text-lg text-primary">{{ item.price }} €</p>
-              <p class="opacity-40 text-[8px] lg:text-[10p] text-right leading-3">
+              <p
+                class="opacity-40 text-[8px] lg:text-[10p] text-right leading-3"
+              >
                 ggf. zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />
                 und Abwicklungskosten
               </p>
@@ -72,10 +99,19 @@
     <div class="lg:col-start-9 lg:col-end-11">
       <div class="rounded-xl overflow-hidden h-full flex flex-col">
         <div class="h-24 w-full relative">
-          <AtomMedia class="w-full h-full blur-sm relative" :isCover="true" v-bind="item.heroImage" />
+          <AtomMedia
+            class="w-full h-full blur-sm relative"
+            :isCover="true"
+            v-bind="item.heroImage"
+          />
           <div
-            class="w-24 z-20 h-24 overflow-hidden rounded-full top-full absolute left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <AtomMedia class="w-full h-full" v-bind="item.heroImage" :isCover="true" />
+            class="w-24 z-20 h-24 overflow-hidden rounded-full top-full absolute left-1/2 -translate-x-1/2 -translate-y-1/2"
+          >
+            <AtomMedia
+              class="w-full h-full"
+              v-bind="item.heroImage"
+              :isCover="true"
+            />
           </div>
         </div>
 
@@ -93,9 +129,12 @@
 </template>
 
 <script setup>
-const props =defineProps({ item: Object });
+const props = defineProps({ item: Object });
 
 const redirectToTicket = () => {
   console.log('blub');
 };
+
+const usersStore = useUsersStore();
+const { isConcertFavorite, toggleFavoriteConcert } = usersStore;
 </script>
