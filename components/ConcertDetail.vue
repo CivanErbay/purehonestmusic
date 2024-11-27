@@ -95,7 +95,6 @@
 <script setup>
 const props =defineProps({ item: Object });
 
-console.log(props.item)
 const redirectToTicket = () => {
   console.log('blub');
 };

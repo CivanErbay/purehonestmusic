@@ -3,6 +3,7 @@
     <Hero />
     <Recommendations :items="concerts" headline="Unsere
         Konzertempfehlungen" />
+    <ItemsCarousel></ItemsCarousel>
     <ConcertFilter :venues="venues" :genres="genres" :promoters="promoters" :concerts="concerts" />
     <ItemList :items="concerts" />
     <Recommendations :items="concerts" headline="Top Konzerte aus dem Genre: Alternative" />
