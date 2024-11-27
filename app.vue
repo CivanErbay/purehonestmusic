@@ -5,13 +5,13 @@
       <Suspense>
         <NuxtPage />
       </Suspense>
-      <Footer />
+      <Footer :settings="settings" />
       <transition name="fade">
         <CookieBanner
           v-if="showBanner"
           @acceptCookies="acceptCookies"
           @declineCookies="declineCookies"
-          :data="data"
+          :settings="settings"
         />
       </transition>
     </div>
@@ -19,13 +19,13 @@
 </template>
 
 <script setup>
-const { data, status } = await fetchGlobalHandler('settings');
+const { data: settings, status } = await fetchGlobalHandler('settings');
 
 useSeoMeta({
-  title: data.value.seoTitle,
-  ogTitle: data.value.seoTitle,
-  description: data.value.seoDescription,
-  ogDescription: data.value.seoDescription,
+  title: settings.value.seoTitle,
+  ogTitle: settings.value.seoTitle,
+  description: settings.value.seoDescription,
+  ogDescription: settings.value.seoDescription,
   // ogImage: '',
 });
 
