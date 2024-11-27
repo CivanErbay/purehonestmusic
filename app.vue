@@ -30,6 +30,7 @@ useSeoMeta({
 });
 
 const showBanner = ref(false);
+const usersStore = useUsersStore();
 
 onMounted(() => {
   if (localStorage.getItem('acceptedCookies')) {

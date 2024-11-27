@@ -37,8 +37,14 @@
                 </button>
                 <button
                   class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center"
+                  @click="() => toggleFavoriteConcert(item.id)"
                 >
-                  <NuxtImg class="w-4 h-4" src="/heart.svg" />
+                  <NuxtImg
+                    v-if="isConcertFavorite(item.id)"
+                    class="w-4 h-4"
+                    src=""
+                  />
+                  <NuxtImg v-else class="w-4 h-4" src="/heart.svg" />
                 </button>
               </div>
             </div>
@@ -129,4 +135,7 @@ console.log(props.item);
 const redirectToTicket = () => {
   console.log('blub');
 };
+
+const usersStore = useUsersStore();
+const { isConcertFavorite, toggleFavoriteConcert } = usersStore;
 </script>
