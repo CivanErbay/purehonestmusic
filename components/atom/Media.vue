@@ -24,8 +24,6 @@
 
 <script setup lang="ts">
 import type { Media } from '../../types/Atoms';
-// Ensure API_URL is correctly set
-const API_URL = import.meta.env.VITE_API_ENDPOINT;
 
 const props = defineProps<Media>();
 const emit = defineEmits<{
@@ -40,7 +38,7 @@ function handleMediaLoaded() {
 }
 
 const src = computed(() => {
-  return `${API_URL}${props.sizes?.large?.url || props.url}`;
+  return props.sizes?.large?.url || props.url;
 });
 
 const isImage = computed(() => {

@@ -1,8 +1,12 @@
 <template>
   <div class="w-full">
-    <Hero />
+    <Hero
+      :media="landing.media"
+      :title="landing.title"
+      :subtitle="landing.subtitle"
+    />
     <Recommendations
-      :items="concerts"
+      :items="landing.highlightedConcerts"
       headline="Unsere
         Konzertempfehlungen"
     />
@@ -14,11 +18,11 @@
     />
     <ItemList :items="concerts" />
     <Recommendations
-      :items="concerts"
+      :items="landing.highlightedConcerts"
       headline="Top Konzerte aus dem Genre: Alternative"
     />
     <Recommendations
-      :items="concerts"
+      :items="landing.highlightedConcerts"
       headline="Top Konzerte aus dem Genre: Post Punk"
     />
     <AboutBox />
@@ -26,12 +30,15 @@
 </template>
 
 <script setup>
-const [concerts, venues, genres, promoters] = await Promise.all([
+const [concerts, venues, genres, promoters, landing] = await Promise.all([
   fetchCollectionHandler('concerts'),
   fetchCollectionHandler('venues'),
   fetchCollectionHandler('genres'),
   fetchCollectionHandler('promoters'),
+  fetchGlobalHandler('landing'),
 ]).then((responses) => responses.map((response) => response.data));
+
+console.log(landing);
 
 // console.log({ concerts, venues, genres, promoters });
 </script>
