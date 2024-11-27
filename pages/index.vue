@@ -38,7 +38,5 @@ const [concerts, venues, genres, promoters, landing] = await Promise.all([
   fetchGlobalHandler('landing'),
 ]).then((responses) => responses.map((response) => response.data));
 
-console.log(landing);
-
-// console.log({ concerts, venues, genres, promoters });
+// console.log({ concerts, venues, genres, promoters, landing });
 </script>
