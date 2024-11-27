@@ -2,11 +2,11 @@
   <DefaultGrid>
     <div class="lg:col-start-3 lg:col-end-11 mt-5 lg:mt-10">
       <h4 class="text-2xl font-semibold mb-6">{{ headline }}</h4>
-      <Carousel :items="filteredGroupedItems.slice(0, 3)">
+      <!-- <Carousel :items="filteredGroupedItems.slice(0, 3)">
         <template #slide="{ item }">
           <ItemsHighlightConcert :item="item" />
         </template>
-      </Carousel>
+      </Carousel> -->
     </div>
   </DefaultGrid>
 </template>
