@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ConcertDetail :item="concert" />
+    <ConcertDetailPage :item="concert" />
   </div>
 </template>
 

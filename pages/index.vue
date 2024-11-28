@@ -3,11 +3,10 @@
     <Hero :media="landing.media" :title="landing.title" :subtitle="landing.subtitle" />
     <Recommendations :items="landing.highlightedConcerts" headline="Unsere
         Konzertempfehlungen" />
-    <ItemsCarousel></ItemsCarousel>
     <ConcertFilter :venues="venues" :genres="genres" :promoters="promoters" :concerts="concerts" />
     <ItemList :items="concerts" />
-    <Recommendations :items="landing.highlightedConcerts" headline="Top Konzerte aus dem Genre: Alternative" />
-    <Recommendations :items="landing.highlightedConcerts" headline="Top Konzerte aus dem Genre: Post Punk" />
+<!--     <Recommendations :items="landing.highlightedConcerts" headline="Top Konzerte aus dem Genre: Alternative" />
+    <Recommendations :items="landing.highlightedConcerts" headline="Top Konzerte aus dem Genre: Post Punk" /> -->
     <AboutBox />
   </div>
 </template>
