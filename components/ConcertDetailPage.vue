@@ -132,7 +132,6 @@
 const props = defineProps({ item: Object });
 
 const redirectToTicket = () => {
-  console.log('blub');
 };
 
 const usersStore = useUsersStore();

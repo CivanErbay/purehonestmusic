@@ -5,12 +5,12 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'de',
       },
-      // script: [
-      //   {
-      //     src: '/flowbite.min.js',
-      //     tagPosition: 'bodyClose',
-      //   },
-      // ],
+      script: [
+        {
+          src: '/flowbite.min.js',
+          tagPosition: 'bodyClose',
+        },
+      ],
     },
   },
   compatibilityDate: '2024-04-03',
