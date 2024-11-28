@@ -14,7 +14,8 @@
   "dependencies": {
     "@nuxt/image": "^1.8.1",
     "@nuxtjs/google-fonts": "^3.2.0",
-    "flowbite": "^2.5.2",
+    "@preline/carousel": "^2.5.0",
+    "preline": "^2.5.1",
     "qs": "^6.13.0",
     "vue": "latest",
     "vue-router": "latest"

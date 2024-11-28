@@ -1,6 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./node_modules/flowbite/**/*.js'],
+  content: [
+    // './src/**/*.{html,js}',
+    'node_modules/preline/dist/*.js',
+  ],
+  plugins: [
+    // require('@tailwindcss/forms'),
+    require('preline/plugin'),
+  ],
   theme: {
     extend: {
       colors: {
@@ -12,5 +19,4 @@ export default {
       },
     },
   },
-  plugins: [require('flowbite/plugin')],
 }

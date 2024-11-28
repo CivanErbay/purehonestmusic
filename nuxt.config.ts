@@ -6,11 +6,8 @@ export default defineNuxtConfig({
         lang: 'de',
       },
       script: [
-        {
-          src: '/flowbite.min.js',
-          tagPosition: 'bodyClose',
-        },
-      ],
+        { src: '/preline.js', type: 'module', defer: true }
+      ]
     },
   },
   compatibilityDate: '2024-04-03',

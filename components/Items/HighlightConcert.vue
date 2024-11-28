@@ -3,7 +3,7 @@
     <div class="absolute top-0 left-0 bg-primary bg-opacity-50 py-1 px-3 h-fit rounded-br-xl rounded-tl-xl">
       🔥 Empfohlen
     </div>
-    <AtomMedia v-bind="item.heroImage" :isCover="true" class="w-full h-24 object-cover rounded-t-xl" />
+    <AtomMedia v-bind="item.heroImage" :isCover="true" class="w-full h-32 object-cover rounded-t-xl" />
     <div class="h-full flex flex-col justify-between relative">
       <div class="flex flex-col mb-3 p-3 pb-0 w-11/12">
         <div
