@@ -23,11 +23,13 @@
               class="flex absolute top-1/2 -translate-y-1/2 right-3 items-center justify-center"
             >
               <button
+                @click="handleShare"
                 class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2"
               >
                 <NuxtImg class="w-4 h-4" src="/share.svg" />
               </button>
               <button
+                v-if="item.date"
                 class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2"
               >
                 <NuxtImg class="w-4 h-4" src="/addCalendar.svg" />
@@ -134,6 +136,22 @@ const emit = defineEmits(['toggleFavorite']);
 
 function toggleFavorite(id) {
   emit('toggleFavorite', id);
+}
+
+function handleShare() {
+  if (navigator.share) {
+    navigator
+      .share({
+        title: document.title,
+        url: window.location.href,
+      })
+      .then(() => {
+        console.log('Thanks for sharing!');
+      })
+      .catch(console.error);
+  } else {
+    console.log('Share not supported on this browser, do it the old way.');
+  }
 }
 </script>
 
