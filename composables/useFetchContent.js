@@ -6,12 +6,14 @@ export const fetchCollectionHandler = async (
   collection,
   slug,
   limit = 1000,
-  page = 0
+  page = 0,
+  additionalQueries = {}
 ) => {
   let url;
   const query = {
     limit,
     page,
+    ...additionalQueries,
   };
 
   if (slug) {

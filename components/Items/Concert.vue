@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- This NuxtLink is only visible on desktop -->
-    <NuxtLink class="hidden lg:block" :to="`concerts/${item.slug}`">
+    <NuxtLink class="hidden lg:block" :to="`/concerts/${item.slug}`">
       <div
         class="flex bg-[#242424] mb-5 rounded-xl overflow-hidden relative min-h-52"
       >

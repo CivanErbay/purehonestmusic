@@ -34,14 +34,13 @@
 
       <div class="flex justify-center mt-2 text-gray-400 mb-16">
         <p class="text-sm">
-          {{ totalVisibleConcerts }} von {{ totalConcerts }} Konzerten
+          {{ totalVisibleConcerts }} von {{ items.length }} Konzerten
         </p>
       </div>
     </div>
   </DefaultGrid>
 </template>
 <script setup>
-import { useRoute } from 'vue-router';
 const { items } = defineProps({
   items: {
     type: Array,
@@ -50,61 +49,8 @@ const { items } = defineProps({
   },
 });
 
-const maxDays = ref(3);
-const showMoreButton = ref(false);
-
-const route = useRoute();
-
-const filteredGroupedItems = computed(() => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const query = route.query.q ? route.query.q.toLowerCase() : '';
-  const selectedVenues = route.query.venues
-    ? route.query.venues.split(',')
-    : [];
-  const selectedPromoters = route.query.promoters
-    ? route.query.promoters.split(',')
-    : [];
-  const selectedGenres = route.query.genres
-    ? route.query.genres.split(',')
-    : [];
-
-  const filteredItems = items
-    .filter(
-      (item) =>
-        item.name.toLowerCase().includes(query) ||
-        item.venue?.address.city.toLowerCase().includes(query) ||
-        item.venue?.name.toLowerCase().includes(query) ||
-        item.promoter?.name.toLowerCase().includes(query) ||
-        item.genres.some((genre) => genre.name?.toLowerCase().includes(query))
-    )
-    .filter((item) => {
-      const itemDate = new Date(item.date);
-      itemDate.setHours(0, 0, 0, 0);
-      return itemDate >= today;
-    })
-    .filter((item) => {
-      const venueMatch =
-        selectedVenues.length === 0 ||
-        selectedVenues.includes(item.venue?.slug);
-      const promoterMatch =
-        selectedPromoters.length === 0 ||
-        selectedPromoters.includes(item.promoter?.slug);
-      const genreMatch =
-        selectedGenres.length === 0 ||
-        selectedGenres.some((genre) =>
-          item.genres.map((g) => g.name).includes(genre)
-        );
-      return venueMatch && promoterMatch && genreMatch;
-    })
-    .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-  if (filteredItems.length > 5) {
-    showMoreButton.value = true;
-  }
-
-  return filteredItems.reduce((groups, item) => {
+const groupedItems = computed(() => {
+  return items.reduce((groups, item) => {
     const dateKey = formattedDate(item.date);
     if (!groups[dateKey]) {
       groups[dateKey] = [];
@@ -114,20 +60,21 @@ const filteredGroupedItems = computed(() => {
   }, {});
 });
 
+const maxDays = ref(3);
+const showMoreButton = computed(
+  () => totalVisibleConcerts.value < items.length
+);
+
 const visibleGroupedItems = computed(() => {
-  const groupedDates = Object.keys(filteredGroupedItems.value);
+  const groupedDates = Object.keys(groupedItems.value);
   return groupedDates.slice(0, maxDays.value).reduce((result, date) => {
-    result[date] = filteredGroupedItems.value[date];
+    result[date] = groupedItems.value[date];
     return result;
   }, {});
 });
 
 const totalVisibleConcerts = computed(() => {
   return Object.values(visibleGroupedItems.value).flat().length;
-});
-
-const totalConcerts = computed(() => {
-  return Object.values(filteredGroupedItems.value).flat().length;
 });
 
 const showMoreDays = () => {

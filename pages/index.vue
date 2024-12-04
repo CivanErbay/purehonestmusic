@@ -16,7 +16,7 @@
       :promoters="promoters"
       :concerts="concerts"
     />
-    <ItemList :items="concerts" />
+    <FilteredItemList :items="concerts" />
     <Recommendations
       :items="landing.highlightedConcerts"
       headline="Top Konzerte aus dem Genre: Alternative"
