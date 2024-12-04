@@ -44,6 +44,8 @@
           <p class="text-sm text-white opacity-50 overflow-hidden">
             {{ item.subtitle }}
           </p>
+          <!-- TODO make sure style is ok -->
+          <UtilsRichTextRenderer :nodes="item.description" />
         </div>
         <div class="flex items-center text-white bg-bg-light">
           <div class="w-1/2 px-10 py-4">

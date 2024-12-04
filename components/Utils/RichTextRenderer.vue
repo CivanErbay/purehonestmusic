@@ -1,5 +1,7 @@
 <template>
-  <p v-html="html"></p>
+  <ClientOnly>
+    <p v-html="html"></p>
+  </ClientOnly>
 </template>
 
 <script setup>
