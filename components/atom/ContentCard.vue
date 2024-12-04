@@ -43,7 +43,7 @@
               </button>
             </div>
           </div>
-          <p class="text-sm text-white opacity-50 overflow-hidden">
+          <p class="text-sm text-white mb-4 opacity-50 overflow-hidden">
             {{ item.subtitle }}
           </p>
           <!-- TODO make sure style is ok -->
