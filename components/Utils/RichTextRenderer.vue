@@ -1,6 +1,6 @@
 <template>
   <ClientOnly>
-    <p v-html="html"></p>
+    <p class="slate-content" v-html="html"></p>
   </ClientOnly>
 </template>
 

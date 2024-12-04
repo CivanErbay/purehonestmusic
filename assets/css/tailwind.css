@@ -15,4 +15,21 @@
   .btn {
     @apply px-8 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition-all;
   }
+
+  .slate-content h1 {
+    @apply text-4xl font-bold mb-8;
+  }
+
+  .slate-content h2 {
+    @apply text-3xl font-bold mb-6;
+  }
+
+  .slate-content a {
+    @apply underline;
+  }
+
+  /* TODO .slate-content styles */
+  /* .slate-content ul {
+    @apply ??;
+  } */
 }
