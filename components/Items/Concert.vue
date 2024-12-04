@@ -5,8 +5,12 @@
       <div
         class="flex bg-[#242424] mb-5 rounded-xl overflow-hidden relative min-h-52"
       >
+        <!-- fallback to artist image if no concert image -->
         <AtomMedia
-          v-bind="item.heroImage"
+          v-bind="
+            item.heroImage ||
+            (item.artist.length > 0 && item.artist[0].heroImage)
+          "
           :isCover="true"
           class="w-60 lg:w-36 h-auto object-cover"
         />

@@ -6,7 +6,15 @@
         <div
           class="absolute z-10 left-0 inset-y-0 hidden md:block w-56 duration-300 transition-all"
         >
-          <AtomMedia v-bind="item.heroImage" :isCover="true" class="h-full" />
+          <!-- fallback to artist image if no concert image -->
+          <AtomMedia
+            v-bind="
+              item.heroImage ||
+              (item.artist.length > 0 && item.artist[0].heroImage)
+            "
+            :isCover="true"
+            class="h-full"
+          />
         </div>
       </div>
 
