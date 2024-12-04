@@ -7,13 +7,18 @@ export const useUsersStore = defineStore('users', () => {
     id: '',
     roles: [],
     favoriteConcerts: [],
+    favoriteLocations: [],
     isLoggedIn: false,
   });
 
-  const loadFavoriteConcerts = () => {
+  const loadFavorites = () => {
     const storedConcerts = localStorage.getItem('favoriteConcerts');
     if (storedConcerts) {
       user.favoriteConcerts = JSON.parse(storedConcerts);
+    }
+    const storedLocations = localStorage.getItem('favoriteLocations');
+    if (storedLocations) {
+      user.favoriteLocations = JSON.parse(storedLocations);
     }
   };
 
@@ -30,17 +35,35 @@ export const useUsersStore = defineStore('users', () => {
     );
   };
 
-  const isConcertFavorite = (concertId) => {
-    return user.favoriteConcerts.includes(concertId);
+  const toggleFavoriteLocation = (locationId) => {
+    const index = user.favoriteLocations.indexOf(locationId);
+    if (index === -1) {
+      user.favoriteLocations.push(locationId);
+    } else {
+      user.favoriteLocations.splice(index, 1);
+    }
+    localStorage.setItem(
+      'favoriteLocations',
+      JSON.stringify(user.favoriteLocations)
+    );
+  };
+
+  const isConcertFavorite = (id) => {
+    return user.favoriteConcerts.includes(id);
+  };
+  const isLocationFavorite = (id) => {
+    return user.favoriteLocations.includes(id);
   };
 
   onMounted(() => {
-    loadFavoriteConcerts();
+    loadFavorites();
   });
 
   return {
     user,
     toggleFavoriteConcert,
+    toggleFavoriteLocation,
     isConcertFavorite,
+    isLocationFavorite,
   };
 });
