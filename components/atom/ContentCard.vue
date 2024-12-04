@@ -45,17 +45,17 @@
             {{ item.subtitle }}
           </p>
         </div>
-        <div class="flex items-center text-white text-xs bg-bg-light">
+        <div class="flex items-center text-white bg-bg-light">
           <div class="w-1/2 px-10 py-4">
             <!-- Conerts -->
-            <div class="flex" v-if="item.date">
+            <div class="flex mb-2" v-if="item.date">
               <NuxtImg class="w-4 h-4" src="/calendar.svg" />
               <p class="ml-1 opacity-40">
                 {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
               </p>
             </div>
             <NuxtLink
-              class="flex my-4"
+              class="flex mb-2"
               v-if="item.venue?.name"
               :to="`/locations/${item.venue.slug}`"
             >
@@ -67,6 +67,33 @@
               <p class="ml-1 opacity-40">
                 {{ item.genres.map((it) => it.name).join(', ') }}
               </p>
+            </div>
+            <!-- location venue -->
+            <div v-if="item.address" class="flex">
+              <NuxtImg class="w-4 h-4" src="/location.svg" />
+              <div class="flex flex-col">
+                <p class="ml-1 opacity-40">{{ item.address.street }}</p>
+                <p class="ml-1 opacity-40">{{ item.address.zipCode }}</p>
+                <p class="ml-1 opacity-40">{{ item.address.city }}</p>
+                <NuxtLink
+                  class="mt-2 ml-1 opacity-40 underline"
+                  :to="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                    `${item.name} ${item.address.street}, ${item.address.zipCode}, ${item.address.city}`
+                  )}`"
+                  target="_blank"
+                >
+                  In Maps öffnen
+                </NuxtLink>
+              </div>
+              <div class="flex flex-col opacity-40 ml-8">
+                <p class="">Folgen auf:</p>
+                <NuxtLink class="underline" :to="item.website" target="_blank"
+                  >Website</NuxtLink
+                >
+                <NuxtLink class="underline" :to="item.instagram" target="_blank"
+                  >Instagram</NuxtLink
+                >
+              </div>
             </div>
           </div>
           <div class="flex flex-col items-end w-1/2 px-10 py-5">

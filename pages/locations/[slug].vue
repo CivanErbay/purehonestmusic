@@ -5,6 +5,7 @@
       :item="location"
       @toggleFavorite="toggleFavoriteLocation"
     />
+    <!-- TODO fetch concerts in this location -->
   </DefaultGrid>
 </template>
 
@@ -13,7 +14,6 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const { data } = await fetchCollectionHandler('venues', route.params.slug);
-console.log(data);
 
 const usersStore = useUsersStore();
 const { isLocationFavorite, toggleFavoriteLocation } = usersStore;
