@@ -130,7 +130,7 @@
 
 <script setup>
 const props = defineProps({ item: Object });
-defineEmits(['toggleFavorite']);
+const emit = defineEmits(['toggleFavorite']);
 
 function toggleFavorite(id) {
   emit('toggleFavorite', id);
