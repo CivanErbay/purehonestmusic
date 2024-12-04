@@ -55,15 +55,12 @@ export const useUsersStore = defineStore('users', () => {
     return user.favoriteLocations.includes(id);
   };
 
-  onMounted(() => {
-    loadFavorites();
-  });
-
   return {
     user,
     toggleFavoriteConcert,
     toggleFavoriteLocation,
     isConcertFavorite,
     isLocationFavorite,
+    loadFavorites,
   };
 });

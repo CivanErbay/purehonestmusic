@@ -30,6 +30,7 @@ useSeoMeta({
 });
 
 const showBanner = ref(false);
+const { loadFavorites } = useUsersStore(); // needd to load the store
 
 onMounted(() => {
   if (localStorage.getItem('acceptedCookies')) {
@@ -40,6 +41,7 @@ onMounted(() => {
   } else {
     showBanner.value = true;
   }
+  loadFavorites();
 });
 
 const acceptCookies = () => {
