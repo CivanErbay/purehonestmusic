@@ -4,6 +4,7 @@ export default {
     './components/**/*.{html,js,vue}',
     './pages/**/*.{html,js,vue}',
     './index.html',
+    'node_modules/preline/dist/*.js',
   ],
   theme: {
     extend: {
