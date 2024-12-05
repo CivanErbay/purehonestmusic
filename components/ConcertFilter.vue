@@ -1,17 +1,40 @@
 <template>
   <DefaultGrid :no-spacing="true">
-    <div class="lg:col-start-3 lg:col-end-11 flex flex-col sm:flex-row sm:items-center mb-12">
+    <div
+      class="lg:col-start-3 lg:col-end-11 flex flex-col sm:flex-row sm:items-center mb-12"
+    >
       <div class="text-2xl mr-12">Filter:</div>
       <div class="flex flex-wrap sm:items-center gap-2 sm:gap-4 my-6 relative">
-        <ItemsDatepicker :open="openDropdown === 'date'" :selected-date="filters.date" @update:date="handleDateChange"
-          @update:toggle="handleDropdownToggle" />
-        <ItemsDropdown title="Location" slug="venues" :items="filters.venues" :open="openDropdown === 'venues'"
-          @update:selected-items="handleSelectedItem" @update:toggle="handleDropdownToggle" />
-        <ItemsDropdown title="Genre" slug="genres" :items="filters.genres" :open="openDropdown === 'genres'"
-          @update:selected-items="handleSelectedItem" @update:toggle="handleDropdownToggle" />
-        <ItemsDropdown title="Veranstaler" slug="promoters" :items="filters.promoters"
-          :open="openDropdown === 'promoters'" @update:selected-items="handleSelectedItem"
-          @update:toggle="handleDropdownToggle" />
+        <ItemsDatepicker
+          :open="openDropdown === 'date'"
+          :selected-date="filters.date"
+          @update:date="handleDateChange"
+          @update:toggle="handleDropdownToggle"
+        />
+        <ItemsDropdown
+          title="Location"
+          slug="venues"
+          :items="filters.venues"
+          :open="openDropdown === 'venues'"
+          @update:selected-items="handleSelectedItem"
+          @update:toggle="handleDropdownToggle"
+        />
+        <ItemsDropdown
+          title="Genre"
+          slug="genres"
+          :items="filters.genres"
+          :open="openDropdown === 'genres'"
+          @update:selected-items="handleSelectedItem"
+          @update:toggle="handleDropdownToggle"
+        />
+        <ItemsDropdown
+          title="Veranstaler"
+          slug="promoters"
+          :items="filters.promoters"
+          :open="openDropdown === 'promoters'"
+          @update:selected-items="handleSelectedItem"
+          @update:toggle="handleDropdownToggle"
+        />
       </div>
     </div>
   </DefaultGrid>
@@ -89,7 +112,6 @@ watch(
   }
 );
 
-
 const handleDateChange = (date) => {
   const query = { ...route.query };
 
@@ -101,9 +123,9 @@ const handleDateChange = (date) => {
     delete query.date;
   }
 
+  // TODO add and remove a query in format dd-mm-yyy
   router.push({ query });
 };
-
 
 watch(
   () => route.query.date,
