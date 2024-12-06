@@ -2,12 +2,7 @@
 export default defineNuxtConfig({
   app: {
     head: {
-      htmlAttrs: {
-        lang: 'de',
-      },
-      script: [
-        { src: '/preline.js', type: 'module', defer: true }
-      ]
+      script: [{ src: '/preline.js', type: 'module', defer: true }],
     },
   },
   compatibilityDate: '2024-04-03',

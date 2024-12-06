@@ -29,6 +29,43 @@ useSeoMeta({
   // ogImage: '',
 });
 
+useHead({
+  title: 'Pure Honest Music',
+  htmlAttrs: { lang: 'de' },
+  meta: [
+    {
+      name: 'description',
+      content: 'Besuche noch heute beindruckende Konzerte in Köln',
+    },
+    {
+      property: 'og:title',
+      content: 'Pure Honest Music',
+    },
+    {
+      property: 'og:description',
+      content: 'Besuche noch heute beindruckende Konzerte in Köln',
+    },
+    // {
+    //   property: 'og:image',
+    //   content: 'https://www.purehonestmusic.com/images/og-image.jpg',
+    // },
+    { property: 'twitter:card', content: 'Pure Honest Music' },
+    { property: 'twitter:title', content: 'PHM' },
+    {
+      property: 'twitter:description',
+      content: 'Besuche noch heute beindruckende Konzerte in Köln',
+    },
+    // {
+    // property: 'twitter:image',
+    //   content: 'https://www.purehonestmusic.com/images/og-image.jpg',
+    // },
+    {
+      name: 'keywords',
+      content: 'concerts, music, live, bands, köln, germany, konzerte, musik',
+    },
+  ],
+});
+
 const showBanner = ref(false);
 const { loadFavorites } = useUsersStore(); // needd to load the store
 
