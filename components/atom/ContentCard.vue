@@ -19,7 +19,7 @@
       </div>
 
       <div class="h-full flex flex-1 flex-col justify-between relative">
-        <div class="flex flex-col py-10 px-6">
+        <div class="flex flex-col py-10 px-4 md:px-6">
           <div class="relative w-full mb-4">
             <h4 class="text-3xl font-semibold text-text">
               {{ item.name }}
@@ -36,11 +36,25 @@
               >
                 <NuxtImg class="w-4 h-4" src="/share.svg" />
               </button>
+
               <button
                 v-if="item.date"
+                @click="handleAddToCalendar"
                 class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2"
               >
                 <NuxtImg class="w-4 h-4" src="/addCalendar.svg" />
+                <add-to-calendar-button
+                  :label="''"
+                  hideTextLabelButton
+                  :name="`${item.name} @ ${item.venue.name}`"
+                  options="'Apple','Google'"
+                  :location="venueLocation"
+                  :startDate="dateTimeStrings[0]"
+                  :endDate="dateTimeStrings[0]"
+                  :startTime="dateTimeStrings[1]"
+                  :endTime="dateTimeStrings[2]"
+                  timeZone="Europe/Berlin"
+                ></add-to-calendar-button>
               </button>
               <button
                 class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center"
@@ -90,7 +104,7 @@
                 <NuxtLink
                   class="mt-2 ml-1 opacity-40 underline"
                   :to="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                    `${item.name} ${item.address.street}, ${item.address.zipCode}, ${item.address.city}`
+                    venueLocation
                   )}`"
                   target="_blank"
                 >
@@ -139,12 +153,36 @@
 </template>
 
 <script setup>
+import 'add-to-calendar-button';
+
 const props = defineProps({ item: Object });
 const emit = defineEmits(['toggleFavorite']);
 
 function toggleFavorite(id) {
   emit('toggleFavorite', id);
 }
+
+const venueLocation = computed(() => {
+  if (props.item.address) {
+    return `${props.item.name}, ${props.item.address.street}, ${props.item.address.zipCode} ${props.item.address.city}`;
+  } else if (props.item.venue) {
+    return `${props.item.venue.name}, ${props.item.venue.address.street}, ${props.item.venue.address.zipCode} ${props.item.venue.address.city}`;
+  }
+});
+
+// [date, time, time2]
+const dateTimeStrings = computed(() => {
+  if (props.item.date) {
+    const date = new Date(props.item.date).toISOString().split('T');
+    const date2 = new Date(
+      new Date(props.item.date).getTime() + 2 * 60 * 60 * 1000
+    )
+      .toISOString()
+      .split('T'); // 2 hours later
+    return [date[0], date[1].slice(0, 5), date2[1].slice(0, 5)];
+  }
+  return;
+});
 
 function handleShare() {
   if (navigator.share) {
@@ -161,6 +199,7 @@ function handleShare() {
     console.log('Share not supported on this browser, do it the old way.');
   }
 }
+function handleAddToCalendar() {}
 </script>
 
 <style lang="scss" scoped></style>
