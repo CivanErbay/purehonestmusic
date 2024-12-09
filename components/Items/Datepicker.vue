@@ -1,8 +1,16 @@
 <template>
-  <div class="w-[28%]">
-    <VueDatePicker style="color: white !important;" locale="de" cancelText="abbrechen" selectText="auswählen"
+  <div class="w-[26.5%]">
+    <VueDatePicker style="color: white !important;" locale="de" @clear="isSelected = false"
+      @open="openDatePicker = true" @closed="openDatePicker = false" cancelText="Abbrechen" selectText="Auswählen"
       :enable-time-picker="false" :dark="true" :format="format" v-model="date" @update:modelValue="emitDate"
       placeholder="Date">
+      <template #input-icon>
+        <svg v-if="!isSelected" :class="{ 'rotate-180': openDatePicker, 'rotate-0': !openDatePicker }"
+          class="inline-block w-4 h-4 sm:ml-2 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg"
+          fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </template>
     </VueDatePicker>
   </div>
 </template>
@@ -28,29 +36,54 @@ const props = defineProps({
 const emit = defineEmits(['update:date', 'update:toggle']);
 
 const date = ref();
+const openDatePicker = ref(false);
+const isSelected = ref(false);
 
 const emitDate = (newDate) => {
-  emit('update:date', newDate); // Emit the selected date
+
+  if (newDate === null) {
+    isSelected.value = false;
+    emit('update:date', '');
+    return;
+  }
+  isSelected.value = true;
+  emit('update:date', newDate);
 };
 </script>
 
-<style scoped>
+<style>
 .dp__theme_dark {
   --dp-background-color: rgb(47, 47, 47);
-  --dp-cell-padding: 1.5rem;
+  --dp-cell-padding: 1rem;
   --dp-input-padding: 1.1rem;
   --dp-border-radius: 0.5rem;
   --dp-font-family: 'Josefin Sans', sans-serif;
   --dp-font-size: 18px;
   --dp-primary-color: #fff;
   --dp-primary-text-color: #fff;
+  --dp-icon-color: #fff;
+  --dp-input-icon-padding: 25px;
+  --dp-primary-color: #e77000 !important;
+  --dp-action-buttons-padding: 17px 10px;
+  --dp-menu-padding: 12px;
 }
 
-:deep(.dp__input) {
+
+.dp__input_icon {
+  right: 0;
+  transform: translateX(72%) translateY(-50%) !important;
+}
+
+.dp__input {
+  color: white !important;
+
+}
+
+.dp__input::placeholder {
   color: white !important;
 }
 
-:deep(.dp__input_placeholder) {
+.dp__input_placeholder) {
   color: white !important;
 }
 </style>
