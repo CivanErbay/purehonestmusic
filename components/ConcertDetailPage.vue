@@ -16,14 +16,21 @@
 <script setup>
 const props = defineProps({ item: Object });
 
-const redirectToTicket = () => {};
-
 const usersStore = useUsersStore();
-const { isConcertFavorite, toggleFavoriteConcert } = usersStore;
+const { isConcertFavorite, toggleFavoriteConcert, user } = usersStore;
 
-const item = computed(() => {
-  return { ...props.item, isUserFavorite: isConcertFavorite(props.item.id) };
+const item = ref({
+  ...props.item,
+  isUserFavorite: isConcertFavorite(props.item.id),
 });
+
+watch(
+  user.favoriteConcerts,
+  () => {
+    item.value.isUserFavorite = isConcertFavorite(props.item.id);
+  },
+  { immediate: true }
+);
 
 const artist = computed(() => {
   if (props.item.artist.length === 0) {
