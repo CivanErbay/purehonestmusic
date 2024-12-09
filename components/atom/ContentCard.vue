@@ -36,10 +36,8 @@
               >
                 <NuxtImg class="w-4 h-4" src="/share.svg" />
               </button>
-
               <button
                 v-if="item.date"
-                @click="handleAddToCalendar"
                 class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2"
               >
                 <NuxtImg class="w-4 h-4" src="/addCalendar.svg" />
@@ -57,11 +55,20 @@
                 ></add-to-calendar-button>
               </button>
               <button
-                class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center"
+                :class="[
+                  'rounded-full w-7 h-7 flex items-center justify-center',
+                  item.isUserFavorite
+                    ? 'bg-[#E77000]'
+                    : 'bg-primary bg-opacity-15',
+                ]"
                 @click="() => toggleFavorite(item.id)"
               >
-                <NuxtImg v-if="item.isUserFavorite" class="w-4 h-4" src="" />
-                <NuxtImg v-else class="w-4 h-4" src="/heart.svg" />
+                <NuxtImg
+                  v-if="item.isUserFavorite"
+                  class="w-4 h-4 mt-[1px]"
+                  src="/heart_filled.svg"
+                />
+                <NuxtImg v-else class="w-4 h-4 mt-[1px]" src="/heart.svg" />
               </button>
             </div>
           </div>
