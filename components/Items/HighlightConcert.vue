@@ -53,6 +53,4 @@
 const { item } = defineProps({
   item: Object,
 });
-
-console.log(item);
 </script>
