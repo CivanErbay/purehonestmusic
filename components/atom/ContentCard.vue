@@ -1,11 +1,11 @@
 <template>
   <div class="rounded-xl overflow-hidden mb-8 lg:mb-0">
-    <div class="flex bg-[#242424] rounded-lg relative h-full">
-      <div v-if="item.heroImage" class="w-56 h-full">
+    <div
+      class="flex bg-[#242424] rounded-lg relative h-full flex-col md:flex-row"
+    >
+      <div v-if="item.heroImage" class="w-full h-32 md:w-56 md:h-full relative">
         <!--  add hover:w-full for animation -->
-        <div
-          class="absolute z-10 left-0 inset-y-0 hidden md:block w-56 duration-300 transition-all"
-        >
+        <div class="absolute z-10 inset-0 duration-300 transition-all">
           <!-- fallback to artist image if no concert image -->
           <AtomMedia
             v-bind="
