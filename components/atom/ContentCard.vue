@@ -1,20 +1,13 @@
 <template>
   <div class="rounded-xl overflow-hidden mb-8 lg:mb-0">
-    <div
-      class="flex bg-[#242424] rounded-lg relative h-full flex-col md:flex-row"
-    >
+    <div class="flex bg-[#242424] rounded-lg relative h-full flex-col md:flex-row">
       <div v-if="item.heroImage" class="w-full h-32 md:w-56 md:h-full relative">
         <!--  add hover:w-full for animation -->
         <div class="absolute z-10 inset-0 duration-300 transition-all">
           <!-- fallback to artist image if no concert image -->
-          <AtomMedia
-            v-bind="
-              item.heroImage ||
-              (item.artist.length > 0 && item.artist[0].heroImage)
-            "
-            :isCover="true"
-            class="h-full"
-          />
+          <AtomMedia v-bind="item.heroImage ||
+            (item.artist.length > 0 && item.artist[0].heroImage)
+            " :isCover="true" class="h-full" />
         </div>
       </div>
 
@@ -27,27 +20,21 @@
             <p v-if="item.date" class="text-primary">
               {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
             </p>
-            <div
-              class="flex absolute top-1/2 -translate-y-1/2 right-3 items-center justify-center"
-            >
-              <button
-                @click="handleShare"
-                class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2"
-              >
+            <div class="flex absolute top-1/2 -translate-y-1/2 right-3 items-center justify-center">
+              <button @click="handleShare"
+                class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2">
                 <NuxtImg class="w-4 h-4" src="/share.svg" />
               </button>
-              <button
-                v-if="item.date"
-                class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2"
-              >
+              <button v-if="item.date"
+                class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2">
                 <NuxtImg class="w-4 h-4" src="/addCalendar.svg" />
               </button>
-              <button
-                class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center"
-                @click="() => toggleFavorite(item.id)"
-              >
-                <NuxtImg v-if="item.isUserFavorite" class="w-4 h-4" src="" />
-                <NuxtImg v-else class="w-4 h-4" src="/heart.svg" />
+              <button :class="[
+                'rounded-full w-7 h-7 flex items-center justify-center',
+                item.isUserFavorite ? 'bg-[#E77000]' : 'bg-primary bg-opacity-15'
+              ]" @click="() => toggleFavorite(item.id)">
+                <NuxtImg v-if="item.isUserFavorite" class="w-4 h-4 mt-[1px]" src="/heart_filled.svg" />
+                <NuxtImg v-else class="w-4 h-4 mt-[1px]" src="/heart.svg" />
               </button>
             </div>
           </div>
@@ -66,11 +53,7 @@
                 {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
               </p>
             </div>
-            <NuxtLink
-              class="flex mb-2"
-              v-if="item.venue?.name"
-              :to="`/locations/${item.venue.slug}`"
-            >
+            <NuxtLink class="flex mb-2" v-if="item.venue?.name" :to="`/locations/${item.venue.slug}`">
               <NuxtImg class="w-4 h-4" src="/location.svg" />
               <p class="ml-1 opacity-40">{{ item.venue.name }}</p>
             </NuxtLink>
@@ -87,24 +70,16 @@
                 <p class="ml-1 opacity-40">{{ item.address.street }}</p>
                 <p class="ml-1 opacity-40">{{ item.address.zipCode }}</p>
                 <p class="ml-1 opacity-40">{{ item.address.city }}</p>
-                <NuxtLink
-                  class="mt-2 ml-1 opacity-40 underline"
-                  :to="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                    `${item.name} ${item.address.street}, ${item.address.zipCode}, ${item.address.city}`
-                  )}`"
-                  target="_blank"
-                >
+                <NuxtLink class="mt-2 ml-1 opacity-40 underline" :to="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                  `${item.name} ${item.address.street}, ${item.address.zipCode}, ${item.address.city}`
+                )}`" target="_blank">
                   In Maps öffnen
                 </NuxtLink>
               </div>
               <div class="flex flex-col opacity-40 ml-8">
                 <p class="">Folgen auf:</p>
-                <NuxtLink class="underline" :to="item.website" target="_blank"
-                  >Website</NuxtLink
-                >
-                <NuxtLink class="underline" :to="item.instagram" target="_blank"
-                  >Instagram</NuxtLink
-                >
+                <NuxtLink class="underline" :to="item.website" target="_blank">Website</NuxtLink>
+                <NuxtLink class="underline" :to="item.instagram" target="_blank">Instagram</NuxtLink>
               </div>
             </div>
           </div>
@@ -113,16 +88,12 @@
               Eine
               <NuxtLink :to="item.promoter.website" class="underline">{{
                 item.promoter.name
-              }}</NuxtLink
-              >-Show
+              }}</NuxtLink>-Show
             </p>
             <p v-if="item.price" class="text-lg text-primary">
               {{ item.price }} €
             </p>
-            <p
-              v-if="item.price"
-              class="opacity-40 text-[8px] lg:text-[10p] text-right leading-3"
-            >
+            <p v-if="item.price" class="opacity-40 text-[8px] lg:text-[10p] text-right leading-3">
               ggf. zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />
               und Abwicklungskosten
             </p>
