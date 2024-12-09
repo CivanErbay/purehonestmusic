@@ -1,4 +1,4 @@
-import { defineStore, storeToRefs } from 'pinia';
+import { defineStore } from 'pinia';
 
 //TODO the whole favorite logic seems not work properly
 export const useUsersStore = defineStore('users', () => {

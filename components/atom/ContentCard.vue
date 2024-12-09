@@ -36,13 +36,30 @@
               >
                 <NuxtImg class="w-4 h-4" src="/share.svg" />
               </button>
-              <button
+              <add-to-calendar-button
+                v-if="item.date"
+                class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2"
+                :label="''"
+                buttonStyle="none"
+                hideTextLabelButton
+                :name="`${item.name} @ ${item.venue.name}`"
+                options="'Apple','Google'"
+                :location="venueLocation"
+                :startDate="dateTimeStrings[0]"
+                :endDate="dateTimeStrings[0]"
+                :startTime="dateTimeStrings[1]"
+                :endTime="dateTimeStrings[2]"
+                timeZone="Europe/Berlin"
+              >
+                <NuxtImg class="w-4 h-4" src="/addCalendar.svg"
+              /></add-to-calendar-button>
+              <!-- <button
                 v-if="item.date"
                 class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2"
               >
-                <NuxtImg class="w-4 h-4" src="/addCalendar.svg" />
                 <add-to-calendar-button
                   :label="''"
+                  buttonStyle="none"
                   hideTextLabelButton
                   :name="`${item.name} @ ${item.venue.name}`"
                   options="'Apple','Google'"
@@ -52,8 +69,10 @@
                   :startTime="dateTimeStrings[1]"
                   :endTime="dateTimeStrings[2]"
                   timeZone="Europe/Berlin"
-                ></add-to-calendar-button>
-              </button>
+                >
+                  <NuxtImg class="w-4 h-4" src="/addCalendar.svg"
+                /></add-to-calendar-button>
+              </button> -->
               <button
                 :class="[
                   'rounded-full w-7 h-7 flex items-center justify-center',
@@ -206,7 +225,9 @@ function handleShare() {
     console.log('Share not supported on this browser, do it the old way.');
   }
 }
-function handleAddToCalendar() {}
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.atcb-button {
+}
+</style>
