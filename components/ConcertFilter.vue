@@ -61,34 +61,44 @@ const handleDropdownToggle = (dropdown) => {
 };
 
 const filters = reactive({
-  venues: props.venues.map(({ name, slug }) => ({
-    name,
-    slug,
-    selected: route.query.venues
-      ? route.query.venues.split(',').includes(slug)
-      : false,
-    count: props.concerts.filter((concert) => concert.venue?.slug === slug)
-      .length,
-  })),
-  genres: props.genres.map(({ name }) => ({
-    name: name,
-    slug: name, // genres have no slug
-    selected: route.query.genres
-      ? route.query.genres.split(',').includes(name)
-      : false,
-    count: props.concerts.filter(
-      (concert) => concert.genres.some((it) => it.name === name) // TODO check
-    ).length,
-  })),
-  promoters: props.promoters.map(({ name, slug }) => ({
-    name,
-    slug,
-    selected: route.query.promoters
-      ? route.query.promoters.split(',').includes(slug)
-      : false,
-    count: props.concerts.filter((concert) => concert.promoter?.slug === slug)
-      .length,
-  })),
+  venues: props.venues
+    .map(({ name, slug }) => ({
+      name,
+      slug,
+      selected: route.query.venues
+        ? route.query.venues.split(',').includes(slug)
+        : false,
+      count: props.concerts.filter((concert) => concert.venue?.slug === slug)
+        .length,
+    }))
+    .filter((venue) => venue.count > 0)
+    .sort((a, b) => a.name.localeCompare(b.name)),
+  genres: props.genres
+    .map(({ name }) => ({
+      name: name,
+      slug: name, // genres have no slug
+      selected: route.query.genres
+        ? route.query.genres.split(',').includes(name)
+        : false,
+      count: props.concerts.filter(
+        (concert) => concert.genres.some((it) => it.name === name) // TODO check
+      ).length,
+    }))
+    .filter((genre) => genre.count > 0)
+    .sort((a, b) => a.name.localeCompare(b.name)),
+  promoters: props.promoters
+    .map(({ name, slug }) => ({
+      name,
+      slug,
+      selected: route.query.promoters
+        ? route.query.promoters.split(',').includes(slug)
+        : false,
+      count: props.concerts.filter((concert) => concert.promoter?.slug === slug)
+        .length,
+    }))
+
+    .filter((prom) => prom.count > 0)
+    .sort((a, b) => a.name.localeCompare(b.name)),
 });
 
 watch(
