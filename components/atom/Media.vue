@@ -8,6 +8,7 @@
       v-if="isImage"
       :src="src"
       :alt="alt"
+      :title="alt"
       :style="imageStyle"
       class="w-full h-full"
       :class="{
