@@ -83,7 +83,8 @@ const emitDate = (newDate) => {
   color: white !important;
 }
 
-.dp__input_placeholder) {
-  color: white !important;
+button.dp--clear-btn {
+  padding-right: 10px 
 }
+
 </style>
