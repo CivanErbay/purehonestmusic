@@ -35,12 +35,12 @@
             </div>
           </div>
           <div
-            class="flex flex-col lg:items-end lg:justify-between text-white text-sm bg-[#2F2F2F] -my-4 -mx-6 px-6 py-4">
+            class="flex flex-col lg:items-end lg:justify-between text-white text-sm bg-[#2F2F2F] -my-4 -mx-6 px-6 py-4 z-20">
             <button :class="[
               'rounded-full w-7 h-7 flex items-center justify-center',
-              item.isUserFavorite ? 'bg-[#E77000]' : 'bg-primary bg-opacity-15'
-            ]" @click="() => toggleFavorite(item.id)">
-              <NuxtImg v-if="item.isUserFavorite" class="w-4 h-4 mt-[1px]" src="/heart_filled.svg" />
+              isConcertFavorite ? 'bg-[#E77000]' : 'bg-primary bg-opacity-15'
+            ]" @click.stop.prevent="() => toggleFavoriteConcert(item.id)">
+              <NuxtImg v-if="isConcertFavorite" class="w-4 h-4 mt-[1px]" src="/heart_filled.svg" />
               <NuxtImg v-else class="w-4 h-4 mt-[1px]" src="/heart.svg" />
             </button>
 
@@ -70,9 +70,9 @@
         <div class="flex flex-col mb-3 p-3 pb-0 w-11/12">
           <button :class="[
             'rounded-full w-7 h-7 flex items-center justify-center',
-            item.isUserFavorite ? 'bg-[#E77000]' : 'bg-primary bg-opacity-15'
-          ]" @click="() => toggleFavorite(item.id)">
-            <NuxtImg v-if="item.isUserFavorite" class="w-4 h-4 mt-[1px]" src="/heart_filled.svg" />
+            isConcertFavorite ? 'bg-[#E77000]' : 'bg-primary bg-opacity-15'
+          ]" @click.stop.prevent="() => toggleFavoriteConcert(item.id)">
+            <NuxtImg v-if="isConcertFavorite" class="w-4 h-4 mt-[1px]" src="/heart_filled.svg" />
             <NuxtImg v-else class="w-4 h-4 mt-[1px]" src="/heart.svg" />
           </button>
           <h4 class="text-lg text-text">{{ item.name }}</h4>
@@ -120,4 +120,6 @@ const props = defineProps({ item: Object });
 
 const usersStore = useUsersStore();
 const { isConcertFavorite, toggleFavoriteConcert } = usersStore;
+
+console.log(usersStore)
 </script>
