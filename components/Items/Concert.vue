@@ -35,7 +35,7 @@
             </div>
           </div>
           <div
-            class="flex flex-col lg:items-end lg:justify-between text-white text-sm bg-[#2F2F2F] -my-4 -mx-6 px-6 py-4 z-20">
+            class="flex flex-col lg:items-end lg:justify-between text-white text-sm bg-[#2F2F2F] -my-4 -mx-6 px-6 py-4">
             <button :class="[
               'rounded-full w-7 h-7 flex items-center justify-center',
               isConcertFavorite ? 'bg-[#E77000]' : 'bg-primary bg-opacity-15'
@@ -120,6 +120,4 @@ const props = defineProps({ item: Object });
 
 const usersStore = useUsersStore();
 const { isConcertFavorite, toggleFavoriteConcert } = usersStore;
-
-console.log(usersStore)
 </script>

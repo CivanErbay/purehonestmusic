@@ -1,33 +1,18 @@
 <template>
   <DefaultGrid :no-spacing="true">
     <div class="lg:col-start-3 lg:col-end-11">
-      <div
-        v-for="(group, date) in visibleGroupedItems"
-        :key="date"
-        class="mb-16"
-      >
+      <div v-for="(group, date) in visibleGroupedItems" :key="date" class="mb-16">
         <p class="text-2xl font-semibold mb-6">
-          <span :class="{ underline: weekDay(group[0].date) === 'Heute' }"
-            >{{ weekDay(group[0].date) }},</span
-          >
+          <span :class="{ underline: weekDay(group[0].date) === 'Heute' }">{{ weekDay(group[0].date) }},</span>
           {{ date }}
         </p>
-        <ItemsConcert
-          v-for="item in group"
-          :key="item.slug"
-          class="lg:col-start-3 lg:col-end-11"
-          :item="item"
-        />
+        <ItemsConcert v-for="item in group" :key="item.slug" class="lg:col-start-3 lg:col-end-11" :item="item" />
       </div>
       <div v-if="showMoreButton" class="flex justify-center">
-        <button
-          @click="showMoreDays"
-          class="btn"
-          :class="{
-            'opacity-50 pointer-events-none':
-              totalVisibleConcerts >= totalConcerts,
-          }"
-        >
+        <button @click="showMoreDays" class="btn" :class="{
+          'opacity-50 pointer-events-none':
+            totalVisibleConcerts >= totalConcerts,
+        }">
           Mehr Konzerte anzeigen
         </button>
       </div>
@@ -48,6 +33,8 @@ const { items } = defineProps({
     default: () => [],
   },
 });
+
+console.log(items)
 
 const groupedItems = computed(() => {
   return items.reduce((groups, item) => {

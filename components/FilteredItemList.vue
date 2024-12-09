@@ -29,6 +29,7 @@ const filteredItems = computed(() => {
   const selectedGenres = route.query.genres
     ? route.query.genres.split(',')
     : [];
+
   const selectedDate = route.query.date;
 
   return items
@@ -42,12 +43,9 @@ const filteredItems = computed(() => {
     )
     .filter((item) => {
       const itemDate = new Date(item.date);
-      itemDate.setHours(0, 0, 0, 0);
       if (selectedDate) {
-        const [day, month, year] = selectedDate.split('-');
-        const selectedDateObj = new Date(year, month - 1, day);
-        selectedDateObj.setHours(0, 0, 0, 0);
-        return itemDate.getTime() === selectedDateObj.getTime();
+        const newItemDate = new Date(itemDate).toISOString().split('T')[0];
+        return newItemDate === selectedDate;
       }
       return itemDate >= today;
     })
