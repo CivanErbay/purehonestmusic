@@ -35,33 +35,37 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'Besuche noch heute beindruckende Konzerte in Köln',
+      content: settings.value.metaDescription,
     },
     {
       property: 'og:title',
-      content: 'Pure Honest Music',
+      content: settings.value.metaTitle,
     },
     {
       property: 'og:description',
-      content: 'Besuche noch heute beindruckende Konzerte in Köln',
+      content: settings.value.metaDescription,
     },
-    // {
-    //   property: 'og:image',
-    //   content: 'https://www.purehonestmusic.com/images/og-image.jpg',
-    // },
-    { property: 'twitter:card', content: 'Pure Honest Music' },
-    { property: 'twitter:title', content: 'PHM' },
+    {
+      property: 'og:image',
+      content:
+        settings.value.socialMediaImage.sizes?.medium?.url ||
+        settings.value.socialMediaImage.url,
+    },
+    { property: 'twitter:card', content: settings.value.socialMediaCard },
+    { property: 'twitter:title', content: settings.value.socialMediaTitle },
     {
       property: 'twitter:description',
-      content: 'Besuche noch heute beindruckende Konzerte in Köln',
+      content: settings.value.socialMediaDescription,
     },
-    // {
-    // property: 'twitter:image',
-    //   content: 'https://www.purehonestmusic.com/images/og-image.jpg',
-    // },
+    {
+      property: 'twitter:image',
+      content:
+        settings.value.socialMediaImage.sizes?.medium?.url ||
+        settings.value.socialMediaImage.url,
+    },
     {
       name: 'keywords',
-      content: 'concerts, music, live, bands, köln, germany, konzerte, musik',
+      content: settings.value.keywords,
     },
   ],
 });
