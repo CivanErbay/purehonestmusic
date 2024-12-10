@@ -12,7 +12,7 @@
 }'
     class="relative"
   >
-    <div class="hs-carousel w-full overflow-hidden bg-white rounded-lg">
+    <div class="hs-carousel w-full overflow-hidden bg-white">
       <div class="relative h-96 -mx-1">
         <!-- transition-transform duration-700 -->
         <div

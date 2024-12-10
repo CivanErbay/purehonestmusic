@@ -1,17 +1,15 @@
 <template>
   <NuxtLink
-    class="flex flex-1 flex-col bg-[#242424] rounded-xl relative mb-5 lg:mb-0"
+    class="flex flex-1 flex-col bg-[#242424] rounded-xl overflow-hidden relative mb-5 lg:mb-0"
     :to="`concerts/${item.slug}`"
   >
-    <div
-      class="absolute top-0 left-0 bg-primary bg-opacity-50 py-1 px-3 h-fit rounded-br-xl rounded-tl-xl"
-    >
+    <div class="absolute top-0 left-0 bg-primary bg-opacity-50 py-1 px-3 h-fit">
       🔥 Empfohlen
     </div>
     <AtomMedia
       v-bind="item.heroImage"
       :isCover="true"
-      class="w-full h-32 object-cover rounded-t-xl"
+      class="w-full h-32 object-cover"
     />
     <div class="h-full flex flex-col justify-between relative">
       <div class="flex flex-col mb-3 p-3 pb-0 w-11/12">
@@ -54,7 +52,7 @@
           </div>
         </div>
         <div
-          class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-5 rounded-tl-xl rounded-br-xl"
+          class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-5 rounded-tl-xl"
         >
           <NuxtLink
             v-if="item.promoter"
