@@ -25,7 +25,6 @@
         <NuxtLink class="py-1 hover:underline" to="/datenschutz"
           >Datenschutz</NuxtLink
         >
-        <NuxtLink class="py-1" to="">AGB</NuxtLink>
         <NuxtLink class="py-1 hover:underline" to="/impressum"
           >Impressum</NuxtLink
         >

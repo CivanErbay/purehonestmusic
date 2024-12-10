@@ -1,10 +1,9 @@
 <template>
   <div>
-    <DefaultGrid :no-spacing="true" class="mb-5 mt-5 lg:mt-10 mb-8">
+    <DefaultGrid :no-spacing="true" class="mt-5 lg:mt-10 mb-8">
       <div
-        class="lg:col-start-3 p-8 lg:col-end-11 flex bg-[#242424] rounded-lg"
+        class="lg:col-start-3 p-4 md:p-8 lg:col-end-11 flex bg-[#242424] rounded-lg"
       >
-        <!-- TODO sytle -->
         <UtilsRichTextRenderer :nodes="settingsData.dataProtection" />
       </div>
     </DefaultGrid>
