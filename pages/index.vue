@@ -18,12 +18,14 @@
     />
     <FilteredItemList :items="concerts" />
     <Recommendations
-      :items="landing.highlightedConcerts"
-      headline="Top Konzerte aus dem Genre: Alternative"
+      v-if="landing.genreConcerts1"
+      :items="landing.genreConcerts1.concerts"
+      :headline="`Top Konzerte aus dem Genre: ${landing.genreConcerts1.genre.name}`"
     />
     <Recommendations
-      :items="landing.highlightedConcerts"
-      headline="Top Konzerte aus dem Genre: Post Punk"
+      v-if="landing.genreConcerts2"
+      :items="landing.genreConcerts2.concerts"
+      :headline="`Top Konzerte aus dem Genre: ${landing.genreConcerts2.genre.name}`"
     />
     <AboutBox />
   </div>
