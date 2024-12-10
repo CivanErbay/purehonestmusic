@@ -161,13 +161,12 @@
               ggf. zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />
               und Abwicklungskosten
             </p>
-            <div class="flex justify-center mt-3">
+            <div
+              class="flex justify-center mt-3"
+              v-if="route.path.startsWith('/concerts')"
+            >
               <NuxtLink :to="item.ticketsLink">
-                <button
-                  @click="redirectToTicket"
-                  class="btn"
-                  :disabled="!item.ticketsLink"
-                >
+                <button class="btn" :disabled="!item.ticketsLink">
                   Zum Ticketkauf
                 </button>
               </NuxtLink>
