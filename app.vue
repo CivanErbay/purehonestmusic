@@ -74,6 +74,8 @@ const showBanner = ref(false);
 const { loadFavorites } = useUsersStore(); // needd to load the store
 
 onMounted(() => {
+  loadFavorites();
+
   if (localStorage.getItem('acceptedCookies')) {
     showBanner.value = false;
     loadGoogleAnalytics();
@@ -82,7 +84,6 @@ onMounted(() => {
   } else {
     showBanner.value = true;
   }
-  loadFavorites();
 });
 
 const acceptCookies = () => {

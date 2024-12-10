@@ -3,12 +3,12 @@
     <DefaultGrid :no-spacing="true" class="mb-5 mt-5 lg:mt-10 mb-8">
       <AtomContentCard
         class="lg:col-start-3 lg:col-end-11"
-        :item="location"
+        :item="venueData"
         @toggleFavorite="toggleFavoriteLocation"
       />
     </DefaultGrid>
     <!-- TODO fit headline in grid -->
-    <h3 class="text-3xl">Konzerte in {{ location.name }}</h3>
+    <h3 class="text-3xl">Konzerte in {{ venueData.name }}</h3>
     <ItemList :items="concerts" />
   </div>
 </template>
@@ -32,12 +32,13 @@ const { data: concerts } = await fetchCollectionHandler(
 );
 
 const usersStore = useUsersStore();
-const { isLocationFavorite, toggleFavoriteLocation } = usersStore;
+const { isLocationFavorite, toggleFavoriteLocation, user } = usersStore;
 
-const location = computed(() => {
-  return {
-    ...venueData.value,
-    isUserFavorite: isLocationFavorite(venueData.value.id),
-  };
+watch(user.favoriteLocations, () => {
+  venueData.value.isUserFavorite = isLocationFavorite(venueData.value.id);
+});
+
+onMounted(() => {
+  venueData.value.isUserFavorite = isLocationFavorite(venueData.value.id);
 });
 </script>

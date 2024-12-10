@@ -1,15 +1,34 @@
 <template>
-  <NuxtLink class="flex flex-1 flex-col bg-[#242424] rounded-xl relative mb-5 lg:mb-0" :to="`concerts/${item.slug}`">
-    <div class="absolute top-0 left-0 bg-primary bg-opacity-50 py-1 px-3 h-fit rounded-br-xl rounded-tl-xl">
+  <NuxtLink
+    class="flex flex-1 flex-col bg-[#242424] rounded-xl relative mb-5 lg:mb-0"
+    :to="`concerts/${item.slug}`"
+  >
+    <div
+      class="absolute top-0 left-0 bg-primary bg-opacity-50 py-1 px-3 h-fit rounded-br-xl rounded-tl-xl"
+    >
       🔥 Empfohlen
     </div>
-    <AtomMedia v-bind="item.heroImage" :isCover="true" class="w-full h-32 object-cover rounded-t-xl" />
+    <AtomMedia
+      v-bind="item.heroImage"
+      :isCover="true"
+      class="w-full h-32 object-cover rounded-t-xl"
+    />
     <div class="h-full flex flex-col justify-between relative">
       <div class="flex flex-col mb-3 p-3 pb-0 w-11/12">
-        <div
-          class="h-7 w-7 flex absolute top-3 right-3 items-center justify-center rounded-full bg-primary bg-opacity-15 mb-2">
-          <NuxtImg class="w-4 h-4" src="/heart.svg" />
-        </div>
+        <button
+          :class="[
+            'h-7 w-7 flex absolute top-3 right-3 items-center justify-center rounded-full  mb-2',
+            item.isUserFavorite ? 'bg-[#E77000]' : 'bg-primary bg-opacity-15',
+          ]"
+          @click.stop.prevent="() => toggleFavoriteConcert(item.id)"
+        >
+          <NuxtImg
+            v-if="item.isUserFavorite"
+            class="w-4 h-4 mt-[1px]"
+            src="/heart_filled.svg"
+          />
+          <NuxtImg v-else class="w-4 h-4 mt-[1px]" src="/heart.svg" />
+        </button>
         <h4 class="text-lg text-text">{{ item.name }}</h4>
         <p class="text-sm text-white opacity-50 overflow-hidden">
           {{ truncateSubtitle(item.subtitle) }}
@@ -34,9 +53,12 @@
             </p>
           </div>
         </div>
-        <div class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-5 rounded-tl-xl rounded-br-xl">
+        <div
+          class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-5 rounded-tl-xl rounded-br-xl"
+        >
           <p v-if="item.promoter" class="opacity-40">
-            Eine <span class="underline">{{ item.promoter.name }}</span>-Show
+            Eine <span class="underline">{{ item.promoter.name }}</span
+            >-Show
           </p>
           <p class="text-lg text-primary">{{ item.price }} €</p>
           <p class="opacity-40 text-[8px] lg:text-[10p] text-right leading-3">
@@ -50,7 +72,18 @@
 </template>
 
 <script setup>
-const { item } = defineProps({
+const props = defineProps({
   item: Object,
+});
+
+const usersStore = useUsersStore();
+const { isConcertFavorite, toggleFavoriteConcert, user } = usersStore;
+
+watch(user.favoriteConcerts, () => {
+  props.item.isUserFavorite = isConcertFavorite(props.item.id);
+});
+
+onMounted(() => {
+  props.item.isUserFavorite = isConcertFavorite(props.item.id);
 });
 </script>

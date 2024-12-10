@@ -161,16 +161,11 @@ const props = defineProps({ item: Object });
 const usersStore = useUsersStore();
 const { isConcertFavorite, toggleFavoriteConcert, user } = usersStore;
 
-const item = ref({
-  ...props.item,
-  isUserFavorite: isConcertFavorite(props.item.id),
+watch(user.favoriteConcerts, () => {
+  props.item.isUserFavorite = isConcertFavorite(props.item.id);
 });
 
-watch(
-  user.favoriteConcerts,
-  () => {
-    item.value.isUserFavorite = isConcertFavorite(props.item.id);
-  },
-  { immediate: true }
-);
+onMounted(() => {
+  props.item.isUserFavorite = isConcertFavorite(props.item.id);
+});
 </script>
