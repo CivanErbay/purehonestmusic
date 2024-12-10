@@ -3,7 +3,9 @@
     class="flex flex-1 flex-col bg-[#242424] rounded-xl overflow-hidden relative mb-5 lg:mb-0"
     :to="`concerts/${item.slug}`"
   >
-    <div class="absolute top-0 left-0 bg-primary bg-opacity-50 py-1 px-3 h-fit">
+    <div
+      class="absolute top-0 left-0 bg-primary bg-opacity-50 py-1 px-3 h-fit rounded-br-xl"
+    >
       🔥 Empfohlen
     </div>
     <AtomMedia

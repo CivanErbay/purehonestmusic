@@ -1,19 +1,29 @@
 <template>
   <div>
     <!-- This NuxtLink is only visible on desktop -->
-    <NuxtLink class="hidden lg:block" :to="`/concerts/${item.slug}`">
+    <div
+      class="hidden lg:block cursor-pointer"
+      @click="
+        (e) => {
+          if (!e.target.closest('a') && !e.target.closest('NuxtLink'))
+            router.push(`/concerts/${item.slug}`);
+        }
+      "
+    >
       <div
         class="flex bg-[#242424] mb-5 rounded-xl overflow-hidden relative min-h-52"
       >
         <!-- fallback to artist image if no concert image -->
-        <AtomMedia
-          v-bind="
-            item.heroImage ||
-            (item.artist.length > 0 && item.artist[0].heroImage)
-          "
-          :isCover="true"
-          class="w-60 lg:w-36 h-auto object-cover"
-        />
+        <NuxtLink :to="`/concerts/${item.slug}`">
+          <AtomMedia
+            v-bind="
+              item.heroImage ||
+              (item.artist.length > 0 && item.artist[0].heroImage)
+            "
+            :isCover="true"
+            class="w-60 lg:w-36 h-full object-cover"
+          />
+        </NuxtLink>
         <div
           class="flex flex-col lg:flex-row justify-between px-4 py-3 lg:px-6 lg:py-4 w-full"
         >
@@ -33,10 +43,13 @@
                   {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
                 </p>
               </div>
-              <div class="flex my-2 lg:my-0 lg:ml-6" v-if="item.venue">
-                <NuxtImg class="w-4 h-4" src="/location.svg" />
-                <p class="ml-1">{{ item.venue.name }}</p>
-              </div>
+              <NuxtLink :to="`/locations/${item.venue.slug}`" v-if="item.venue">
+                <div class="flex my-2 lg:my-0 lg:ml-6">
+                  <NuxtImg class="w-4 h-4" src="/location.svg" />
+                  <p class="ml-1">{{ item.venue.name }}</p>
+                </div>
+              </NuxtLink>
+
               <div class="flex lg:ml-6">
                 <NuxtImg class="w-4 h-4" src="/music.svg" />
                 <p class="ml-1">
@@ -83,23 +96,25 @@
           </div>
         </div>
       </div>
-    </NuxtLink>
+    </div>
 
     <!-- This NuxtLink is only visible on mobile -->
-    <NuxtLink
+    <div
       class="lg:hidden flex flex-1 flex-col bg-[#242424] rounded-xl relative mb-5 lg:mb-0"
-      :to="`concerts/${item.slug}`"
+      @click="() => router.push(`/concerts/${item.slug}`)"
     >
       <div
         class="absolute top-0 left-0 bg-primary bg-opacity-50 py-1 px-3 h-fit rounded-br-xl rounded-tl-xl"
       >
         🔥 Empfohlen
       </div>
-      <AtomMedia
-        v-bind="item.heroImage"
-        :isCover="true"
-        class="w-full h-24 object-cover rounded-t-xl"
-      />
+      <NuxtLink :to="`/concerts/${item.slug}`">
+        <AtomMedia
+          v-bind="item.heroImage"
+          :isCover="true"
+          class="w-full h-24 object-cover rounded-t-xl"
+        />
+      </NuxtLink>
       <div class="h-full flex flex-col justify-between relative">
         <div class="flex flex-col mb-3 p-3 pb-0 w-11/12">
           <button
@@ -129,9 +144,13 @@
                 {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
               </p>
             </div>
-            <div class="flex my-4" v-if="item.venue">
-              <NuxtImg class="w-4 h-4" src="/location.svg" />
-              <p class="ml-1 opacity-40">{{ item.venue.name }}</p>
+            <div>
+              <NuxtLink :to="`/locations/${item.venue.slug}`" v-if="item.venue">
+                <div class="flex my-4">
+                  <NuxtImg class="w-4 h-4" src="/location.svg" />
+                  <p class="ml-1 opacity-40">{{ item.venue.name }}</p>
+                </div>
+              </NuxtLink>
             </div>
             <div class="flex">
               <NuxtImg class="w-4 h-4" src="/music.svg" />
@@ -159,12 +178,14 @@
           </div>
         </div>
       </div>
-    </NuxtLink>
+    </div>
   </div>
 </template>
 
 <script setup>
 const props = defineProps({ item: Object });
+
+const router = useRouter();
 
 const usersStore = useUserStore();
 const { isConcertFavorite, toggleFavoriteConcert, user } = usersStore;

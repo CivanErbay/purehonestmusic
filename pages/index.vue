@@ -18,12 +18,16 @@
     />
     <FilteredItemList :items="concerts" />
     <Recommendations
-      v-if="landing.genreConcerts1"
+      v-if="
+        landing.genreConcerts1 && landing.genreConcerts1.concerts.length > 2
+      "
       :items="landing.genreConcerts1.concerts"
       :headline="`Top Konzerte aus dem Genre: ${landing.genreConcerts1.genre.name}`"
     />
     <Recommendations
-      v-if="landing.genreConcerts2"
+      v-if="
+        landing.genreConcerts2 && landing.genreConcerts2.concerts.length > 2
+      "
       :items="landing.genreConcerts2.concerts"
       :headline="`Top Konzerte aus dem Genre: ${landing.genreConcerts2.genre.name}`"
     />

@@ -13,7 +13,7 @@
     class="relative"
   >
     <div class="hs-carousel w-full overflow-hidden bg-white">
-      <div class="relative h-96 -mx-1">
+      <div class="relative min-h-96 -mx-1">
         <!-- transition-transform duration-700 -->
         <div
           class="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-nowrap transition-transform duration-700 bg-[#131313]"
