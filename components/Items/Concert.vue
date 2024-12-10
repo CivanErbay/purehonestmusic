@@ -33,7 +33,7 @@
                   {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
                 </p>
               </div>
-              <div class="flex my-2 lg:my-0 lg:ml-6">
+              <div class="flex my-2 lg:my-0 lg:ml-6" v-if="item.venue">
                 <NuxtImg class="w-4 h-4" src="/location.svg" />
                 <p class="ml-1">{{ item.venue.name }}</p>
               </div>
@@ -129,7 +129,7 @@
                 {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
               </p>
             </div>
-            <div class="flex my-4">
+            <div class="flex my-4" v-if="item.venue">
               <NuxtImg class="w-4 h-4" src="/location.svg" />
               <p class="ml-1 opacity-40">{{ item.venue.name }}</p>
             </div>

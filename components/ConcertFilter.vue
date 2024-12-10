@@ -58,7 +58,6 @@ const router = useRouter();
 const openDropdown = ref(null);
 
 const handleDropdownToggle = (dropdown) => {
-  console.log(dropdown);
   openDropdown.value = openDropdown.value === dropdown ? null : dropdown;
 };
 
