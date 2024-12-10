@@ -1,20 +1,40 @@
 <template>
   <div class="dropdown sm:relative text-lg font-thin">
-    <button class="p-4 sm:px-6 sm:py-4 bg-bg-light rounded-lg align-middle border"
-      :class="{ ' border-primary': open, 'border-bg-light': !open }" @click="toggleDropdown">
+    <button
+      class="p-4 sm:px-6 sm:py-4 bg-bg-light rounded-lg align-middle border inline-flex items-center"
+      :class="{ ' border-primary': open, 'border-bg-light': !open }"
+      @click="toggleDropdown"
+    >
       <span class="opacity-70"> {{ title }}</span>
-      <svg :class="{ 'rotate-180': open, 'rotate-0': !open }"
-        class="inline-block w-4 h-4 sm:ml-2 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg"
-        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      <svg
+        :class="{ 'rotate-180': open, 'rotate-0': !open }"
+        class="inline-block w-4 h-4 sm:ml-2 transition-transform duration-200"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M19 9l-7 7-7-7"
+        />
       </svg>
     </button>
     <transition name="dropdown">
-      <div v-if="open"
-        class="dropdown-menu max-h-[360px] left-0 max-w-screen sm:w-max overflow-y-auto bg-bg-light p-4 rounded-lg">
+      <div
+        v-if="open"
+        class="dropdown-menu max-h-[360px] left-0 max-w-screen sm:w-max overflow-y-auto bg-bg-light p-4 rounded-lg"
+      >
         <div v-for="(item, index) in items" :key="index" class="dropdown-item">
           <label>
-            <input type="checkbox" :value="item" @change="toggleItem(item)" :checked="item.selected" />
+            <input
+              type="checkbox"
+              :value="item"
+              @change="toggleItem(item)"
+              :checked="item.selected"
+            />
             {{ item.name }}
           </label>
           <span class="item-count text-slate-400">{{ item.count }}</span>
