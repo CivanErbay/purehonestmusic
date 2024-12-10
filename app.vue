@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-4 lg:mx-0 font-josefin">
+  <div class="mx-4 lg:mx-0 font-josefin relative">
     <div class="max-w-[2056px] mx-auto lg:px-16">
       <Navbar />
       <Suspense>
@@ -15,6 +15,9 @@
         />
       </transition>
     </div>
+    <transition name="fade">
+      <div class="absolute z-50 inset-0 bg-bg" v-if="loading"></div>
+    </transition>
   </div>
 </template>
 
@@ -71,9 +74,13 @@ useHead({
 });
 
 const showBanner = ref(false);
+const loading = ref(true);
 const { loadFavorites } = useUsersStore(); // needd to load the store
 
 onMounted(() => {
+  if (import.meta.client) {
+    loading.value = false;
+  }
   loadFavorites();
 
   if (localStorage.getItem('acceptedCookies')) {
