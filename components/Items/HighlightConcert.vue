@@ -30,7 +30,7 @@
           <NuxtImg v-else class="w-4 h-4 mt-[1px]" src="/heart.svg" />
         </button>
         <h4 class="text-lg text-text">{{ item.name }}</h4>
-        <p class="text-sm text-white opacity-50 overflow-hidden">
+        <p v-if="item.subtitle" class="text-sm text-white opacity-50 overflow-hidden">
           {{ truncateSubtitle(item.subtitle) }}
         </p>
       </div>
