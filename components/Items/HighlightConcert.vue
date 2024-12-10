@@ -56,10 +56,14 @@
         <div
           class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-5 rounded-tl-xl rounded-br-xl"
         >
-          <p v-if="item.promoter" class="opacity-40">
+          <NuxtLink
+            v-if="item.promoter"
+            class="opacity-40"
+            :to="`/promoters/${item.promoter.slug}`"
+          >
             Eine <span class="underline">{{ item.promoter.name }}</span
             >-Show
-          </p>
+          </NuxtLink>
           <p class="text-lg text-primary">{{ item.price }} €</p>
           <p class="opacity-40 text-[8px] lg:text-[10p] text-right leading-3">
             ggf. zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />

@@ -13,7 +13,7 @@
 
 @layer components {
   .btn {
-    @apply px-8 py-2 bg-primary text-white rounded hover:bg-orange-600 transition-all;
+    @apply px-8 py-2 bg-primary text-white rounded hover:bg-orange-600 transition-all disabled:opacity-50;
   }
 
   .slate-content h1 {

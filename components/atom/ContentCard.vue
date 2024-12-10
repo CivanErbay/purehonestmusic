@@ -53,27 +53,12 @@
               >
                 <NuxtImg class="w-4 h-4" src="/addCalendar.svg"
               /></add-to-calendar-button>
-              <!-- <button
-                v-if="item.date"
-                class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2"
-              >
-                <add-to-calendar-button
-                  :label="''"
-                  buttonStyle="none"
-                  hideTextLabelButton
-                  :name="`${item.name} @ ${item.venue.name}`"
-                  options="'Apple','Google'"
-                  :location="venueLocation"
-                  :startDate="dateTimeStrings[0]"
-                  :endDate="dateTimeStrings[0]"
-                  :startTime="dateTimeStrings[1]"
-                  :endTime="dateTimeStrings[2]"
-                  timeZone="Europe/Berlin"
-                >
-                  <NuxtImg class="w-4 h-4" src="/addCalendar.svg"
-                /></add-to-calendar-button>
-              </button> -->
+
               <button
+                v-if="
+                  route.path.startsWith('/concerts') ||
+                  route.path.startsWith('/locations')
+                "
                 :class="[
                   'rounded-full w-7 h-7 flex items-center justify-center',
                   item.isUserFavorite
@@ -94,82 +79,98 @@
           <p class="text-sm text-white mb-4 opacity-50 overflow-hidden">
             {{ item.subtitle }}
           </p>
-          <!-- TODO make sure style is ok -->
           <UtilsRichTextRenderer :nodes="item.description" />
         </div>
-        <div class="flex items-center text-white bg-bg-light">
-          <div class="w-1/2 px-10 py-4">
+        <div
+          class="flex flex-col md:flex-row items-center text-white bg-bg-light"
+        >
+          <div class="px-4 md:px-10 py-4 flex w-full">
             <!-- Conerts -->
-            <div class="flex mb-2" v-if="item.date">
-              <NuxtImg class="w-4 h-4" src="/calendar.svg" />
-              <p class="ml-1 opacity-40">
-                {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
-              </p>
+            <div class="">
+              <div class="flex mb-2" v-if="item.date">
+                <NuxtImg class="w-4 h-4" src="/calendar.svg" />
+                <p class="ml-1 opacity-40">
+                  {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
+                </p>
+              </div>
+              <NuxtLink
+                class="flex mb-2"
+                v-if="item.venue?.name"
+                :to="`/locations/${item.venue.slug}`"
+              >
+                <NuxtImg class="w-4 h-4" src="/location.svg" />
+                <p class="ml-1 opacity-40">{{ item.venue.name }}</p>
+              </NuxtLink>
+              <div class="flex" v-if="item.genres">
+                <NuxtImg class="w-4 h-4" src="/music.svg" />
+                <p class="ml-1 opacity-40">
+                  {{ item.genres.map((it) => it.name).join(', ') }}
+                </p>
+              </div>
+              <!-- location venue -->
+              <div v-if="item.address" class="flex">
+                <NuxtImg class="w-4 h-4" src="/location.svg" />
+                <div class="flex flex-col">
+                  <p class="ml-1 opacity-40">{{ item.address.street }}</p>
+                  <p class="ml-1 opacity-40">{{ item.address.zipCode }}</p>
+                  <p class="ml-1 opacity-40">{{ item.address.city }}</p>
+                  <NuxtLink
+                    class="mt-2 ml-1 opacity-40 underline"
+                    :to="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                      venueLocation
+                    )}`"
+                    target="_blank"
+                  >
+                    In Maps öffnen
+                  </NuxtLink>
+                </div>
+              </div>
             </div>
-            <NuxtLink
-              class="flex mb-2"
-              v-if="item.venue?.name"
-              :to="`/locations/${item.venue.slug}`"
+            <div
+              v-if="
+                route.path.startsWith('/promoters') ||
+                route.path.startsWith('/locations')
+              "
+              class="flex flex-col opacity-40 ml-8 w-fit"
             >
-              <NuxtImg class="w-4 h-4" src="/location.svg" />
-              <p class="ml-1 opacity-40">{{ item.venue.name }}</p>
-            </NuxtLink>
-            <div class="flex" v-if="item.genres">
-              <NuxtImg class="w-4 h-4" src="/music.svg" />
-              <p class="ml-1 opacity-40">
-                {{ item.genres.map((it) => it.name).join(', ') }}
-              </p>
-            </div>
-            <!-- location venue -->
-            <div v-if="item.address" class="flex">
-              <NuxtImg class="w-4 h-4" src="/location.svg" />
-              <div class="flex flex-col">
-                <p class="ml-1 opacity-40">{{ item.address.street }}</p>
-                <p class="ml-1 opacity-40">{{ item.address.zipCode }}</p>
-                <p class="ml-1 opacity-40">{{ item.address.city }}</p>
-                <NuxtLink
-                  class="mt-2 ml-1 opacity-40 underline"
-                  :to="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                    venueLocation
-                  )}`"
-                  target="_blank"
-                >
-                  In Maps öffnen
-                </NuxtLink>
-              </div>
-              <div class="flex flex-col opacity-40 ml-8">
-                <p class="">Folgen auf:</p>
-                <NuxtLink class="underline" :to="item.website" target="_blank"
-                  >Website</NuxtLink
-                >
-                <NuxtLink class="underline" :to="item.instagram" target="_blank"
-                  >Instagram</NuxtLink
-                >
-              </div>
+              <p class="">Folgen auf:</p>
+              <NuxtLink class="underline" :to="item.website" target="_blank"
+                >Website</NuxtLink
+              >
+              <NuxtLink class="underline" :to="item.instagram" target="_blank"
+                >Instagram</NuxtLink
+              >
             </div>
           </div>
-          <div class="flex flex-col items-end w-1/2 px-10 py-5">
-            <p v-if="item.promoter" class="opacity-40">
-              Eine
-              <NuxtLink :to="item.promoter.website" class="underline">{{
-                item.promoter.name
-              }}</NuxtLink
+          <div class="flex flex-col items-end px-4 md:px-10 py-5 self-end">
+            <NuxtLink
+              v-if="item.promoter"
+              class="opacity-40 whitespace-nowrap"
+              :to="`/promoters/${item.promoter.slug}`"
+            >
+              Eine <span class="underline">{{ item.promoter.name }}</span
               >-Show
-            </p>
-            <p v-if="item.price" class="text-lg text-primary">
+            </NuxtLink>
+            <p v-if="item.price" class="text-lg md:text-2xl text-primary">
               {{ item.price }} €
             </p>
             <p
               v-if="item.price"
-              class="opacity-40 text-[8px] lg:text-[10p] text-right leading-3"
+              class="opacity-40 font-light text-sm md:text-md text-right leading-3"
             >
               ggf. zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />
               und Abwicklungskosten
             </p>
-            <div v-if="item.ticketsLink" class="flex justify-center mt-3">
-              <button @click="redirectToTicket" class="btn">
-                Zum Ticketkauf
-              </button>
+            <div class="flex justify-center mt-3">
+              <NuxtLink :to="item.ticketsLink">
+                <button
+                  @click="redirectToTicket"
+                  class="btn"
+                  :disabled="!item.ticketsLink"
+                >
+                  Zum Ticketkauf
+                </button>
+              </NuxtLink>
             </div>
           </div>
         </div>
@@ -180,6 +181,8 @@
 
 <script setup>
 import 'add-to-calendar-button';
+
+const route = useRoute();
 
 const props = defineProps({ item: Object });
 const emit = defineEmits(['toggleFavorite']);

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DefaultGrid :no-spacing="true" class="mb-5 mt-5 lg:mt-10 mb-8">
+    <DefaultGrid :no-spacing="true" class="mt-5 lg:mt-10 mb-8">
       <AtomContentCard
         class="lg:col-start-3 lg:col-end-11"
         :item="venueData"
