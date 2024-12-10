@@ -31,7 +31,7 @@ const { data: concerts } = await fetchCollectionHandler(
   { where: { venue: { equals: venueData.value.id } } }
 );
 
-const usersStore = useUsersStore();
+const usersStore = useUserStore();
 const { isLocationFavorite, toggleFavoriteLocation, user } = usersStore;
 
 watch(user.favoriteLocations, () => {

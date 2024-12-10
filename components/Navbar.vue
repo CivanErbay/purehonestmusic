@@ -40,10 +40,20 @@
         <span class="sr-only">Search</span>
       </button>
     </div>
-    <!--  <div
-      class="lg:col-start-12 lg:col-end-13 bg-[#242424] absolute top-4 right-0 lg:static px-6 py-4 lg:mr-4 rounded text-center">
-      Login
-    </div> -->
+
+    <NuxtLink
+      to="/concerts/favorites"
+      class="flex items-center p-4 bg-bg-light rounded-lg gap-4 xl:col-start-13 xl:col-end-13 tracking-widest mt-6 md:mt-0"
+    >
+      <div
+        class="h-7 w-7 flex items-center justify-center rounded-full bg-[#E77000]"
+      >
+        <NuxtImg class="w-4 h-4 mt-[1px]" src="/heart_filled.svg" />
+      </div>
+      <div class="text-xl">
+        {{ user?.favoriteConcerts?.length || 0 }}
+      </div>
+    </NuxtLink>
   </DefaultGrid>
 </template>
 
@@ -52,6 +62,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
+const { user } = useUserStore();
 
 const localSearchQuery = ref('');
 

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-export const useUsersStore = defineStore('users', () => {
+export const useUserStore = defineStore('users', () => {
   const user = reactive({
     name: '',
     email: '',

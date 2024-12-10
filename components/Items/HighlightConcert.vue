@@ -78,7 +78,7 @@ const props = defineProps({
   item: Object,
 });
 
-const usersStore = useUsersStore();
+const usersStore = useUserStore();
 const { isConcertFavorite, toggleFavoriteConcert, user } = usersStore;
 
 watch(user.favoriteConcerts, () => {

@@ -75,7 +75,7 @@ useHead({
 
 const showBanner = ref(false);
 const loading = ref(true);
-const { loadFavorites } = useUsersStore(); // needd to load the store
+const { loadFavorites } = useUserStore(); // needd to load the store
 
 onMounted(() => {
   if (import.meta.client) {
