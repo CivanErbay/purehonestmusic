@@ -1,14 +1,36 @@
 <template>
   <div class="w-[26.5%]">
-    <VueDatePicker style="color: white !important;" locale="de" @clear="isSelected = false"
-      @open="openDatePicker = true" @closed="openDatePicker = false" cancelText="Abbrechen" selectText="Auswählen"
-      :enable-time-picker="false" :dark="true" :format="format" v-model="date" @update:modelValue="emitDate"
-      placeholder="Date">
+    <VueDatePicker
+      style="color: white !important"
+      locale="de"
+      @clear="isSelected = false"
+      @open="openDatePicker = true"
+      @closed="openDatePicker = false"
+      cancelText="Abbrechen"
+      selectText="Auswählen"
+      :enable-time-picker="false"
+      :dark="true"
+      :format="format"
+      v-model="date"
+      @update:modelValue="emitDate"
+      placeholder="Datum"
+    >
       <template #input-icon>
-        <svg v-if="!isSelected" :class="{ 'rotate-180': openDatePicker, 'rotate-0': !openDatePicker }"
-          class="inline-block w-4 h-4 sm:ml-2 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg"
-          fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        <svg
+          v-if="!isSelected"
+          :class="{ 'rotate-180': openDatePicker, 'rotate-0': !openDatePicker }"
+          class="inline-block w-4 h-4 sm:ml-2 transition-transform duration-200"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          />
         </svg>
       </template>
     </VueDatePicker>
@@ -26,7 +48,7 @@ const format = (date) => {
   const year = date.getFullYear();
 
   return `${day}.${month}.${year}`;
-}
+};
 
 const props = defineProps({
   open: Boolean,
@@ -40,7 +62,6 @@ const openDatePicker = ref(false);
 const isSelected = ref(false);
 
 const emitDate = (newDate) => {
-
   if (newDate === null) {
     isSelected.value = false;
     emit('update:date', '');
@@ -68,7 +89,6 @@ const emitDate = (newDate) => {
   --dp-menu-padding: 12px;
 }
 
-
 .dp__input_icon {
   right: 0;
   transform: translateX(72%) translateY(-50%) !important;
@@ -76,7 +96,6 @@ const emitDate = (newDate) => {
 
 .dp__input {
   color: white !important;
-
 }
 
 .dp__input::placeholder {
@@ -84,7 +103,6 @@ const emitDate = (newDate) => {
 }
 
 button.dp--clear-btn {
-  padding-right: 10px 
+  padding-right: 10px;
 }
-
 </style>
