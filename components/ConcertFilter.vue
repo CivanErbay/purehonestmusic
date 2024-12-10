@@ -38,6 +38,13 @@
           @update:toggle="handleDropdownToggle"
         />
       </div>
+      <div
+        v-if="activeFilter"
+        class="underline cursor-pointer ml-auto text-nowrap opacity-70"
+        @click="handleClearFilter"
+      >
+        Clear filter
+      </div>
     </div>
   </DefaultGrid>
 </template>
@@ -103,6 +110,14 @@ const filters = reactive({
     .sort((a, b) => a.name.localeCompare(b.name)),
 });
 
+const activeFilter = computed(
+  () =>
+    route.query.venues ||
+    route.query.genres ||
+    route.query.promoters ||
+    route.query.date
+);
+
 watch(
   () => route.query,
   (newQuery) => {
@@ -165,6 +180,10 @@ const handleSelectedItem = (category, selectedItem) => {
   }
 
   router.push({ query });
+};
+
+const handleClearFilter = () => {
+  router.push({ query: {} });
 };
 
 const handleClickOutside = (event) => {
