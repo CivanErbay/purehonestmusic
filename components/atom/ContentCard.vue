@@ -166,7 +166,10 @@
               v-if="route.path.startsWith('/concerts')"
             >
               <NuxtLink :to="item.ticketsLink">
-                <button class="btn" :disabled="!item.ticketsLink">
+                <button
+                  class="btn whitespace-nowrap"
+                  :disabled="!item.ticketsLink"
+                >
                   Zum Ticketkauf
                 </button>
               </NuxtLink>
