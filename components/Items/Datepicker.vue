@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[26.5%]">
+  <div class="">
     <VueDatePicker
       style="color: white !important"
       locale="de"
