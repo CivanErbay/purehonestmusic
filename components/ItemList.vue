@@ -1,8 +1,8 @@
 <template>
   <DefaultGrid :no-spacing="true">
     <div class="lg:col-start-3 lg:col-end-11">
-      <TransitionGroup name="list" tag="ul">
-        <li
+      <TransitionGroup name="list" tag="div">
+        <div
           v-for="(group, date) in visibleGroupedItems"
           :key="date"
           class="mb-16"
@@ -19,7 +19,7 @@
             class="lg:col-start-3 lg:col-end-11"
             :item="item"
           />
-        </li>
+        </div>
       </TransitionGroup>
       <div v-if="showMoreButton" class="flex justify-center">
         <button
