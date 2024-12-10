@@ -35,11 +35,10 @@ export function slateToHtml(nodes) {
         if (node.underline) {
           text = `<u>${text}</u>`;
         }
-        if (text === '') {
-          return '<br>';
-        }
         text = text.replace(/\n/g, '<br>');
-        return text;
+        return `${text}<br>`;
+      } else if (node.text === '') {
+        return '<br>';
       }
       return slateToHtml(node.children);
     })
