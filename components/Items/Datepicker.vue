@@ -1,11 +1,11 @@
 <template>
-  <div class="">
+  <div class="dropdown">
     <VueDatePicker
       style="color: white !important"
       locale="de"
       @clear="isSelected = false"
-      @open="openDatePicker = true"
-      @closed="openDatePicker = false"
+      @open="emit('update:toggle', props.slug)"
+      @closed="emit('update:toggle', props.slug)"
       cancelText="Abbrechen"
       selectText="Auswählen"
       :enable-time-picker="false"
@@ -18,7 +18,7 @@
       <template #input-icon>
         <svg
           v-if="!isSelected"
-          :class="{ 'rotate-180': openDatePicker, 'rotate-0': !openDatePicker }"
+          :class="{ 'rotate-180': open, 'rotate-0': !open }"
           class="inline-block w-4 h-4 sm:ml-2 transition-transform duration-200"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -58,7 +58,6 @@ const props = defineProps({
 const emit = defineEmits(['update:date', 'update:toggle']);
 
 const date = ref();
-const openDatePicker = ref(false);
 const isSelected = ref(false);
 
 const emitDate = (newDate) => {
@@ -87,6 +86,8 @@ const emitDate = (newDate) => {
   --dp-primary-color: #e77000 !important;
   --dp-action-buttons-padding: 17px 10px;
   --dp-menu-padding: 12px;
+  --dp-border-color-focus: #e77000 !important;
+  --dp-border-color-hover: transparent;
 }
 
 .dp__input_icon {
