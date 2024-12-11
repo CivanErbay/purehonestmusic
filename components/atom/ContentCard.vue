@@ -28,7 +28,7 @@
               {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
             </p>
             <div
-              class="flex absolute top-1/2 -translate-y-1/2 right-3 items-center justify-center"
+              class="flex mt-2 md:mt-0 md:absolute md:top-0 md:right-0 items-center md:justify-center"
             >
               <button
                 @click="handleShare"
