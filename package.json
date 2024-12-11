@@ -14,11 +14,10 @@
   "dependencies": {
     "@nuxt/image": "^1.8.1",
     "@nuxtjs/google-fonts": "^3.2.0",
-    "@preline/carousel": "^2.5.0",
     "@vuepic/vue-datepicker": "^10.0.0",
     "add-to-calendar-button": "^2.7.3",
-    "preline": "^2.5.1",
     "qs": "^6.13.0",
+    "swiper": "^11.1.15",
     "vue": "latest",
     "vue-router": "latest"
   },
