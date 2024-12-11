@@ -1,9 +1,8 @@
 <template>
   <DefaultGrid>
-    <div class="lg:col-start-3 lg:col-end-11 mt-5 lg:mt-10">
+    <div class="w-[90svw] sm:w-[95svw] lg:w-auto lg:col-start-3 lg:col-end-11 mt-5 lg:mt-10">
       <h4 class="text-2xl font-semibold mb-6">{{ headline }}</h4>
-      <ItemsConcertRecommendations :items="items" />
-
+      <ItemsConcertSlider :items="items"></ItemsConcertSlider>
     </div>
   </DefaultGrid>
 </template>
@@ -22,7 +21,6 @@ const { items, headline } = defineProps({
   },
 });
 
-console.log("blub", items)
 
 /* const filteredGroupedItems = computed(() => {
   const today = new Date();

@@ -1,6 +1,6 @@
 <template>
   <NuxtLink
-    class="flex flex-1 flex-col bg-[#242424] rounded-xl overflow-hidden relative mb-5 lg:mb-0"
+    class="flex flex-1 flex-col bg-[#242424] rounded-xl overflow-hidden relative mb-5 lg:mb-0 lg:h-[370px]"
     :to="`concerts/${item.slug}`"
   >
     <div

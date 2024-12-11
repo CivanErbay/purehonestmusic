@@ -14,21 +14,18 @@ importers:
       '@nuxtjs/google-fonts':
         specifier: ^3.2.0
         version: 3.2.0(magicast@0.3.5)(rollup@4.28.0)
-      '@preline/carousel':
-        specifier: ^2.5.0
-        version: 2.6.0
       '@vuepic/vue-datepicker':
         specifier: ^10.0.0
         version: 10.0.0(vue@3.5.13(typescript@5.7.2))
       add-to-calendar-button:
         specifier: ^2.7.3
         version: 2.7.3
-      preline:
-        specifier: ^2.5.1
-        version: 2.6.0
       qs:
         specifier: ^6.13.0
         version: 6.13.1
+      swiper:
+        specifier: ^11.1.15
+        version: 11.1.15
       vue:
         specifier: latest
         version: 3.5.13(typescript@5.7.2)
@@ -729,12 +726,6 @@ packages:
 
   '@polka/url@1.0.0-next.28':
     resolution: {integrity: sha512-8LduaNlMZGwdZ6qWrKlfa+2M4gahzFkprZiAt2TF8uS0qQgBizKXpXURqvTJ4WtmupWxaLqjRb2UCTe72mu+Aw==}
-
-  '@popperjs/core@2.11.8':
-    resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
-
-  '@preline/carousel@2.6.0':
-    resolution: {integrity: sha512-WahfsSDjrqRHb7uu3k0xjBVWbFRKzxMCJL020Y2LZ4agFlKqhp1WBmOPBYBlteY/937/wXNh78ABUi6Jnn1Ccw==}
 
   '@redocly/ajv@8.11.2':
     resolution: {integrity: sha512-io1JpnwtIcvojV7QKDUSIuMN/ikdOUd1ReEnUnMKGfDVridQZ31J0MmIuqwuRjWDZfmvr+Q0MqCcfHM2gTivOg==}
@@ -3149,9 +3140,6 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  preline@2.6.0:
-    resolution: {integrity: sha512-8O9ayfWgicM8w64k6HIXoRafVqI3xsyFhlT/OCR99USR5izlMGvCunAW+HsTtCwWI0V04m96eXcYy8ElYkDqNg==}
-
   pretty-bytes@6.1.1:
     resolution: {integrity: sha512-mQUvGU6aUFQ+rNvTIAcZuWGRT9a6f6Yrg9bHs4ImKF+HZCEK+plBvnAZYSIQztknZF2qnzNtr6F8s0+IuptdlQ==}
     engines: {node: ^14.13.1 || >=16.0.0}
@@ -3522,6 +3510,10 @@ packages:
     resolution: {integrity: sha512-OoohrmuUlBs8B8o6MB2Aevn+pRIH9zDALSR+6hhqVfa6fRwG/Qw9VUMSMW9VNg2CFc/MTIfabtdOVl9ODIJjpw==}
     engines: {node: '>=14.0.0'}
     hasBin: true
+
+  swiper@11.1.15:
+    resolution: {integrity: sha512-IzWeU34WwC7gbhjKsjkImTuCRf+lRbO6cnxMGs88iVNKDwV+xQpBCJxZ4bNH6gSrIbbyVJ1kuGzo3JTtz//CBw==}
+    engines: {node: '>= 4.7.0'}
 
   system-architecture@0.1.0:
     resolution: {integrity: sha512-ulAk51I9UVUyJgxlv9M6lFot2WP3e7t8Kz9+IS6D4rVba1tR9kON+Ey69f+1R4Q8cd45Lod6a4IcJIxnzGc/zA==}
@@ -4878,10 +4870,6 @@ snapshots:
     optional: true
 
   '@polka/url@1.0.0-next.28': {}
-
-  '@popperjs/core@2.11.8': {}
-
-  '@preline/carousel@2.6.0': {}
 
   '@redocly/ajv@8.11.2':
     dependencies:
@@ -7694,10 +7682,6 @@ snapshots:
       tunnel-agent: 0.6.0
     optional: true
 
-  preline@2.6.0:
-    dependencies:
-      '@popperjs/core': 2.11.8
-
   pretty-bytes@6.1.1: {}
 
   pretty-ms@9.2.0:
@@ -8128,6 +8112,8 @@ snapshots:
       css-what: 6.1.0
       csso: 5.0.5
       picocolors: 1.1.1
+
+  swiper@11.1.15: {}
 
   system-architecture@0.1.0: {}
 
