@@ -33,26 +33,26 @@ useSeoMeta({
 });
 
 useHead({
-  title: 'Pure Honest Music',
+  title: 'Pure Honest Music', // This is the title of the page.
   htmlAttrs: { lang: 'de' },
   meta: [
     {
       name: 'description',
-      content: settings.value.metaDescription,
+      content: settings.value.metaDescription, // This is the description of the page.
     },
     {
       property: 'og:title',
-      content: settings.value.metaTitle,
+      content: settings.value.metaTitle, // This is the Open Graph title, used by Telegram for the title.
     },
     {
       property: 'og:description',
-      content: settings.value.metaDescription,
+      content: settings.value.metaDescription, // This is the Open Graph description, used by Telegram for the description.
     },
     {
       property: 'og:image',
       content:
         settings.value.socialMediaImage.sizes?.medium?.url ||
-        settings.value.socialMediaImage.url,
+        settings.value.socialMediaImage.url, // This is the Open Graph image, used by Telegram for the image preview.
     },
     { property: 'twitter:card', content: settings.value.socialMediaCard },
     { property: 'twitter:title', content: settings.value.socialMediaTitle },
