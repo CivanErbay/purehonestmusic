@@ -6,9 +6,10 @@
         :item="venueData"
         @toggleFavorite="toggleFavoriteLocation"
       />
+      <h3 class="text-3xl mt-8 lg:mt-16 lg:col-start-3 lg:col-end-11">
+        Konzerte in {{ venueData.name }}
+      </h3>
     </DefaultGrid>
-    <!-- TODO fit headline in grid -->
-    <h3 class="text-3xl">Konzerte in {{ venueData.name }}</h3>
     <ItemList :items="concerts" />
   </div>
 </template>

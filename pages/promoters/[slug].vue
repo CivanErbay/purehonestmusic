@@ -5,9 +5,11 @@
         class="lg:col-start-3 lg:col-end-11"
         :item="promoterData"
       />
+      <h3 class="text-3xl mt-8 lg:mt-16 lg:col-start-3 lg:col-end-11">
+        Mehr von {{ promoterData.name }}
+      </h3>
     </DefaultGrid>
-    <!-- TODO fit headline in grid -->
-    <h3 class="text-3xl">{{ promoterData.name }}</h3>
+
     <ItemList :items="concerts" />
   </div>
 </template>
