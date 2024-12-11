@@ -151,7 +151,6 @@ const handleDateChange = (date) => {
     delete query.date;
   }
 
-  // TODO add and remove a query in format dd-mm-yyy
   router.push({ query });
 };
 

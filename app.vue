@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-const { data: settings, status } = await fetchGlobalHandler('settings');
+const { data: settings } = await fetchGlobalHandler('settings');
 
 useSeoMeta({
   title: settings.value.seoTitle,
