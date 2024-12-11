@@ -2,31 +2,22 @@
   <div>
     <!-- This NuxtLink is only visible on desktop -->
     <div
-      class="hidden lg:block cursor-pointer"
+      class="hidden lg:block cursor-pointer transition-all duration-500 ease-in-out transform hover:translate-y-[-5px] hover:scale-105 hover:z-10 hover:shadow-2xl"
       @click="
         (e) => {
           if (!e.target.closest('a') && !e.target.closest('NuxtLink'))
             router.push(`/concerts/${item.slug}`);
         }
-      "
-    >
-      <div
-        class="flex bg-[#242424] mb-5 rounded-xl overflow-hidden relative min-h-52"
-      >
+      ">
+      <div class="flex bg-[#242424] mb-5 rounded-xl overflow-hidden relative min-h-52">
         <!-- fallback to artist image if no concert image -->
         <NuxtLink :to="`/concerts/${item.slug}`">
-          <AtomMedia
-            v-bind="
+          <AtomMedia v-bind="
               item.heroImage ||
               (item.artist.length > 0 && item.artist[0].heroImage)
-            "
-            :isCover="true"
-            class="w-60 lg:w-36 h-full object-cover"
-          />
+            " :isCover="true" class="w-60 lg:w-36 h-full object-cover" />
         </NuxtLink>
-        <div
-          class="flex flex-col lg:flex-row justify-between px-4 py-3 lg:px-6 lg:py-4 w-full"
-        >
+        <div class="flex flex-col lg:flex-row justify-between px-4 py-3 lg:px-6 lg:py-4 w-full">
           <div class="flex flex-col justify-between w-full lg:w-2/3">
             <div class="flex flex-col mb-3">
               <h4 class="text-lg text-text">{{ item.name }}</h4>
@@ -34,9 +25,7 @@
                 {{ truncateSubtitle(item.subtitle) }}
               </p>
             </div>
-            <div
-              class="flex flex-col lg:flex-row lg:items-center text-white opacity-40 text-sm"
-            >
+            <div class="flex flex-col lg:flex-row lg:items-center text-white opacity-40 text-sm">
               <div class="flex">
                 <NuxtImg class="w-4 h-4" src="/calendar.svg" />
                 <p class="ml-1">
@@ -59,33 +48,20 @@
             </div>
           </div>
           <div
-            class="flex flex-col lg:items-end lg:justify-between text-white text-sm bg-[#2F2F2F] -my-4 -mx-6 px-6 py-4"
-          >
-            <button
-              :class="[
+            class="flex flex-col lg:items-end lg:justify-between text-white text-sm bg-[#2F2F2F] -my-4 -mx-6 px-6 py-4">
+            <button :class="[
                 'rounded-full w-7 h-7 flex items-center justify-center',
                 item.isUserFavorite
                   ? 'bg-[#E77000]'
                   : 'bg-primary bg-opacity-15',
-              ]"
-              @click.stop.prevent="() => toggleFavoriteConcert(item.id)"
-            >
-              <NuxtImg
-                v-if="item.isUserFavorite"
-                class="w-4 h-4 mt-[1px]"
-                src="/heart_filled.svg"
-              />
+              ]" @click.stop.prevent="() => toggleFavoriteConcert(item.id)">
+              <NuxtImg v-if="item.isUserFavorite" class="w-4 h-4 mt-[1px]" src="/heart_filled.svg" />
               <NuxtImg v-else class="w-4 h-4 mt-[1px]" src="/heart.svg" />
             </button>
 
             <div class="flex flex-col items-end">
-              <NuxtLink
-                v-if="item.promoter"
-                class="opacity-40"
-                :to="`/promoters/${item.promoter.slug}`"
-              >
-                Eine <span class="underline">{{ item.promoter.name }}</span
-                >-Show
+              <NuxtLink v-if="item.promoter" class="opacity-40" :to="`/promoters/${item.promoter.slug}`">
+                Eine <span class="underline">{{ item.promoter.name }}</span>-Show
               </NuxtLink>
               <p class="text-lg text-primary">{{ item.price }} €</p>
               <p class="opacity-40 text-[8px] lg:text-xs text-right">
@@ -99,36 +75,21 @@
     </div>
 
     <!-- This NuxtLink is only visible on mobile -->
-    <div
-      class="lg:hidden flex flex-1 flex-col bg-[#242424] rounded-xl relative mb-5 lg:mb-0"
-      @click="() => router.push(`/concerts/${item.slug}`)"
-    >
-      <div
-        class="absolute top-0 left-0 bg-primary bg-opacity-50 py-1 px-3 h-fit rounded-br-xl rounded-tl-xl"
-      >
+    <div class="lg:hidden flex flex-1 flex-col bg-[#242424] rounded-xl relative mb-5 lg:mb-0"
+      @click="() => router.push(`/concerts/${item.slug}`)">
+      <div class="absolute top-0 left-0 bg-primary bg-opacity-50 py-1 px-3 h-fit rounded-br-xl rounded-tl-xl">
         🔥 Empfohlen
       </div>
       <NuxtLink :to="`/concerts/${item.slug}`">
-        <AtomMedia
-          v-bind="item.heroImage"
-          :isCover="true"
-          class="w-full h-24 object-cover rounded-t-xl"
-        />
+        <AtomMedia v-bind="item.heroImage" :isCover="true" class="w-full h-24 object-cover rounded-t-xl" />
       </NuxtLink>
       <div class="h-full flex flex-col justify-between relative">
         <div class="flex flex-col mb-3 p-3 pb-0 w-11/12">
-          <button
-            :class="[
+          <button :class="[
               'rounded-full w-7 h-7 flex items-center justify-center',
               item.isUserFavorite ? 'bg-[#E77000]' : 'bg-primary bg-opacity-15',
-            ]"
-            @click.stop.prevent="() => toggleFavoriteConcert(item.id)"
-          >
-            <NuxtImg
-              v-if="item.isUserFavorite"
-              class="w-4 h-4 mt-[1px]"
-              src="/heart_filled.svg"
-            />
+            ]" @click.stop.prevent="() => toggleFavoriteConcert(item.id)">
+            <NuxtImg v-if="item.isUserFavorite" class="w-4 h-4 mt-[1px]" src="/heart_filled.svg" />
             <NuxtImg v-else class="w-4 h-4 mt-[1px]" src="/heart.svg" />
           </button>
           <h4 class="text-lg text-text">{{ item.name }}</h4>
@@ -159,16 +120,9 @@
               </p>
             </div>
           </div>
-          <div
-            class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-5 rounded-tl-xl rounded-br-xl"
-          >
-            <NuxtLink
-              v-if="item.promoter"
-              class="opacity-40"
-              :to="`/promoters/${item.promoter.slug}`"
-            >
-              Eine <span class="underline">{{ item.promoter.name }}</span
-              >-Show
+          <div class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-5 rounded-tl-xl rounded-br-xl">
+            <NuxtLink v-if="item.promoter" class="opacity-40" :to="`/promoters/${item.promoter.slug}`">
+              Eine <span class="underline">{{ item.promoter.name }}</span>-Show
             </NuxtLink>
             <p class="text-lg text-primary">{{ item.price }} €</p>
             <p class="opacity-40 text-[8px] lg:text-[10p] text-right leading-3">
