@@ -26,7 +26,7 @@
                 <NuxtImg class="w-4 h-4" src="/share.svg" />
               </button>
               <add-to-calendar-button v-if="item.date"
-                class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2" :label="''"
+                class="flex items-center justify-center mr-2" :label="''"
                 customCss="/calendar.css" buttonStyle="custom" hideTextLabelButton
                 :name="`${item.name} @ ${item.venue.name}`" options="'Apple','Google'" :location="venueLocation"
                 :startDate="dateTimeStrings[0]" :endDate="dateTimeStrings[0]" :startTime="dateTimeStrings[1]"
