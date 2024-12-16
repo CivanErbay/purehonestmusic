@@ -106,4 +106,13 @@ const emitDate = (newDate) => {
 button.dp--clear-btn {
   padding-right: 10px;
 }
+
+.dp--menu-wrapper {
+  left: 0!important;
+  top: 67px !important;
+}
+
+.dp__arrow_top {
+  display: none;
+}
 </style>
