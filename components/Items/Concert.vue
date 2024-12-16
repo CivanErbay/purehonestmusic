@@ -103,11 +103,11 @@
       class="lg:hidden flex flex-1 flex-col bg-[#242424] rounded-xl relative mb-5 lg:mb-0"
       @click="() => router.push(`/concerts/${item.slug}`)"
     >
-      <div
+     <!--  <div
         class="absolute top-0 left-0 bg-primary bg-opacity-50 py-1 px-3 h-fit rounded-br-xl rounded-tl-xl"
       >
         🔥 Empfohlen
-      </div>
+      </div> -->
       <NuxtLink :to="`/concerts/${item.slug}`">
         <AtomMedia
           v-bind="item.heroImage"
