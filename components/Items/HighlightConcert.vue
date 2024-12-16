@@ -43,7 +43,7 @@
             Eine <span class="underline">{{ item.promoter.name }}</span>-Show
           </NuxtLink>
           <p class="text-lg text-primary">{{ item.price }} €</p>
-          <p class="opacity-40 text-[8px] lg:text-[10p] text-right leading-3">
+          <p class="opacity-40 text-[8px] lg:text-[10p] text-right leading-4">
             ggf. zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />
             und Abwicklungskosten
           </p>

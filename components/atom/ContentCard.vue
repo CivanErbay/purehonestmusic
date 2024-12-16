@@ -25,8 +25,7 @@
                 class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2">
                 <NuxtImg class="w-4 h-4 ml-[1px] mb-[1px]" src="/share.svg" />
               </button>
-              <add-to-calendar-button v-if="item.date"
-                class="flex items-center justify-center mr-2" :label="''"
+              <add-to-calendar-button v-if="item.date" class="flex items-center justify-center mr-2" :label="''"
                 customCss="/calendar.css" buttonStyle="custom" hideTextLabelButton
                 :name="`${item.name} @ ${item.venue.name}`" options="'Apple','Google'" :location="venueLocation"
                 :startDate="dateTimeStrings[0]" :endDate="dateTimeStrings[0]" :startTime="dateTimeStrings[1]"
@@ -38,11 +37,11 @@
                 route.path.startsWith('/concerts') ||
                 route.path.startsWith('/locations')
               " :class="[
-                  'rounded-full w-7 h-7 flex items-center justify-center',
-                  item.isUserFavorite
-                    ? 'bg-[#E77000]'
-                    : 'bg-primary bg-opacity-15',
-                ]" @click="() => toggleFavorite(item.id)">
+                'rounded-full w-7 h-7 flex items-center justify-center',
+                item.isUserFavorite
+                  ? 'bg-[#E77000]'
+                  : 'bg-primary bg-opacity-15',
+              ]" @click="() => toggleFavorite(item.id)">
                 <NuxtImg v-if="item.isUserFavorite" class="w-4 h-4 mt-[1px]" src="/heart_filled.svg" />
                 <NuxtImg v-else class="w-4 h-4 mt-[1px]" src="/heart.svg" />
               </button>
@@ -51,7 +50,7 @@
           <p class="text-sm text-white mb-4 opacity-50 overflow-hidden">
             {{ item.subtitle }}
           </p>
-          <UtilsRichTextRenderer :nodes="item.description" />
+          <UtilsRichTextRenderer :customClasses="'text-sm'" :nodes="item.description" />
         </div>
         <div class="flex flex-col md:flex-row items-center text-white bg-bg-light">
           <div class="px-4 md:px-10 py-4 flex w-full">
@@ -59,17 +58,17 @@
             <div class="">
               <div class="flex mb-2" v-if="item.date">
                 <NuxtImg class="w-4 h-4" src="/calendar.svg" />
-                <p class="ml-1 opacity-40">
+                <p class="ml-1 opacity-40 text-sm">
                   {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
                 </p>
               </div>
               <NuxtLink class="flex mb-2" v-if="item.venue?.name" :to="`/locations/${item.venue.slug}`">
                 <NuxtImg class="w-4 h-4" src="/location.svg" />
-                <p class="ml-1 opacity-40">{{ item.venue.name }}</p>
+                <p class="ml-1 opacity-40 text-sm">{{ item.venue.name }}</p>
               </NuxtLink>
               <div class="flex" v-if="item.genres">
                 <NuxtImg class="w-4 h-4" src="/music.svg" />
-                <p class="ml-1 opacity-40">
+                <p class="ml-1 opacity-40 text-sm">
                   {{ item.genres.map((it) => it.name).join(', ') }}
                 </p>
               </div>
@@ -98,14 +97,14 @@
             </div>
           </div>
           <div class="flex flex-col items-end px-4 md:px-10 py-5 self-end">
-            <NuxtLink v-if="item.promoter" class="opacity-40 whitespace-nowrap"
+            <NuxtLink v-if="item.promoter" class="opacity-40 whitespace-nowrap text-sm"
               :to="`/promoters/${item.promoter.slug}`">
               Eine <span class="underline">{{ item.promoter.name }}</span>-Show
             </NuxtLink>
             <p v-if="item.price" class="text-lg md:text-2xl text-primary">
               {{ item.price }} €
             </p>
-            <p v-if="item.price" class="opacity-40 font-light text-sm md:text-md text-right leading-3">
+            <p v-if="item.price" class="opacity-40 font-light text-sm md:text-md text-right leading-4">
               ggf. zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />
               und Abwicklungskosten
             </p>

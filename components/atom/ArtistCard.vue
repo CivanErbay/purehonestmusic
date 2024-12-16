@@ -2,19 +2,10 @@
   <div class="">
     <div class="rounded-xl overflow-hidden h-full flex flex-col">
       <div class="h-24 w-full relative">
-        <AtomMedia
-          class="w-full h-full blur-sm relative"
-          :isCover="true"
-          v-bind="artist.heroImage"
-        />
+        <AtomMedia class="w-full h-full blur-sm relative" :isCover="true" v-bind="artist.heroImage" />
         <div
-          class="w-24 z-20 h-24 overflow-hidden rounded-full top-full absolute left-1/2 -translate-x-1/2 -translate-y-1/2"
-        >
-          <AtomMedia
-            class="w-full h-full"
-            v-bind="artist.heroImage"
-            :isCover="true"
-          />
+          class="w-24 z-20 h-24 overflow-hidden rounded-full top-full absolute left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <AtomMedia class="w-full h-full" v-bind="artist.heroImage" :isCover="true" />
         </div>
       </div>
 
@@ -24,10 +15,7 @@
           {{ artist.genres?.map((it) => it.name).join(', ') }}
         </h5>
         <div class="flex-1 px-3 mt-8 mb-4 text-faded">
-          <UtilsRichTextRenderer
-            v-if="artist.description"
-            :nodes="artist.description"
-          />
+          <UtilsRichTextRenderer v-if="artist.description" :nodes="artist.description" :customClasses="'text-sm'" />
         </div>
         <ClientOnly>
           <div v-if="artist.spotifyIframe" v-html="artist.spotifyIframe"></div>

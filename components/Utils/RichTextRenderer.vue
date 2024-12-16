@@ -1,6 +1,6 @@
 <template>
   <ClientOnly>
-    <p class="slate-content" v-html="html"></p>
+    <p :class="['slate-content', customClasses]" v-html="html"></p>
   </ClientOnly>
 </template>
 
@@ -10,6 +10,10 @@ const props = defineProps({
     type: Array,
     required: true,
     default: () => [],
+  },
+  customClasses: {
+    type: String,
+    default: '',
   },
 });
 
