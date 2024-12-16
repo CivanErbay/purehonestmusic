@@ -1,14 +1,14 @@
 <template>
-  <DefaultGrid :no-spacing="true" class="mb-5 mt-5 lg:mt-10">
+  <DefaultGrid :no-spacing="true" class="mb-5 mt-5 xl:mt-10">
     <AtomContentCard
-      class="lg:col-start-3 lg:col-end-9 lg:mr-4"
+      class="xl:col-start-3 xl:col-end-9 xl:mr-4"
       :item="item"
       @toggleFavorite="toggleFavoriteConcert"
     />
     <AtomArtistCard
       v-if="artist"
       :artist="artist"
-      class="lg:col-start-9 lg:col-end-11"
+      class="xl:col-start-9 xl:col-end-11"
     />
   </DefaultGrid>
 </template>

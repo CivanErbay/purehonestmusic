@@ -113,6 +113,7 @@
           v-bind="item.heroImage"
           :isCover="true"
           class="w-full h-24 object-cover rounded-t-xl"
+          :customClasses="'rounded-tr-xl rounded-tl-xl'"
         />
       </NuxtLink>
       <div class="h-full flex flex-col justify-between relative">

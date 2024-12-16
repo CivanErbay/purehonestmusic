@@ -1,7 +1,7 @@
 <template>
   <DefaultGrid :no-spacing="true">
     <div
-      class="lg:col-start-3 lg:col-end-11 flex flex-col sm:flex-row sm:items-center mb-12"
+      class="xl:col-start-3 xl:col-end-11 flex flex-col sm:flex-row sm:items-center mb-12"
     >
       <div class="text-2xl mr-12">Filter:</div>
       <div class="flex flex-wrap sm:items-center gap-2 sm:gap-4 my-6 relative">

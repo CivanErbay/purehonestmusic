@@ -1,6 +1,6 @@
 <template>
   <DefaultGrid>
-    <div class="lg:col-start-3 lg:col-end-11">
+    <div class="xl:col-start-3 xl:col-end-11">
       <div class="bg-[#242424] w-full p-8 rounded-xl">
         <h2 class="uppercase text-primary text-base">Konzerte Heute in Köln</h2>
         <h3 class="uppercase text-text text-[22px] font-semibold mb-5">

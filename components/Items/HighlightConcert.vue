@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink class="flex flex-1 flex-col bg-[#242424] rounded-xl overflow-hidden relative mb-5 lg:mb-0  md:h-[450px] lg:h-[390px]"
+  <NuxtLink class="flex flex-1 flex-col bg-[#242424] rounded-xl overflow-hidden relative mb-5 xl:mb-0  md:h-[450px] 2xl:h-[390px]"
     :to="`concerts/${item.slug}`">
     <div class="absolute top-0 left-0 bg-primary bg-opacity-50 py-1 px-3 h-fit rounded-br-xl">
       🔥 Empfohlen
