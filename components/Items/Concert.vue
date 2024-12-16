@@ -59,7 +59,7 @@
             </div>
           </div>
           <div
-            class="flex flex-col lg:items-end lg:justify-between text-white text-sm bg-[#2F2F2F] -my-4 -mx-6 px-6 py-4"
+            class="flex flex-col lg:items-end lg:justify-between text-white text-sm bg-[#2F2F2F] -my-4 -mx-6 px-6 py-4 md:w-[240px]"
           >
             <button
               :class="[
