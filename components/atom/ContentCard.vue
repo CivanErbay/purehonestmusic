@@ -23,7 +23,7 @@
             <div class="flex mt-2 md:mt-0 md:absolute md:top-0 md:right-0 items-center md:justify-center">
               <button @click="handleShare"
                 class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2">
-                <NuxtImg class="w-4 h-4" src="/share.svg" />
+                <NuxtImg class="w-4 h-4 ml-[1px] mb-[1px]" src="/share.svg" />
               </button>
               <add-to-calendar-button v-if="item.date"
                 class="flex items-center justify-center mr-2" :label="''"
