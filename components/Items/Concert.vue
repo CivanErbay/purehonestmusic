@@ -120,7 +120,7 @@
         <div class="flex flex-col mb-3 p-3 pb-0 w-11/12">
           <button
             :class="[
-              'rounded-full w-7 h-7 flex items-center justify-center',
+              'rounded-full w-7 h-7 flex items-center justify-center absolute right-3',
               item.isUserFavorite ? 'bg-[#E77000]' : 'bg-primary bg-opacity-15',
             ]"
             @click.stop.prevent="() => toggleFavoriteConcert(item.id)"
