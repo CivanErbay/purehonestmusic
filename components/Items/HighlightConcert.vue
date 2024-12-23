@@ -39,7 +39,7 @@
           </div>
         </div>
         <div class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-5 rounded-tl-xl">
-          <NuxtLink v-if="item.promoter" class="opacity-40" :to="`/promoters/${item.promoter.slug}`">
+          <NuxtLink v-if="item.promoter" class="opacity-40 text-right" :to="`/promoters/${item.promoter.slug}`">
             Eine <span class="underline">{{ item.promoter.name }}</span>-Show
           </NuxtLink>
           <p class="text-lg text-primary">{{ item.price }} €</p>
