@@ -165,7 +165,7 @@
           >
             <NuxtLink
               v-if="item.promoter"
-              class="opacity-40"
+              class="opacity-40 text-right"
               :to="`/promoters/${item.promoter.slug}`"
             >
               Eine <span class="underline">{{ item.promoter.name }}</span
