@@ -29,8 +29,9 @@ export default defineNuxtConfig({
   },
   googleFonts: {
     families: {
-      'montserrat+Sans': true,
-      'josefin+Sans': true,
+      Montserrat: true, // Richtig ohne +
+      'Josefin Sans': true, // Leerzeichen statt +
     },
+    display: 'swap', // Optional: Vermeidet FOUC (Flash of Unstyled Content)
   },
 });
