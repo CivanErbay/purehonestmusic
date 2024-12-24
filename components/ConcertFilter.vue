@@ -30,7 +30,7 @@
           @update:toggle="handleDropdownToggle"
         />
         <ItemsDropdown
-          title="Veranstaler"
+          title="Veranstalter"
           slug="promoters"
           :items="filters.promoters"
           :open="openDropdown === 'promoters'"
@@ -43,7 +43,7 @@
         class="underline cursor-pointer ml-auto text-nowrap opacity-70"
         @click="handleClearFilter"
       >
-        Clear filter
+        Filter zurücksetzen
       </div>
     </div>
   </DefaultGrid>

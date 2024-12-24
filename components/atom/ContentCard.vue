@@ -42,7 +42,7 @@
                   ? 'bg-[#E77000]'
                   : 'bg-primary bg-opacity-15',
               ]" @click="() => toggleFavorite(item.id)">
-                <NuxtImg v-if="item.isUserFavorite" class="w-4 h-4 mt-[1px]" src="/heart_filled.svg" />
+                <NuxtImg v-if="item.isUserFavorite " class="w-4 h-4 mt-[1px]" src="/heart_filled.svg" />
                 <NuxtImg v-else class="w-4 h-4 mt-[1px]" src="/heart.svg" />
               </button>
             </div>

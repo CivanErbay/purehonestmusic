@@ -67,7 +67,7 @@ const emitDate = (newDate) => {
   --dp-cell-padding: 1rem;
   --dp-input-padding: 1.1rem;
   --dp-border-radius: 0.5rem;
-  --dp-font-family: 'Josefin Sans', sans-serif;
+  --dp-font-family: 'montserrat Sans', sans-serif;
   --dp-font-size: 18px;
   --dp-primary-color: #fff;
   --dp-primary-text-color: #fff;

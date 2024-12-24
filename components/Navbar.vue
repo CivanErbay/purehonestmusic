@@ -1,12 +1,12 @@
 <template>
-  <DefaultGrid :no-spacing="true" class="relative flex items-center">
+  <DefaultGrid :no-spacing="true" class="relative flex items-center mb-4 mt-4">
     <div class="flex items-end">
       <NuxtLink
         to="/"
         class="xl:col-start-1 xl:col-end-3 tracking-widest mt-6 md:mt-0"
       >
-        <h1 class="text-lg">PURE.HONEST.MUSIC</h1>
-        <h2 class="text-xs text-[#454545] w-max">ARTISTS / SHOWS / RECORDS</h2>
+        <h1 class="text-lg logo dynamicLetterSpacing">PURE.HONEST.MUSIC</h1>
+       <h2 class="text-xs text-[#454545] w-max logo">ENTDECKE LIVE-MUSIK IN KÖLN</h2>
       </NuxtLink>
       <div class="md:hidden ml-auto">
         <NuxtLink
@@ -25,9 +25,9 @@
       </div>
     </div>
     <div
-      class="relative order-last md:order-none w-full md:col-start-4 md:col-end-10 xl:col-start-3 xl:col-end-11 my-5"
+      class="relative order-last md:order-none w-full md:col-start-4 md:col-end-10 xl:col-start-3 xl:col-end-11 my-1"
     >
-      <input
+      <!-- <input
         v-model="localSearchQuery"
         type="search"
         id="search-dropdown"
@@ -55,7 +55,7 @@
           />
         </svg>
         <span class="sr-only">Search</span>
-      </button>
+      </button>-->
     </div>
 
     <div class="md:col-start-12 md:col-end-12 hidden md:block">

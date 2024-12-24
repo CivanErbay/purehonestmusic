@@ -3,9 +3,14 @@ body {
   color: white;
 }
 
-.font-josefin {
-  font-family: 'Josefin Sans', sans-serif;
+.font-montserrat {
+  font-family: 'montserrat Sans', sans-serif;
 }
+
+.font-Josefin {
+  font-family: 'Josefin Sans', serif !important;
+}
+
 /* For WebKit browsers (Chrome, Safari) */
 ::-webkit-scrollbar {
   width: 12px;
@@ -56,4 +61,47 @@ body {
   hyphens: auto;
   word-wrap: break-word;
   overflow-wrap: break-word;
+}
+
+/* Qickfixes Design / Dynamic Values */
+.dynamicLineHeight {
+  line-height: 12px !important;
+}
+
+.dynamicLineHeight1 {
+  line-height: 1.33333333rem !important;
+}
+
+.dynamicLineHeight2 {
+  line-height: 1.8rem !important;
+}
+
+@media (min-width: 1533px) {
+  .dynamicElementHeight2 {
+    line-height: 4.4rem !important;
+  }
+}
+
+.dynamicFontSize {
+font-size: 1rem;
+}
+
+.logo {
+  font-family: 'Josefin Sans', serif !important;
+}
+
+.dynamicElementHeight {
+  top: -14px !important;
+  }
+
+.dynamicElementHeight1 {
+  height: 32px !important;
+  }
+
+.dynamicZIndex {
+  z-index: 999999 !important;
+  }
+
+.dynamicLetterSpacing {
+  letter-spacing: 0.2rem;
 }

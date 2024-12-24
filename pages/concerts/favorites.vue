@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ItemList :items="favoriteConcerts" />
+    <ItemList :items="favoriteConcerts"/>
   </div>
 </template>
 

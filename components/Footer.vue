@@ -21,7 +21,7 @@
             <NuxtImg src="/spotify.svg" class="w-6 h-6 ml-2" />
           </NuxtLink>
         </div>
-        <NuxtLink class="py-1" to="/about-us">Über uns</NuxtLink>
+        <NuxtLink class="py-1 hover:underline" to="/about-us">Über uns</NuxtLink>
         <NuxtLink class="py-1 hover:underline" to="/datenschutz"
           >Datenschutz</NuxtLink
         >

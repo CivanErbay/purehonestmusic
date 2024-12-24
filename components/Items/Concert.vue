@@ -89,7 +89,7 @@
               </NuxtLink>
               <p class="text-lg text-primary">{{ item.price }} €</p>
               <p class="opacity-40 text-[8px] lg:text-xs text-right">
-                ggf. zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />
+                ggf. zzgl. VVK-Gebühren <br class="hidden lg:block" />
                 und Abwicklungskosten
               </p>
             </div>
@@ -112,7 +112,7 @@
         <AtomMedia
           v-bind="item.heroImage"
           :isCover="true"
-          class="w-full h-24 object-cover rounded-t-xl"
+          class="w-full h-24 object-cover rounded-t-xl dynamicZIndex"
           :customClasses="'rounded-tr-xl rounded-tl-xl'"
         />
       </NuxtLink>
@@ -173,7 +173,7 @@
             </NuxtLink>
             <p class="text-lg text-primary">{{ item.price }} €</p>
             <p class="opacity-40 text-[8px] lg:text-[10p] text-right leading-4">
-              ggf.zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />
+              ggf.zzgl. VVK-Gebühren <br class="hidden lg:block" />
               und Abwicklungskosten
             </p>
           </div>

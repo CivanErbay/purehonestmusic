@@ -29,7 +29,8 @@ export default defineNuxtConfig({
   },
   googleFonts: {
     families: {
-      'Josefin+Sans': true,
+      'montserrat+Sans': true,
+      'josefin+Sans': true,
     },
   },
 });

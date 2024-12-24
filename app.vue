@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-4 lg:mx-0 font-josefin relative">
+  <div class="mx-4 lg:mx-0 font-montserrat relative">
     <div class="max-w-[2056px] mx-auto lg:px-16">
       <Navbar />
       <Suspense>

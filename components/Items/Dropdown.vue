@@ -27,7 +27,7 @@
         v-if="open"
         class="dropdown-menu max-h-[360px] left-0 max-w-screen sm:w-max overflow-y-auto bg-bg-light p-4 rounded-lg"
       >
-        <div v-for="(item, index) in items" :key="index" class="dropdown-item">
+        <div v-for="(item, index) in items" :key="index" class="dropdown-item dynamicFontSize">
           <label>
             <input
               type="checkbox"
