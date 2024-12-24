@@ -5,14 +5,14 @@
     >
       <div class="text-2xl mr-12">Filter:</div>
       <div class="flex flex-wrap sm:items-center gap-2 sm:gap-4 my-6 relative">
-        <ItemsDatepicker
+        <!-- <ItemsDatepicker
           class="w-36"
           slug="date"
           :open="openDropdown === 'date'"
           :selected-date="filters.date"
           @update:date="handleDateChange"
           @update:toggle="handleDropdownToggle"
-        />
+        /> -->
         <ItemsDropdown
           title="Location"
           slug="venues"
