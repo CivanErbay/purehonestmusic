@@ -81,7 +81,7 @@
             <div class="flex flex-col items-end">
               <NuxtLink
                 v-if="item.promoter"
-                class="opacity-40 text-right"
+                class="opacity-40 text-right "
                 :to="`/promoters/${item.promoter.slug}`"
               >
                 Eine <span class="underline">{{ item.promoter.name }}</span
@@ -89,7 +89,7 @@
               </NuxtLink>
               <p class="text-lg text-primary">{{ item.price }} €</p>
               <p class="opacity-40 text-[8px] lg:text-xs text-right">
-                ggf. zzgl. VVK-Gebühren <br class="hidden lg:block" />
+                ggf. zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />
                 und Abwicklungskosten
               </p>
             </div>
@@ -112,7 +112,7 @@
         <AtomMedia
           v-bind="item.heroImage"
           :isCover="true"
-          class="w-full h-24 object-cover rounded-t-xl dynamicZIndex"
+          class="w-full h-24 object-cover rounded-t-xl"
           :customClasses="'rounded-tr-xl rounded-tl-xl'"
         />
       </NuxtLink>
@@ -165,7 +165,7 @@
           >
             <NuxtLink
               v-if="item.promoter"
-              class="opacity-40 text-right"
+              class="opacity-40"
               :to="`/promoters/${item.promoter.slug}`"
             >
               Eine <span class="underline">{{ item.promoter.name }}</span
@@ -173,7 +173,7 @@
             </NuxtLink>
             <p class="text-lg text-primary">{{ item.price }} €</p>
             <p class="opacity-40 text-[8px] lg:text-[10p] text-right leading-4">
-              ggf.zzgl. VVK-Gebühren <br class="hidden lg:block" />
+              ggf.zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />
               und Abwicklungskosten
             </p>
           </div>

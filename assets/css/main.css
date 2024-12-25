@@ -105,3 +105,8 @@ font-size: 1rem;
 .dynamicLetterSpacing {
   letter-spacing: 0.2rem;
 }
+
+.swiper-pagination-bullet {
+  background: #e5e7eb !important;
+  color: #e5e7eb !important;
+}
