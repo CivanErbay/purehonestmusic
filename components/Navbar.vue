@@ -1,9 +1,9 @@
 <template>
   <DefaultGrid :no-spacing="true" class="relative flex items-center mb-4 mt-4">
-    <div class="flex items-end logo">
+    <div class="flex items-end">
       <NuxtLink
         to="/"
-        class="xl:col-start-1 xl:col-end-3 tracking-widest mt-6 md:mt-0"
+        class="xl:col-start-1 xl:col-end-3 tracking-widest md:mt-0"
       >
        <h1 class="text-lg logo dynamicLetterSpacingLogo">LOUD & LOCAL</h1>
        <h2 class="text-xs text-[#454545] w-max logo">ENTDECKE KONZERTE IN KÖLN</h2>
