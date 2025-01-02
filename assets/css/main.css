@@ -120,3 +120,7 @@ font-size: 1rem;
   letter-spacing: 0.4rem;
   width: 342px;
 }
+
+.textJustify {
+  text-align: justify;
+}
