@@ -5,7 +5,7 @@
         to="/"
         class="xl:col-start-1 xl:col-end-3 tracking-widest mt-6 md:mt-0"
       >
-       <h1 class="text-lg logo dynamicLetterSpacingLogo">LOUD & LOUDER</h1>
+       <h1 class="text-lg logo dynamicLetterSpacingLogo">LOUD & LOCAL</h1>
        <h2 class="text-xs text-[#454545] w-max logo">ENTDECKE KONZERTE IN KÖLN</h2>
       </NuxtLink>
       <div class="md:hidden ml-auto">
