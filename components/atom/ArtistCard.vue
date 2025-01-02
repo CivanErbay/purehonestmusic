@@ -9,13 +9,13 @@
         </div>
       </div>
 
-      <div class="pt-12 flex flex-col h-full flex-1 z-10 bg-bg-light">
-        <h6 class="text-center px-3 pt-3">{{ artist.name }}</h6>
+      <div class="pt-12 flex flex-col h-full flex-1 z-10 bg-[#242424]">
+        <h6 class="text-center px-3 pt-3 font-semibold">{{ artist.name }}</h6>
         <h5 class="opacity-70 text-sm text-center px-3">
           {{ artist.genres?.map((it) => it.name).join(', ') }}
         </h5>
         <div class="flex-1 px-3 mt-8 mb-4 text-faded">
-          <UtilsRichTextRenderer v-if="artist.description" :nodes="artist.description" :customClasses="'text-sm'" />
+          <UtilsRichTextRenderer v-if="artist.description" :nodes="artist.description" :customClasses="'text-sm customLineHight'" />
         </div>
         <ClientOnly>
           <div v-if="artist.spotifyIframe" v-html="artist.spotifyIframe"></div>
