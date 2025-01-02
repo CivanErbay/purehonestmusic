@@ -80,6 +80,6 @@ const swiperPrevSlide = () => {
 }
 
 .swiper-pagination-bullet-active {
-  background-color: #e77000;
+  background-color: #e77000 !important;
 }
 </style>

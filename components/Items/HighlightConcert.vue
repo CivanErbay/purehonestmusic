@@ -9,9 +9,9 @@
       <div class="flex flex-col mb-3 p-3 pb-0">
         <button :class="[
             'h-7 w-7 flex absolute top-3 right-3 items-center justify-center rounded-full  mb-2 dynamicElementHeight dynamicZIndex',
-            item.isUserFavorite ? 'bg-[#E77000]' : 'bg-primary bg-opacity-15',
+            item.isUserFavorite ? 'bg-[#242424]' : 'bg-[#242424]',
           ]" @click.stop.prevent="() => toggleFavoriteConcert(item.id)">
-          <NuxtImg v-if="item.isUserFavorite" class="w-4 h-4 mt-[1px] dynamicZIndex" src="/heart_filled.svg" />
+          <NuxtImg v-if="item.isUserFavorite" class="w-4 h-4 mt-[1px] dynamicZIndex" src="/heart_default.svg" />
           <NuxtImg v-else class="w-4 h-4 mt-[1px] dynamicZIndex" src="/heart.svg" />
         </button>
         <h4 class="text-lg text-text">{{ item.name }}</h4>
@@ -39,9 +39,9 @@
           </div>
         </div>
         <div class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-6 rounded-tl-xl">
-          <NuxtLink v-if="item.promoter" class="opacity-40 text-right dynamicElementHeight1" :to="`/promoters/${item.promoter.slug}`">
+          <!--<NuxtLink v-if="item.promoter" class="opacity-40 text-right dynamicElementHeight1" :to="`/promoters/${item.promoter.slug}`">
             Eine <span class="underline">{{ item.promoter.name }}</span>-Show
-          </NuxtLink>
+          </NuxtLink>-->
           <p class="text-lg text-primary">{{ item.price }} €</p>
           <p class="opacity-40 text-[8px] lg:text-[10p] text-right dynamicLineHeight">
             ggf. zzgl. VVK-Gebühren <br class="hidden lg:block" />

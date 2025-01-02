@@ -65,28 +65,28 @@
               :class="[
                 'rounded-full w-7 h-7 flex items-center justify-center',
                 item.isUserFavorite
-                  ? 'bg-[#E77000]'
-                  : 'bg-primary bg-opacity-15',
+                  ? 'bg-[#242424] bg-opacity-50'
+                  : 'bg-[#242424] bg-opacity-50',
               ]"
               @click.stop.prevent="() => toggleFavoriteConcert(item.id)"
             >
               <NuxtImg
                 v-if="item.isUserFavorite"
                 class="w-4 h-4 mt-[1px]"
-                src="/heart_filled.svg"
+                src="/heart_default.svg"
               />
               <NuxtImg v-else class="w-4 h-4 mt-[1px]" src="/heart.svg" />
             </button>
 
             <div class="flex flex-col items-end">
-              <NuxtLink
+              <!--<NuxtLink
                 v-if="item.promoter"
                 class="opacity-40 text-right "
                 :to="`/promoters/${item.promoter.slug}`"
               >
                 Eine <span class="underline">{{ item.promoter.name }}</span
                 >-Show
-              </NuxtLink>
+              </NuxtLink>-->
               <p class="text-lg text-primary">{{ item.price }} €</p>
               <p class="opacity-40 text-[8px] lg:text-xs text-right">
                 ggf. zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />
@@ -120,17 +120,17 @@
         <div class="flex flex-col mb-3 p-3 pb-0 w-11/12">
           <button
             :class="[
-              'rounded-full w-7 h-7 flex items-center justify-center absolute right-3',
-              item.isUserFavorite ? 'bg-[#E77000]' : 'bg-primary bg-opacity-15',
+              'rounded-full w-7 h-7 flex items-center justify-center absolute dynamicElementHeight right-3',
+              item.isUserFavorite ? 'bg-[#242424]' : 'bg-[#242424]',
             ]"
             @click.stop.prevent="() => toggleFavoriteConcert(item.id)"
           >
             <NuxtImg
               v-if="item.isUserFavorite"
               class="w-4 h-4 mt-[1px]"
-              src="/heart_filled.svg"
+              src="/heart_default.svg"
             />
-            <NuxtImg v-else class="w-4 h-4 mt-[1px]" src="/heart.svg" />
+            <NuxtImg v-else class="w-4 h-4 mt-[1px]" src="/heart_active.svg" />
           </button>
           <h4 class="text-lg text-text">{{ item.name }}</h4>
           <p class="text-sm text-white opacity-50 overflow-hidden">
@@ -163,14 +163,14 @@
           <div
             class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-5 rounded-tl-xl rounded-br-xl"
           >
-            <NuxtLink
+            <!--<NuxtLink
               v-if="item.promoter"
               class="opacity-40"
               :to="`/promoters/${item.promoter.slug}`"
             >
               Eine <span class="underline">{{ item.promoter.name }}</span
               >-Show
-            </NuxtLink>
+            </NuxtLink>-->
             <p class="text-lg text-primary">{{ item.price }} €</p>
             <p class="opacity-40 text-[8px] lg:text-[10p] text-right leading-4">
               ggf.zzgl. Vorverkaufsgebühren <br class="hidden lg:block" />

@@ -22,7 +22,7 @@
             </p>
             <div class="flex mt-2 md:mt-0 md:absolute md:top-0 md:right-0 items-center md:justify-center">
               <button @click="handleShare"
-                class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center mr-2">
+                class="rounded-full bg-[#2F2F2F] w-7 h-7 flex items-center justify-center mr-2">
                 <NuxtImg class="w-4 h-4 ml-[1px] mb-[1px]" src="/share.svg" />
               </button>
               <add-to-calendar-button v-if="item.date" class="flex items-center justify-center mr-2" :label="''"
@@ -39,11 +39,11 @@
               " :class="[
                 'rounded-full w-7 h-7 flex items-center justify-center',
                 item.isUserFavorite
-                  ? 'bg-[#E77000]'
-                  : 'bg-primary bg-opacity-15',
+                ? 'bg-[#2F2F2F]'
+                : 'bg-[#2F2F2F]',
               ]" @click="() => toggleFavorite(item.id)">
-                <NuxtImg v-if="item.isUserFavorite " class="w-4 h-4 mt-[1px]" src="/heart_filled.svg" />
-                <NuxtImg v-else class="w-4 h-4 mt-[1px]" src="/heart.svg" />
+                <NuxtImg v-if="item.isUserFavorite " class="w-4 h-4 mt-[1px]" src="/heart_default.svg" />
+                <NuxtImg v-else class="w-4 h-4 mt-[1px]" src="/heart_active.svg" />
               </button>
             </div>
           </div>
@@ -97,10 +97,10 @@
             </div>
           </div>
           <div class="flex flex-col items-end px-4 md:px-10 py-5 self-end">
-            <NuxtLink v-if="item.promoter" class="opacity-40 whitespace-nowrap text-sm"
+            <!--<NuxtLink v-if="item.promoter" class="opacity-40 whitespace-nowrap text-sm"
               :to="`/promoters/${item.promoter.slug}`">
               Eine <span class="underline">{{ item.promoter.name }}</span>-Show
-            </NuxtLink>
+            </NuxtLink>-->
             <p v-if="item.price" class="text-lg md:text-2xl text-primary">
               {{ item.price }} €
             </p>

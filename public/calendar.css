@@ -207,7 +207,7 @@
 
 .atcb-button {
   align-items: center;
-  background-color: rgba(231, 112, 0, 0.15);
+  background-color: rgb(47 47 47 / var(--tw-bg-opacity, 1));
   /*  opacity: 15%; */
   border: 0;
   border-radius: 50%;
