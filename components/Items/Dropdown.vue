@@ -1,11 +1,11 @@
 <template>
   <div class="dropdown sm:relative text-lg font-thin">
     <button
-      class="p-4 sm:px-6 sm:py-4 bg-bg-light rounded-lg align-middle border inline-flex items-center"
+      class="p-4 sm:px-6 sm:py-4 bg-bg-light rounded-lg align-middle border inline-flex items-center font-medium dropdown-hover"
       :class="{ ' border-primary': open, 'border-bg-light': !open }"
       @click="toggleDropdown"
     >
-      <span class="opacity-70"> {{ title }}</span>
+      <span class="pt-1"> {{ title }}</span>
       <svg
         :class="{ 'rotate-180': open, 'rotate-0': !open }"
         class="inline-block w-4 h-4 sm:ml-2 transition-transform duration-200"
@@ -75,6 +75,7 @@ const toggleDropdown = () => {
   top: calc(100% + 4px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  width: 343px;
 }
 
 .dropdown-item {
@@ -95,5 +96,22 @@ const toggleDropdown = () => {
 .dropdown-enter-from,
 .dropdown-leave-to {
   opacity: 0;
+}
+
+.dropdown-hover {
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth Transition */
+  background-color: transparent; /* Standard-Hintergrund */
+}
+
+.dropdown-hover:hover {
+  border-radius: 0.5rem;
+  background-color: #242424; /* Hintergrundfarbe bei Hover */
+  color: #FFF; /* Textfarbe bei Hover */
+}
+
+.pt-1
+{
+  padding-top: 1px;
 }
 </style>

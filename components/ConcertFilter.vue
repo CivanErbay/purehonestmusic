@@ -15,6 +15,7 @@
         /> -->
         <ItemsDropdown
           title="Location"
+          class="font-medium"
           slug="venues"
           :items="filters.venues"
           :open="openDropdown === 'venues'"
@@ -23,6 +24,7 @@
         />
         <ItemsDropdown
           title="Genre"
+          class="font-medium"
           slug="genres"
           :items="filters.genres"
           :open="openDropdown === 'genres'"
@@ -31,6 +33,7 @@
         />
         <ItemsDropdown
           title="Veranstalter"
+          class="font-medium "
           slug="promoters"
           :items="filters.promoters"
           :open="openDropdown === 'promoters'"
@@ -40,7 +43,7 @@
       </div>
       <div
         v-if="activeFilter"
-        class="underline cursor-pointer ml-auto text-nowrap opacity-70"
+        class="cleartBtn min-[320px]:text-center max-[600px]: ml-4"
         @click="handleClearFilter"
       >
         Filter zurücksetzen
@@ -199,3 +202,26 @@ onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside);
 });
 </script>
+
+
+<style scoped>
+.cleartBtn {
+  padding: 19px;
+  border: 0.5px;
+    border-top-style: none;
+    border-right-style: none;
+    border-bottom-style: none;
+    border-left-style: none;
+  border-style: solid;
+  border-radius: 0.5rem;
+  padding: 1rem 1.5rem 1rem 1.5rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  color: #FFF;
+}
+
+.cleartBtn:hover {
+  background-color: #e0e0e0;
+  color: #000;
+}
+</style>

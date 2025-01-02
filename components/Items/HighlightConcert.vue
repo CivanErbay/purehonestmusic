@@ -1,21 +1,43 @@
 <template>
-  <NuxtLink class="flex flex-1 flex-col bg-[#242424] rounded-xl overflow-hidden relative mb-5 xl:mb-0  md:h-[450px] 2xl:h-[390px]"
-    :to="`concerts/${item.slug}`">
+  <NuxtLink
+    class="flex flex-1 flex-col bg-[#242424] zoom-in-container rounded-xl overflow-hidden relative mb-5 xl:mb-0 md:h-[450px] 2xl:h-[390px]"
+    :to="`concerts/${item.slug}`"
+  >
     <div class="absolute top-0 left-0 bg-primary bg-opacity-50 py-1 px-3 h-fit rounded-br-xl dynamicZIndex">
       🔥 Empfohlen
     </div>
-    <AtomMedia v-bind="item.heroImage" :isCover="true" class="w-full h-32 object-cover" :customClasses="'!h-[128px]'" />
+    <div class="">
+      <AtomMedia
+        v-bind="item.heroImage"
+        :isCover="true"
+        class="w-full h-32 object-cover !h-[128px]"
+      />
+    </div>
     <div class="h-full flex flex-col justify-between relative">
       <div class="flex flex-col mb-3 p-3 pb-0">
-        <button :class="[
+        <button
+          :class="[
             'h-7 w-7 flex absolute top-3 right-3 items-center justify-center rounded-full  mb-2 dynamicElementHeight dynamicZIndex',
             item.isUserFavorite ? 'bg-[#242424]' : 'bg-[#242424]',
-          ]" @click.stop.prevent="() => toggleFavoriteConcert(item.id)">
-          <NuxtImg v-if="item.isUserFavorite" class="w-4 h-4 mt-[1px] dynamicZIndex" src="/heart_default.svg" />
-          <NuxtImg v-else class="w-4 h-4 mt-[1px] dynamicZIndex" src="/heart.svg" />
+          ]"
+          @click.stop.prevent="() => toggleFavoriteConcert(item.id)"
+        >
+          <NuxtImg
+            v-if="item.isUserFavorite"
+            class="w-4 h-4 mt-[1px] dynamicZIndex"
+            src="/heart_default.svg"
+          />
+          <NuxtImg
+            v-else
+            class="w-4 h-4 mt-[1px] dynamicZIndex"
+            src="/heart.svg"
+          />
         </button>
-        <h4 class="text-lg text-text">{{ item.name }}</h4>
-        <p v-if="item.subtitle" class="text-sm text-white opacity-50 overflow-hidden dynamicLineHeight1">
+        <h4 class="text-lg text-text font-semibold">{{ item.name }}</h4>
+        <p
+          v-if="item.subtitle"
+          class="text-sm text-white opacity-50 overflow-hidden dynamicLineHeight1"
+        >
           {{ truncateSubtitle(item.subtitle) }}
         </p>
       </div>
@@ -38,10 +60,9 @@
             </p>
           </div>
         </div>
-        <div class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-6 rounded-tl-xl">
-          <!--<NuxtLink v-if="item.promoter" class="opacity-40 text-right dynamicElementHeight1" :to="`/promoters/${item.promoter.slug}`">
-            Eine <span class="underline">{{ item.promoter.name }}</span>-Show
-          </NuxtLink>-->
+        <div
+          class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-6 rounded-tl-xl"
+        >
           <p class="text-lg text-primary">{{ item.price }} €</p>
           <p class="opacity-40 text-[8px] lg:text-[10p] text-right dynamicLineHeight">
             ggf. zzgl. VVK-Gebühren <br class="hidden lg:block" />
@@ -52,6 +73,21 @@
     </div>
   </NuxtLink>
 </template>
+
+<style scoped>
+.zoom-in-container {
+  overflow: hidden;
+  position: relative;
+}
+
+.zoom-in-container .object-cover {
+  transition: transform 0.3s ease-in-out;
+}
+
+.zoom-in-container:hover .object-cover {
+  transform: scale(1.05); /* Leichte Vergrößerung */
+}
+</style>
 
 <script setup>
 const props = defineProps({

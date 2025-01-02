@@ -29,7 +29,7 @@
         >
           <div class="flex flex-col justify-between w-full lg:w-2/3">
             <div class="flex flex-col mb-3">
-              <h4 class="text-lg text-text">{{ item.name }}</h4>
+              <h4 class="text-lg text-text font-semibold">{{ item.name }}</h4>
               <p class="text-sm text-white opacity-50">
                 {{ truncateSubtitle(item.subtitle) }}
               </p>
@@ -133,7 +133,7 @@
             <NuxtImg v-else class="w-4 h-4 mt-[1px]" src="/heart_active.svg" />
           </button>
           <h4 class="text-lg text-text">{{ item.name }}</h4>
-          <p class="text-sm text-white opacity-50 overflow-hidden">
+          <p class="text-sm text-white opacity-50 overflow-hidden dynamicLineHeight1">
             {{ truncateSubtitle(item.subtitle) }}
           </p>
         </div>
