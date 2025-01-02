@@ -88,6 +88,7 @@ font-size: 1rem;
 
 .logo {
   font-family: 'Josefin Sans', serif !important;
+  width: 234px;
 }
 
 .dynamicElementHeight {
@@ -113,4 +114,9 @@ font-size: 1rem;
 
 .customLineHight {
   line-height: 1.5rem !important;
+}
+
+.dynamicLetterSpacingLogo {
+  letter-spacing: 0.4rem;
+  width: 342px;
 }
