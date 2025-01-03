@@ -22,7 +22,9 @@
     <div class="swiper-pagination"></div>
   </swiper>
 
+  <!-- Left Arrow -->
   <button
+    v-if="items.length > 3"
     class="hidden lg:block absolute left-[12%] top-[55%] arrow"
     type="button"
     @click="swiperPrevSlide"
@@ -42,7 +44,10 @@
       <path d="m15 18-6-6 6-6"></path>
     </svg>
   </button>
+
+  <!-- Right Arrow -->
   <button
+    v-if="items.length > 3"
     class="hidden lg:block absolute right-[12%] top-[55%] arrow"
     type="button"
     @click="swiperNextSlide"
