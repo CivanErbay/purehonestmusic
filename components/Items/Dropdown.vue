@@ -31,13 +31,14 @@
           <label>
             <input
               type="checkbox"
+              class="custom-checkbox positionHover"
               :value="item"
               @change="toggleItem(item)"
               :checked="item.selected"
             />
-            {{ item.name }}
+           <div class="position">{{ item.name }}</div>
           </label>
-          <span class="item-count text-slate-400">{{ item.count }}</span>
+          <span class="item-count text-slate-200">{{ item.count }}</span>
         </div>
       </div>
     </transition>
@@ -75,7 +76,7 @@ const toggleDropdown = () => {
   top: calc(100% + 4px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 1;
-  width: 343px;
+  width: 348px;
 }
 
 .dropdown-item {
@@ -87,6 +88,8 @@ const toggleDropdown = () => {
 .item-count {
   margin-left: auto;
   padding-left: 24px;
+  right: 5px;
+  position: relative;
 }
 
 .dropdown-enter-active,
@@ -100,18 +103,71 @@ const toggleDropdown = () => {
 
 .dropdown-hover {
   border-radius: 0.5rem;
-  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth Transition */
-  background-color: transparent; /* Standard-Hintergrund */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: transparent;
 }
 
 .dropdown-hover:hover {
   border-radius: 0.5rem;
-  background-color: #242424; /* Hintergrundfarbe bei Hover */
-  color: #FFF; /* Textfarbe bei Hover */
+  background-color: #242424;
+  color: #FFF;
 }
 
-.pt-1
-{
+.pt-1 {
   padding-top: 1px;
+}
+
+.custom-checkbox {
+  width: 16px;
+  height: 16px;
+  appearance: none; /* Entfernt Standard-Styling */
+  background-color: white;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  position: relative; /* Für das Pseudoelement erforderlich */
+  margin-right: 14px;
+}
+
+.custom-checkbox:checked {
+  background-color: #E77000; /* Orange Fläche bei Auswahl */
+}
+
+.custom-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  width: 6px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.position {
+  display: inline;
+  position: relative;
+  top: 0.068rem;
+}
+
+.dropdown-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  background-color: transparent; /* Standard-Hintergrund */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth Transition */
+  cursor: pointer; /* Zeigt Interaktivität an */
+}
+
+.dropdown-item:hover {
+  background-color: #242424; /* Leichtes Grau bei Hover */
+  border-radius: 8px
+}
+
+.positionHover {
+  top: 3px;
+  position: relative;
+  left: 4px;
 }
 </style>
