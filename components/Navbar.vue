@@ -2,7 +2,7 @@
   <div
     class="sticky top-0 z-10 w-full"
     :class="{
-      'bg-[#131313] transition-all duration-300 ease-in-out shadow-md': true, 
+      'bg-[#131313] transition-all duration-300 ease-in-out': true, 
       'transform translate-y-[-100%]': !isVisible,
     }"
   >
@@ -12,7 +12,7 @@
           to="/"
           class="xl:col-start-1 xl:col-end-3 tracking-widest md:mt-0"
         >
-          <h1 class="text-lg logo dynamicLetterSpacingLogo">LOUD & LOCAL</h1>
+          <h1 class="text-lg logo dynamicLetterSpacingLogo">PURE.HONEST.MUSIC</h1>
           <h2 class="text-xs text-[#454545] w-max logo">ENTDECKE KONZERTE IN KÖLN</h2>
         </NuxtLink>
         <div class="md:hidden ml-auto">
