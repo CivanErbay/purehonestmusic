@@ -13,7 +13,7 @@
           <h2 class="text-xs text-[#454545] w-max logo">ENTDECKE KONZERTE IN KÖLN</h2>
         </NuxtLink>
         <div class="md:hidden ml-auto">
-          <NuxtLink to="/concerts/favorites" class="flex w-fit ml-auto items-center p-2 bg-bg-light rounded-lg gap-4 tracking-widest">
+          <NuxtLink to="/concerts/favorites" class="flex w-fit ml-auto items-center p-2 mt-[8px] bg-bg-light rounded-lg gap-4 tracking-widest">
             <div class="h-7 w-7 flex items-center justify-center rounded-full bg-[#E77000]">
               <NuxtImg class="w-4 h-4 mt-[1px] transform transition-transform duration-300 hover:scale-110" src="/heart_filled.svg" />
             </div>
