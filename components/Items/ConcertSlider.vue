@@ -1,5 +1,5 @@
 <template>
-  <swiper class="lg:h-[95%]" ref="swiperRef" @swiper="onSwiper" :modules="modules" :spaceBetween="30" :pagination="{
+  <swiper class="lg:h-[95%]" ref="swiperRef" @swiper="onSwiper" :loop="true" :modules="modules" :spaceBetween="30" :pagination="{
     el: '.swiper-pagination', type: 'bullets'
   }" :breakpoints="{
     768: {
