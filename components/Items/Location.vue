@@ -18,7 +18,7 @@
                   <NuxtImg class="w-4 h-4" src="/share.svg" />
                 </button>
                 <button class="rounded-full bg-primary bg-opacity-15 w-7 h-7 flex items-center justify-center">
-                  <NuxtImg class="w-4 h-4" src="/heart.svg" />
+                  <NuxtImg class="w-4 h-4 transform transition-transform duration-300 hover:scale-110" src="/heart.svg" />
                 </button>
               </div>
             </div>

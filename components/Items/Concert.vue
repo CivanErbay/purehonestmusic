@@ -72,10 +72,10 @@
             >
               <NuxtImg
                 v-if="item.isUserFavorite"
-                class="w-4 h-4 mt-[1px]"
+                class="w-4 h-4 mt-[1px] transform transition-transform duration-300 hover:scale-110"
                 src="/heart_default.svg"
               />
-              <NuxtImg v-else class="w-4 h-4 mt-[1px]" src="/heart.svg" />
+              <NuxtImg v-else class="w-4 h-4 mt-[1px] transform transition-transform duration-300 hover:scale-110" src="/heart.svg" />
             </button>
 
             <div class="flex flex-col items-end">
@@ -130,7 +130,7 @@
               class="w-4 h-4 mt-[1px]"
               src="/heart_default.svg"
             />
-            <NuxtImg v-else class="w-4 h-4 mt-[1px]" src="/heart_active.svg" />
+            <NuxtImg v-else class="w-4 h-4 mt-[1px] transform transition-transform duration-300 hover:scale-110" src="/heart_active.svg" />
           </button>
           <h4 class="text-lg text-text">{{ item.name }}</h4>
           <p class="text-sm text-white opacity-50 overflow-hidden dynamicLineHeight1">

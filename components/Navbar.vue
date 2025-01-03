@@ -16,7 +16,7 @@
           <div
             class="h-7 w-7 flex items-center justify-center rounded-full bg-[#E77000]"
           >
-            <NuxtImg class="w-4 h-4 mt-[1px]" src="/heart_filled.svg" />
+            <NuxtImg class="w-4 h-4 mt-[1px] transform transition-transform duration-300 hover:scale-110" src="/heart_filled.svg" />
           </div>
           <div class="text-xl">
             {{ user?.favoriteConcerts?.length || 0 }}
@@ -61,12 +61,12 @@
     <div class="md:col-start-12 md:col-end-12 hidden md:block">
       <NuxtLink
         to="/concerts/favorites"
-        class="flex w-fit ml-auto items-center p-4 bg-bg-light rounded-lg gap-4 tracking-widest"
+        class="flex w-fit ml-auto items-center p-4 bg-bg-light rounded-lg gap-4 tracking-widest transform transition-transform duration-300 hover:scale-110"
       >
         <div
           class="h-7 w-7 flex items-center justify-center rounded-full bg-[#E77000]"
         >
-          <NuxtImg class="w-4 h-4 mt-[1px]" src="/heart_filled.svg" />
+          <NuxtImg class="w-4 h-4 mt-[1px] " src="/heart_filled.svg" />
         </div>
         <div class="text-xl">
           {{ user?.favoriteConcerts?.length || 0 }}

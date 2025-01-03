@@ -23,13 +23,13 @@
           @click.stop.prevent="() => toggleFavoriteConcert(item.id)"
         >
           <NuxtImg
-            v-if="item.isUserFavorite"
-            class="w-4 h-4 mt-[1px] dynamicZIndex"
-            src="/heart_default.svg"
+          v-if="item.isUserFavorite"
+    class="w-4 h-4 mt-[1px] dynamicZIndex transform transition-transform duration-300 hover:scale-110"
+    src="/heart_default.svg"
           />
           <NuxtImg
             v-else
-            class="w-4 h-4 mt-[1px] dynamicZIndex"
+            class="w-4 h-4 mt-[1px] dynamicZIndex transform transition-transform duration-300 hover:scale-110"
             src="/heart.svg"
           />
         </button>

@@ -22,12 +22,8 @@
           </NuxtLink>
         </div>
         <NuxtLink class="py-1 hover:underline" to="/about-us">Über uns</NuxtLink>
-        <NuxtLink class="py-1 hover:underline" to="/datenschutz"
-          >Datenschutz</NuxtLink
-        >
-        <NuxtLink class="py-1 hover:underline" to="/impressum"
-          >Impressum</NuxtLink
-        >
+        <NuxtLink class="py-1 hover:underline" to="/datenschutz">Datenschutz</NuxtLink>
+        <NuxtLink class="py-1 hover:underline" to="/impressum">Impressum</NuxtLink>
       </div>
       <p class="py-4 text-text text-sm">{{ settings.copyright }}.</p>
     </div>

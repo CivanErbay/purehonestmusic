@@ -42,8 +42,8 @@
                 ? 'bg-[#2F2F2F]'
                 : 'bg-[#2F2F2F]',
               ]" @click="() => toggleFavorite(item.id)">
-                <NuxtImg v-if="item.isUserFavorite " class="w-4 h-4 mt-[1px]" src="/heart_default.svg" />
-                <NuxtImg v-else class="w-4 h-4 mt-[1px]" src="/heart_active.svg" />
+                <NuxtImg v-if="item.isUserFavorite " class="w-4 h-4 mt-[1px] transform transition-transform duration-300 hover:scale-110" src="/heart_default.svg" />
+                <NuxtImg v-else class="w-4 h-4 mt-[1px] transform transition-transform duration-300 hover:scale-110" src="/heart_active.svg" />
               </button>
             </div>
           </div>
