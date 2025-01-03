@@ -1,6 +1,6 @@
 <template>
   <div
-    class="sticky top-0 z-10 w-full"
+    class="sticky top-0 z-50 w-full"
     :class="{
       'bg-[#131313] transition-all duration-300 ease-in-out': true, 
       'transform translate-y-[-100%]': !isVisible,
