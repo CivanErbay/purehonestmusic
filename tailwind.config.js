@@ -15,6 +15,10 @@ export default {
         text: '#D3D3D3',
         faded: '#777777',
       },
+      fontFamily: {
+        montserrat: ['Montserrat', 'sans-serif'],
+        josefin: ['"Josefin Sans"', 'sans-serif'],
+      },
     },
   },
 };
