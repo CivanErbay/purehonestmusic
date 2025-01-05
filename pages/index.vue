@@ -5,11 +5,8 @@
       :title="landing.title"
       :subtitle="landing.subtitle"
     />
-    <Recommendations
-      :items="landing.highlightedConcerts"
-      headline="Unsere
-        Konzertempfehlungen"
-    />
+    <br>
+    <br>
     <ConcertFilter
       :venues="venues"
       :genres="genres"
@@ -17,7 +14,13 @@
       :concerts="concerts"
     />
     <FilteredItemList :items="concerts" />
+    
     <Recommendations
+      :items="landing.highlightedConcerts"
+      headline="Unsere
+        Konzertempfehlungen"
+    />
+    <!--<Recommendations
       v-if="
         landing.genreConcerts1 && landing.genreConcerts1.concerts.length > 2
       "
@@ -30,7 +33,7 @@
       "
       :items="landing.genreConcerts2.concerts"
       :headline="`Top Konzerte aus dem Genre: ${landing.genreConcerts2.genre.name}`"
-    />
+    />-->
     <AboutBox />
   </div>
 </template>
