@@ -42,12 +42,12 @@
         />
       </div>
       <div
-        v-if="activeFilter"
-        class="cleartBtn min-[320px]:text-center max-[600px]: ml-4"
-        @click="handleClearFilter"
-      >
-        Filter zurücksetzen
-      </div>
+          v-if="activeFilter"
+          class="cleartBtn min-[320px]:text-center sm:ml-4"
+          @click="handleClearFilter"
+        >
+  Filter zurücksetzen
+</div>
     </div>
   </DefaultGrid>
 </template>
