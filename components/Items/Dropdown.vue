@@ -25,10 +25,10 @@
     <transition name="dropdown">
       <div
         v-if="open"
-        class="dropdown-menu max-h-[360px] left-0 max-w-screen sm:w-max overflow-y-auto bg-bg-light p-4 rounded-lg"
+        class="dropdown-menu max-h-[380px] left-0 max-w-screen sm:w-max overflow-y-auto bg-bg-light p-4 rounded-lg"
       >
-        <div v-for="(item, index) in items" :key="index" class="dropdown-item dynamicFontSize">
-          <label>
+        <div v-for="(item, index) in items" :key="index">
+          <label class="dropdown-item dynamicFontSize">
             <input
               type="checkbox"
               class="custom-checkbox positionHover"
@@ -36,9 +36,9 @@
               @change="toggleItem(item)"
               :checked="item.selected"
             />
-           <div class="position">{{ item.name }}</div>
+            <div class="position">{{ item.name }}</div>
+            <span class="item-count text-slate-200">{{ item.count }}</span>
           </label>
-          <span class="item-count text-slate-200">{{ item.count }}</span>
         </div>
       </div>
     </transition>
@@ -76,7 +76,7 @@ const toggleDropdown = () => {
   top: calc(100% + 4px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 1;
-  width: 348px;
+  width: 358px;
 }
 
 .dropdown-item {
@@ -148,7 +148,7 @@ const toggleDropdown = () => {
 .position {
   display: inline;
   position: relative;
-  top: 0.068rem;
+  top: 0.06rem;
 }
 
 .dropdown-item {
@@ -166,7 +166,7 @@ const toggleDropdown = () => {
 }
 
 .positionHover {
-  top: 3px;
+  top: 6px;
   position: relative;
   left: 4px;
 }
