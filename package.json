@@ -27,6 +27,7 @@
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@pinia/nuxt": "^0.5.5",
     "nuxt": "^3.14.0",
+    "sass-embedded": "^1.83.1",
     "typescript": "^5.0.0"
   }
 }
