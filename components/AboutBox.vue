@@ -2,7 +2,7 @@
   <DefaultGrid>
     <div class="xl:col-start-3 xl:col-end-11">
       <div class="bg-[#242424] w-full p-8 rounded-xl">
-        <h2 class="uppercase text-primary text-base">Willkommen bei PURE.HONEST.MUSICE
+        <h2 class="uppercase text-primary text-base">Willkommen bei PURE.HONEST.MUSIC
 </h2>
         <h3 class="uppercase text-text text-[22px] font-semibold mb-5">
           Entdecke noch heute Kölns Konzert-Highlights und sei live mit dabei!
