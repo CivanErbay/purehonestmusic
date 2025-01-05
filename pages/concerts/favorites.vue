@@ -14,9 +14,9 @@ const { user } = useUserStore();
 const { data: concerts } = await fetchCollectionHandler('concerts');
 
 const favoriteConcerts = computed(() => {
-  return concerts.value.filter((concert) =>
-    user.favoriteConcerts.includes(concert.id)
-  );
+  return concerts.value
+    .filter((concert) => user.favoriteConcerts.includes(concert.id))
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
 });
 </script>
 
