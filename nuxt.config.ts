@@ -10,8 +10,8 @@ export default defineNuxtConfig({
       ],
       meta: [
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
-        { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
-        { name: 'theme-color', content: '#ffffff' }
+        { name: 'apple-mobile-web-app-status-bar-style', content: '#131313' },
+        { name: 'theme-color', content: '#131313' }
       ],
       script: [{ src: '/preline.js', type: 'module', defer: true }],
     },
