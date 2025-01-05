@@ -1,0 +1,11 @@
+/* CSS-Regeln für Standalone-Modus */
+body.standalone {
+    padding-top: 0; /* Entfernt Platz für die iOS-Browserleisten */
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  body.standalone #app {
+    height: 100%;
+    overflow: hidden;
+  }
