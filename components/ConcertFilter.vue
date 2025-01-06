@@ -23,7 +23,7 @@
           @update:toggle="handleDropdownToggle"
         />
         <ItemsDropdown
-          title="Genre"
+          title="Musikgenre"
           class="font-medium"
           slug="genres"
           :items="filters.genres"
@@ -31,7 +31,7 @@
           @update:selected-items="handleSelectedItem"
           @update:toggle="handleDropdownToggle"
         />
-        <ItemsDropdown
+        <!-- <ItemsDropdown
           title="Veranstalter"
           class="font-medium "
           slug="promoters"
@@ -39,7 +39,7 @@
           :open="openDropdown === 'promoters'"
           @update:selected-items="handleSelectedItem"
           @update:toggle="handleDropdownToggle"
-        />
+        /> -->
       </div>
       <div
           v-if="activeFilter"
