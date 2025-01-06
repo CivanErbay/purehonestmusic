@@ -64,7 +64,7 @@ const groupedItems = computed(() => {
   }, {});
 });
 
-const maxDays = ref(3);
+const maxDays = ref(6);
 const showMoreButton = computed(
   () => totalVisibleConcerts.value < items.length
 );
@@ -82,7 +82,7 @@ const totalVisibleConcerts = computed(() => {
 });
 
 const showMoreDays = () => {
-  maxDays.value += 3;
+  maxDays.value += 6;
 };
 </script>
 
