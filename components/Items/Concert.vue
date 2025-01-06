@@ -78,21 +78,21 @@
               <NuxtImg v-else class="w-4 h-4 mt-[1px] transform transition-transform duration-300 hover:scale-110" src="/heart.svg" />
             </button>
 
-            <div class="flex flex-col items-end">
-              <!--<NuxtLink
+            <!--<div class="flex flex-col items-end">
+              <NuxtLink
                 v-if="item.promoter"
                 class="opacity-40 text-right "
                 :to="`/promoters/${item.promoter.slug}`"
               >
                 Eine <span class="underline">{{ item.promoter.name }}</span
                 >-Show
-              </NuxtLink>-->
+              </NuxtLink>
               <p class="text-lg text-primary">{{ item.price }} €</p>
               <p class="opacity-40 text-[8px] lg:text-xs text-right">
                 ggf. zzgl. VVK-Gebühren <br class="hidden lg:block" />
                 und Abwicklungskosten
               </p>
-            </div>
+            </div>-->
           </div>
         </div>
       </div>
@@ -160,23 +160,23 @@
               </p>
             </div>
           </div>
-          <div
+          <!--<div
             class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-5 rounded-tl-xl rounded-br-xl"
           >
-            <!--<NuxtLink
+            <NuxtLink
               v-if="item.promoter"
               class="opacity-40"
               :to="`/promoters/${item.promoter.slug}`"
             >
               Eine <span class="underline">{{ item.promoter.name }}</span
               >-Show
-            </NuxtLink>-->
+            </NuxtLink>
             <p class="text-lg text-primary">{{ item.price }} €</p>
             <p class="opacity-40 text-[8px] dynamicLineHeight lg:text-[10p] text-right">
               ggf. zzgl. VVK-Gebühren <br class="hidden lg:block" />
               und Abwicklungskosten
             </p>
-          </div>
+          </div>-->
         </div>
       </div>
     </div>

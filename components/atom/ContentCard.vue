@@ -96,11 +96,11 @@
               <NuxtLink class="underline" :to="item.instagram" target="_blank">Instagram</NuxtLink>
             </div>
           </div>
-          <div class="flex flex-col w-full items-start px-4 md:px-10 py-5 self-end">
-            <!--<NuxtLink v-if="item.promoter" class="opacity-40 whitespace-nowrap text-sm"
+          <!--<div class="flex flex-col w-full items-start px-4 md:px-10 py-5 self-end">
+            <NuxtLink v-if="item.promoter" class="opacity-40 whitespace-nowrap text-sm"
               :to="`/promoters/${item.promoter.slug}`">
               Eine <span class="underline">{{ item.promoter.name }}</span>-Show
-            </NuxtLink>-->
+            </NuxtLink>
             <p v-if="item.price" class="text-lg md:text-2xl text-primary">
               {{ item.price }} €
             </p>
@@ -115,7 +115,7 @@
                 </button>
               </NuxtLink>
             </div>
-          </div>
+          </div>-->
         </div>
       </div>
     </div>

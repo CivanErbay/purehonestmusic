@@ -60,7 +60,7 @@
             </p>
           </div>
         </div>
-        <div
+        <!--<div
           class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-6 rounded-tl-xl"
         >
           <p class="text-lg text-primary">{{ item.price }} €</p>
@@ -68,7 +68,7 @@
             ggf. zzgl. VVK-Gebühren <br class="hidden lg:block" />
             und Abwicklungskosten
           </p>
-        </div>
+        </div>-->
       </div>
     </div>
   </NuxtLink>
