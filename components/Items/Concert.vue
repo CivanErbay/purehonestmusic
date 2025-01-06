@@ -173,7 +173,7 @@
             </NuxtLink>-->
             <p class="text-lg text-primary">{{ item.price }} €</p>
             <p class="opacity-40 text-[8px] dynamicLineHeight lg:text-[10p] text-right">
-              ggf.zzgl. VVK-Gebühren <br class="hidden lg:block" />
+              ggf. zzgl. VVK-Gebühren <br class="hidden lg:block" />
               und Abwicklungskosten
             </p>
           </div>
