@@ -33,7 +33,7 @@ useSeoMeta({
 });
 
 useHead({
-  title: 'Pure Honest Music', // This is the title of the page.
+  title: settings.value.metaTitle, // This is the title of the page.
   htmlAttrs: { lang: 'de' },
   meta: [
     {
