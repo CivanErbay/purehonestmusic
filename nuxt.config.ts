@@ -1,7 +1,19 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   app: {
     head: {
+      link: [
+        { rel: 'icon', type: 'image/png', href: '/favicon_16_16.png', sizes: '16x16' },
+        { rel: 'icon', type: 'image/png', href: '/favicon_32_32.png', sizes: '32x32' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+        { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/android-chrome-192x192.png' },
+        { rel: 'icon', type: 'image/png', sizes: '512x512', href: '/android-chrome-512x512.png' }
+      ],
+      meta: [
+        { name: 'apple-mobile-web-app-capable', content: 'yes' },
+        { name: 'apple-mobile-web-app-status-bar-style', content: '#131313' },
+        { name: 'theme-color', content: '#131313' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' } // Hinzugefügt
+      ],
       script: [{ src: '/preline.js', type: 'module', defer: true }],
     },
   },
@@ -29,7 +41,9 @@ export default defineNuxtConfig({
   },
   googleFonts: {
     families: {
-      'Josefin+Sans': true,
+      Montserrat: true, // Richtig, ohne Anführungszeichen oder `+`
+      'Josefin Sans': true, // Richtig, mit Leerzeichen statt `+`
     },
+    display: 'swap', // Optional: Vermeidet FOUC (Flash of Unstyled Content)
   },
 });

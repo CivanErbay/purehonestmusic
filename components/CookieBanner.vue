@@ -1,7 +1,6 @@
 <template>
   <div
-    class="fixed bottom-8 left-8 w-[600px] py-6 px-4 flex items-center bg-bg border border-primary rounded-xl"
-  >
+    class="fixed bottom-8 w-4/5 lg:w-[800px] py-6 px-4 flex z-50 left-1/2 transform -translate-x-1/2 items-center bg-bg border border-primary rounded-xl">
     <div class="">
       <div class="flex flex-col flex-1">
         <p class="font-semibold">{{ settings.cookieHeadline }}</p>
@@ -9,18 +8,11 @@
           {{ settings.cookieDescription }}
         </p>
       </div>
-      <div class="flex justify-end gap-6">
-        <button
-          class="btn bg-transparent text-gray-400 hover:bg-bg-light"
-          @click="$emit('declineCookies')"
-        >
+      <div class="flex justify-between lg:justify-end lg:gap-6">
+        <button class="btn px-3 lg:px-6 bg-transparent text-gray-400 hover:bg-bg-light" @click="$emit('declineCookies')">
           {{ settings.cookieDecline }}
         </button>
-        <button
-          class="btn"
-          :text="settings.cookieAccept"
-          @click="$emit('acceptCookies')"
-        >
+        <button class="btn px-3 lg:px-6" :text="settings.cookieAccept" @click="$emit('acceptCookies')">
           {{ settings.cookieAccept }}
         </button>
       </div>

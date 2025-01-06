@@ -1,20 +1,21 @@
 <template>
   <DefaultGrid :no-spacing="true">
     <div
-      class="lg:col-start-3 lg:col-end-11 flex flex-col sm:flex-row sm:items-center mb-12"
+      class="xl:col-start-3 xl:col-end-11 flex flex-col sm:flex-row sm:items-center mb-12"
     >
       <div class="text-2xl mr-12">Filter:</div>
       <div class="flex flex-wrap sm:items-center gap-2 sm:gap-4 my-6 relative">
-        <ItemsDatepicker
+        <!-- <ItemsDatepicker
           class="w-36"
           slug="date"
           :open="openDropdown === 'date'"
           :selected-date="filters.date"
           @update:date="handleDateChange"
           @update:toggle="handleDropdownToggle"
-        />
+        /> -->
         <ItemsDropdown
           title="Location"
+          class="font-medium"
           slug="venues"
           :items="filters.venues"
           :open="openDropdown === 'venues'"
@@ -22,29 +23,31 @@
           @update:toggle="handleDropdownToggle"
         />
         <ItemsDropdown
-          title="Genre"
+          title="Musikgenre"
+          class="font-medium"
           slug="genres"
           :items="filters.genres"
           :open="openDropdown === 'genres'"
           @update:selected-items="handleSelectedItem"
           @update:toggle="handleDropdownToggle"
         />
-        <ItemsDropdown
-          title="Veranstaler"
+        <!-- <ItemsDropdown
+          title="Veranstalter"
+          class="font-medium "
           slug="promoters"
           :items="filters.promoters"
           :open="openDropdown === 'promoters'"
           @update:selected-items="handleSelectedItem"
           @update:toggle="handleDropdownToggle"
-        />
+        /> -->
       </div>
       <div
-        v-if="activeFilter"
-        class="underline cursor-pointer ml-auto text-nowrap opacity-70"
-        @click="handleClearFilter"
-      >
-        Clear filter
-      </div>
+          v-if="activeFilter"
+          class="cleartBtn min-[320px]:text-center sm:ml-4"
+          @click="handleClearFilter"
+        >
+  Filter zurücksetzen
+</div>
     </div>
   </DefaultGrid>
 </template>
@@ -199,3 +202,26 @@ onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside);
 });
 </script>
+
+
+<style scoped>
+.cleartBtn {
+  padding: 19px;
+  border: 0.5px;
+    border-top-style: none;
+    border-right-style: none;
+    border-bottom-style: none;
+    border-left-style: none;
+  border-style: solid;
+  border-radius: 0.5rem;
+  padding: 1rem 1.5rem 1rem 1.5rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  color: #FFF;
+}
+
+.cleartBtn:hover {
+  background-color: #e0e0e0;
+  color: #000;
+}
+</style>

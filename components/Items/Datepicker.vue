@@ -1,36 +1,15 @@
 <template>
   <div class="dropdown">
-    <VueDatePicker
-      style="color: white !important"
-      locale="de"
-      @clear="isSelected = false"
-      @open="emit('update:toggle', props.slug)"
-      @closed="emit('update:toggle', props.slug)"
-      cancelText="Abbrechen"
-      selectText="Auswählen"
-      :enable-time-picker="false"
-      :dark="true"
-      :format="format"
-      v-model="date"
-      @update:modelValue="emitDate"
-      placeholder="Datum"
-    >
+    <VueDatePicker style="color: white !important" locale="de" @clear="isSelected = false"
+      @open="() => { emit('update:toggle', props.slug), openDropdown = true }"
+      @closed="() => { emit('update:toggle', props.slug), openDropdown = false }" cancelText="Abbrechen"
+      selectText="Auswählen" :enable-time-picker="false" :dark="true" :format="format" v-model="date"
+      @update:modelValue="emitDate" placeholder="Datum">
       <template #input-icon>
-        <svg
-          v-if="!isSelected"
-          :class="{ 'rotate-180': open, 'rotate-0': !open }"
-          class="inline-block w-4 h-4 sm:ml-2 transition-transform duration-200"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M19 9l-7 7-7-7"
-          />
+        <svg v-if="!isSelected" :class="{ 'rotate-180': openDropdown, 'rotate-0': !openDropdown }"
+          class="inline-block w-4 h-4 sm:ml-2 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg"
+          fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
       </template>
     </VueDatePicker>
@@ -59,6 +38,7 @@ const emit = defineEmits(['update:date', 'update:toggle']);
 
 const date = ref();
 const isSelected = ref(false);
+const openDropdown = ref(false);
 
 const emitDate = (newDate) => {
   if (newDate === null) {
@@ -72,12 +52,22 @@ const emitDate = (newDate) => {
 </script>
 
 <style>
+.dp__calendar_header_item {
+  margin-left: -10px;
+  text-align: center;
+  flex-grow: 1;
+  height: var(--dp-cell-size);
+  padding: var(--dp-cell-padding);
+  width: var(--dp-cell-size);
+  box-sizing: border-box;
+}
+
 .dp__theme_dark {
   --dp-background-color: rgb(47, 47, 47);
   --dp-cell-padding: 1rem;
   --dp-input-padding: 1.1rem;
   --dp-border-radius: 0.5rem;
-  --dp-font-family: 'Josefin Sans', sans-serif;
+  --dp-font-family: 'montserrat Sans', sans-serif;
   --dp-font-size: 18px;
   --dp-primary-color: #fff;
   --dp-primary-text-color: #fff;
@@ -105,5 +95,18 @@ const emitDate = (newDate) => {
 
 button.dp--clear-btn {
   padding-right: 10px;
+}
+
+.dp--menu-wrapper {
+  left: 0 !important;
+  top: 67px !important;
+}
+
+.dp__arrow_top {
+  display: none;
+}
+
+.swiper-pagination-bullet {
+  background: white;
 }
 </style>

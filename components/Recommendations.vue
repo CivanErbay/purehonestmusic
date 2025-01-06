@@ -1,6 +1,6 @@
 <template>
   <DefaultGrid>
-    <div class="w-[90svw] sm:w-[95svw] lg:w-auto lg:col-start-3 lg:col-end-11 mt-5 lg:mt-10">
+    <div class="w-[90svw] sm:w-[89svw] xl:w-auto xl:col-start-3 xl:col-end-11 mt-5 xl:mt-10">
       <h4 class="text-2xl font-semibold mb-6">{{ headline }}</h4>
       <ItemsConcertSlider :items="items"></ItemsConcertSlider>
     </div>

@@ -1,6 +1,6 @@
 <template>
   <DefaultGrid :no-spacing="true">
-    <div class="lg:col-start-3 lg:col-end-11">
+    <div class="xl:col-start-3 xl:col-end-11">
       <TransitionGroup name="list" tag="div">
         <div
           v-for="(group, date) in visibleGroupedItems"
@@ -16,7 +16,7 @@
           <ItemsConcert
             v-for="item in group"
             :key="item.slug"
-            class="lg:col-start-3 lg:col-end-11"
+            class="xl:col-start-3 xl:col-end-11"
             :item="item"
           />
         </div>
@@ -64,7 +64,7 @@ const groupedItems = computed(() => {
   }, {});
 });
 
-const maxDays = ref(3);
+const maxDays = ref(6);
 const showMoreButton = computed(
   () => totalVisibleConcerts.value < items.length
 );
@@ -82,7 +82,7 @@ const totalVisibleConcerts = computed(() => {
 });
 
 const showMoreDays = () => {
-  maxDays.value += 3;
+  maxDays.value += 6;
 };
 </script>
 

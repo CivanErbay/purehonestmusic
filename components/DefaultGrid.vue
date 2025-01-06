@@ -15,8 +15,8 @@ const props = defineProps({
 
 const gridClasses = computed(() => {
   return [
-    'relative grid lg:grid-cols-12 gap-x-1',
-    props.noSpacing ? '' : 'mb-12 lg:mb-20'
+    'relative grid xl:grid-cols-12',
+    props.noSpacing ? '' : 'mb-12 xl:mb-20'
   ].join(' ')
 })
 </script>

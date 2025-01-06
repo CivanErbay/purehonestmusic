@@ -10,11 +10,7 @@
       :alt="alt"
       :title="alt"
       :style="imageStyle"
-      class="w-full h-full"
-      :class="{
-        'object-cover': isCover,
-        'object-contain': !isCover,
-      }"
+      :class="['w-full h-full', { 'object-cover': isCover, 'object-contain': !isCover }, customClasses]"
       :height="height"
       :width="width"
       format="webp"
@@ -26,7 +22,7 @@
 <script setup lang="ts">
 import type { Media } from '../../types/Atoms';
 
-const props = defineProps<Media>();
+const props = defineProps<Media & { customClasses?: string }>();
 const emit = defineEmits<{
   (e: 'loaded', value: boolean): void;
 }>();
