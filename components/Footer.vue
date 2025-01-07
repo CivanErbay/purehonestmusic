@@ -25,7 +25,7 @@
         <NuxtLink class="py-1 hover:underline" to="/datenschutz">Datenschutz</NuxtLink>
         <NuxtLink class="py-1 hover:underline" to="/impressum">Impressum</NuxtLink>
       </div>
-      <p class="py-4 text-text text-sm">{{ settings.copyright }}.</p>
+      <p class="py-4 text-text footer">{{ settings.copyright }}.</p>
     </div>
   </DefaultGrid>
 </template>
@@ -35,3 +35,9 @@ defineProps({
   settings: Object,
 });
 </script>
+
+<style>
+.footer {
+  font-size: 0.74rem !important;
+}
+</style>
