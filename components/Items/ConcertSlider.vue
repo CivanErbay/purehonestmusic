@@ -7,14 +7,14 @@
     :modules="modules"
     :spaceBetween="30"
     :pagination="{
-      el: '.swiper-pagination', type: 'bullets', clickable: true
+      el: '.swiper-pagination',
+      type: 'bullets',
+      clickable: true,
     }"
     :breakpoints="{
-      768: { slidesPerView: 3 }
+      768: { slidesPerView: 3 },
     }"
     :speed="500"
-    @swiperprogress="onProgress"
-    @swiperslidechange="onSlideChange"
   >
     <swiper-slide v-for="item in items" :key="item.id">
       <HighlightConcert :item="item" />
