@@ -19,10 +19,13 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute();
 
-const { data: venueData } = await fetchCollectionHandler(
-  'venues',
-  route.params.slug
-);
+const { data } = await fetchCollectionHandler('venues', route.params.slug);
+
+const { data: venueData } = useLivePreview({
+  initialData: data.value,
+  serverURL: import.meta.env.VITE_API_ENDPOINT,
+  depth: 2,
+});
 
 const { data: concerts } = await fetchCollectionHandler(
   'concerts',
