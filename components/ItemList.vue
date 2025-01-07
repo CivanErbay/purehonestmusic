@@ -27,7 +27,7 @@
           class="btn"
           :class="{
             'opacity-50 pointer-events-none':
-              totalVisibleConcerts >= totalConcerts,
+              totalVisibleConcerts >= items.length,
           }"
         >
           Mehr Konzerte anzeigen
