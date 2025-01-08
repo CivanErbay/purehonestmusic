@@ -171,7 +171,7 @@
               Eine <span class="underline">{{ item.promoter.name }}</span
               >-Show
             </NuxtLink>-->
-            <p class="text-lg text-primary">{{ item.price }} €</p>
+            <p class="text-lg text-primary text-right">{{ item.price }} €</p>
             <p class="opacity-40 text-[8px] dynamicLineHeight lg:text-[10p] text-right">
               ggf. zzgl. VVK-Gebühren <br class="hidden lg:block" />
               und Abwicklungskosten

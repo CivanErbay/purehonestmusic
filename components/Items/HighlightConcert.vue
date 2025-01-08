@@ -63,7 +63,7 @@
         <div
           class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-6 rounded-tl-xl"
         >
-          <p class="text-lg text-primary">{{ item.price }} €</p>
+          <p class="text-lg text-primary text-right">{{ item.price }} €</p>
           <p class="opacity-40 text-[8px] lg:text-[10p] text-right dynamicLineHeight">
             ggf. zzgl. VVK-Gebühren <br class="hidden lg:block" />
             und Abwicklungskosten
