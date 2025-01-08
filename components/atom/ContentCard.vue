@@ -111,7 +111,7 @@
             <div class="flex justify-center mt-3" v-if="route.path.startsWith('/concerts')">
               <a :href="item.ticketsLink" target="_blank" rel="noopener noreferrer">
                 <button class="btn whitespace-nowrap" :disabled="!item.ticketsLink">
-                 Zum externen Ticketverkauf
+                 Zum externen Ticketkauf
                </button>
               </a>
             </div>
