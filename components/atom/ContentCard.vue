@@ -186,10 +186,6 @@ function handleShare() {
   background-color: black;
 }
 
-.atcb-button {
-  background-color: black;
-}
-
 .mobile-bottom-fixed {
   display: none;
 }
@@ -203,7 +199,8 @@ function handleShare() {
     right: 0;
     width: 100%;
     z-index: 1000;
-    background-color: #131313; /* Optional: Set background color */
+    backdrop-filter: blur(30px); /* Blur-Effekt */
+    background-color: rgba(19, 19, 19, 0.6); /* Transparenter Hintergrund */
     padding: 10px; /* Optional: Add padding */
   }
 }
