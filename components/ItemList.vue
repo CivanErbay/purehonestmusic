@@ -2,7 +2,11 @@
   <DefaultGrid :no-spacing="true">
     <div class="xl:col-start-3 xl:col-end-11">
       <TransitionGroup name="list" tag="div">
-        <div v-for="(group, i) in visibleGroupedItems" :key="i" class="mb-16">
+        <div
+          v-for="(group, date) of visibleGroupedItems"
+          :key="date"
+          class="mb-16"
+        >
           <p class="text-2xl font-semibold mb-6">
             <span :class="{ underline: weekDay(group[0].date) === 'Heute' }"
               >{{ weekDay(group[0].date) }},</span
