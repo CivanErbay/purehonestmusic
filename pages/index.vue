@@ -1,12 +1,12 @@
 <template>
-  <div v-if="dataLoaded" class="w-full">
+  <div class="w-full">
     <Hero
       :media="landing.media"
       :title="landing.title"
       :subtitle="landing.subtitle"
     />
-    <br />
-    <br />
+    <br>
+    <br>
     <ConcertFilter
       :venues="venues"
       :genres="genres"
@@ -14,7 +14,7 @@
       :concerts="concerts"
     />
     <FilteredItemList :items="concerts" />
-
+    
     <Recommendations
       :items="landing.highlightedConcerts"
       headline="Unsere
@@ -39,24 +39,13 @@
 </template>
 
 <script setup>
-const dataLoaded = ref(false);
 const [concerts, venues, genres, promoters, landing] = await Promise.all([
-  fetchCollectionHandler('concerts', null, 1000, 0, {
-    sort: 'date',
-    where: {
-      date: {
-        greater_than: new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
-      },
-    },
-  }),
+  fetchCollectionHandler('concerts'),
   fetchCollectionHandler('venues'),
   fetchCollectionHandler('genres'),
   fetchCollectionHandler('promoters'),
   fetchGlobalHandler('landing'),
-]).then((responses) => {
-  dataLoaded.value = true;
-  return responses.map((response) => response.data);
-});
+]).then((responses) => responses.map((response) => response.data));
 
 // console.log({ concerts, venues, genres, promoters, landing });
 </script>
