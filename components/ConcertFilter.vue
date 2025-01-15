@@ -42,12 +42,12 @@
         /> -->
       </div>
       <div
-          v-if="activeFilter"
-          class="cleartBtn min-[320px]:text-center sm:ml-4"
-          @click="handleClearFilter"
-        >
-  Filter zurücksetzen
-</div>
+        v-if="activeFilter"
+        class="cleartBtn min-[320px]:text-center sm:ml-4"
+        @click="handleClearFilter"
+      >
+        Filter zurücksetzen
+      </div>
     </div>
   </DefaultGrid>
 </template>
@@ -57,10 +57,22 @@ import { reactive, watch, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const props = defineProps({
-  venues: Array,
-  genres: Array,
-  promoters: Array,
-  concerts: Array,
+  venues: {
+    type: Array,
+    default: () => [],
+  },
+  genres: {
+    type: Array,
+    default: () => [],
+  },
+  promoters: {
+    type: Array,
+    default: () => [],
+  },
+  concerts: {
+    type: Array,
+    default: () => [],
+  },
 });
 
 const route = useRoute();
@@ -203,21 +215,20 @@ onUnmounted(() => {
 });
 </script>
 
-
 <style scoped>
 .cleartBtn {
   padding: 19px;
   border: 0.5px;
-    border-top-style: none;
-    border-right-style: none;
-    border-bottom-style: none;
-    border-left-style: none;
+  border-top-style: none;
+  border-right-style: none;
+  border-bottom-style: none;
+  border-left-style: none;
   border-style: solid;
   border-radius: 0.5rem;
   padding: 1rem 1.5rem 1rem 1.5rem;
   text-decoration: none;
   transition: background-color 0.3s ease, color 0.3s ease;
-  color: #FFF;
+  color: #fff;
 }
 
 .cleartBtn:hover {
