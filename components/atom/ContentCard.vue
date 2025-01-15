@@ -108,13 +108,20 @@
               ggf. zzgl. VVK-Gebühren<br class="hidden lg:block" />
               und Abwicklungskosten
             </p>
-            <div class="flex justify-center mt-3" v-if="route.path.startsWith('/concerts')">
-              <a :href="item.ticketsLink" target="_blank" rel="noopener noreferrer">
-                <button class="btn whitespace-nowrap" :disabled="!item.ticketsLink">
-                 Zum externen Ticketkauf
-               </button>
-              </a>
-            </div>
+            <div ref="originalButton" class="flex justify-center mt-3" v-if="route.path.startsWith('/concerts')">
+      <a :href="item.ticketsLink" target="_blank" rel="noopener noreferrer">
+        <button class="btn whitespace-nowrap" :disabled="!item.ticketsLink">
+          Zum externen Ticketkauf
+        </button>
+      </a>
+    </div>
+    <div ref="fixedButton" class="flex justify-center mt-3 mobile-bottom-fixed" v-if="route.path.startsWith('/concerts')">
+      <a :href="item.ticketsLink" target="_blank" rel="noopener noreferrer" class="w-full">
+        <button class="btn whitespace-nowrap w-full" :disabled="!item.ticketsLink">
+          Zum externen Ticketkauf
+        </button>
+      </a>
+    </div>
           </div>
         </div>
       </div>
@@ -177,5 +184,24 @@ function handleShare() {
 <style scoped>
 .atcb-button {
   background-color: black;
+}
+
+.mobile-bottom-fixed {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .mobile-bottom-fixed {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1000;
+    backdrop-filter: blur(30px); /* Blur-Effekt */
+    background-color: rgba(19, 19, 19, 0.6); /* Transparenter Hintergrund */
+    padding: 10px; /* Optional: Add padding */
+  }
 }
 </style>
