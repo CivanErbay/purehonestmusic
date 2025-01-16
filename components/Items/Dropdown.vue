@@ -75,7 +75,7 @@ const toggleDropdown = () => {
   position: absolute;
   top: calc(100% + 4px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  z-index: 1;
+  z-index: 10;
   width: 358px;
 }
 
@@ -110,7 +110,7 @@ const toggleDropdown = () => {
 .dropdown-hover:hover {
   border-radius: 0.5rem;
   background-color: #242424;
-  color: #FFF;
+  color: #fff;
 }
 
 .pt-1 {
@@ -130,7 +130,7 @@ const toggleDropdown = () => {
 }
 
 .custom-checkbox:checked {
-  background-color: #E77000; /* Orange Fläche bei Auswahl */
+  background-color: #e77000; /* Orange Fläche bei Auswahl */
 }
 
 .custom-checkbox:checked::after {
@@ -162,7 +162,7 @@ const toggleDropdown = () => {
 
 .dropdown-item:hover {
   background-color: #242424; /* Leichtes Grau bei Hover */
-  border-radius: 8px
+  border-radius: 8px;
 }
 
 .positionHover {

@@ -26,7 +26,9 @@ useHead({
     },
     {
       property: 'og:title',
-      content: concert.value.name, // This is the Open Graph title, used by Telegram for the title.
+      content: `🎵 Besuche das Konzert von ${
+        concert.value.name
+      } am ${formattedDate(concert.value.date)}`, // This is the Open Graph title, used by Telegram for the title.
     },
     {
       property: 'og:description',
@@ -39,7 +41,12 @@ useHead({
         concert.value.heroImage.url, // This is the Open Graph image, used by Telegram for the image preview.
     },
     { property: 'twitter:card', content: concert.value.subtitle },
-    { property: 'twitter:title', content: concert.value.name },
+    {
+      property: 'twitter:title',
+      content: `🎵 Besuche das Konzert von ${
+        concert.value.name
+      } am ${formattedDate(concert.value.date)}`,
+    },
     {
       property: 'twitter:description',
       content: concert.value.subtitle,
@@ -53,6 +60,9 @@ useHead({
     {
       name: 'keywords',
       content: [
+        'Konzert',
+        concert.value.name,
+        concert.value.subtitle,
         concert.value.venue?.name,
         ...concert.value.genres?.map((it) => it.name),
         concert.value.promoter?.name,
