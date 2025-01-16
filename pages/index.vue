@@ -1,5 +1,5 @@
 <template>
-  <div v-if="dataLoaded" class="w-full">
+  <div class="w-full">
     <Hero
       :media="landing.media"
       :title="landing.title"
@@ -39,24 +39,24 @@
 </template>
 
 <script setup>
-const dataLoaded = ref(false);
-const [concerts, venues, genres, promoters, landing] = await Promise.all([
-  fetchCollectionHandler('concerts', null, 1000, 0, {
-    sort: 'date',
-    where: {
-      date: {
-        greater_than: new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
-      },
+const concertsPromise = fetchCollectionHandler('concerts', null, 1000, 0, {
+  sort: 'date',
+  where: {
+    date: {
+      greater_than: new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
     },
-  }),
-  fetchCollectionHandler('venues'),
-  fetchCollectionHandler('genres'),
-  fetchCollectionHandler('promoters'),
-  fetchGlobalHandler('landing'),
-]).then((responses) => {
-  dataLoaded.value = true;
-  return responses.map((response) => response.data);
+  },
 });
+const venuesPromise = fetchCollectionHandler('venues');
+const genresPromise = fetchCollectionHandler('genres');
+const promotersPromise = fetchCollectionHandler('promoters');
+const landingPromise = fetchGlobalHandler('landing');
+
+const { data: concerts } = await concertsPromise;
+const { data: venues } = await venuesPromise;
+const { data: genres } = await genresPromise;
+const { data: promoters } = await promotersPromise;
+const { data: landing } = await landingPromise;
 
 // console.log({ concerts, venues, genres, promoters, landing });
 </script>
