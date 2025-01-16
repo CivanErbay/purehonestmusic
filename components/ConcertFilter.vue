@@ -53,7 +53,7 @@
 </template>
 
 <script setup>
-import { reactive, watch, ref } from 'vue';
+import { reactive, watch, ref, computed, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const props = defineProps({
@@ -85,7 +85,13 @@ const handleDropdownToggle = (dropdown) => {
 };
 
 const filters = reactive({
-  venues: props.venues
+  venues: [],
+  genres: [],
+  promoters: [],
+});
+
+const updateFilters = () => {
+  filters.venues = props.venues
     .map(({ name, slug }) => ({
       name,
       slug,
@@ -96,8 +102,9 @@ const filters = reactive({
         .length,
     }))
     .filter((venue) => venue.count > 0)
-    .sort((a, b) => a.name.localeCompare(b.name)),
-  genres: props.genres
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  filters.genres = props.genres
     .map(({ name }) => ({
       name: name,
       slug: name, // genres have no slug
@@ -109,8 +116,9 @@ const filters = reactive({
       ).length,
     }))
     .filter((genre) => genre.count > 0)
-    .sort((a, b) => a.name.localeCompare(b.name)),
-  promoters: props.promoters
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  filters.promoters = props.promoters
     .map(({ name, slug }) => ({
       name,
       slug,
@@ -120,10 +128,15 @@ const filters = reactive({
       count: props.concerts.filter((concert) => concert.promoter?.slug === slug)
         .length,
     }))
-
     .filter((prom) => prom.count > 0)
-    .sort((a, b) => a.name.localeCompare(b.name)),
-});
+    .sort((a, b) => a.name.localeCompare(b.name));
+};
+
+watch(
+  () => [props.venues, props.genres, props.promoters, props.concerts],
+  updateFilters,
+  { immediate: true }
+);
 
 const activeFilter = computed(
   () =>
