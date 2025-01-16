@@ -15,4 +15,49 @@ const { data: concert } = useLivePreview({
   serverURL: import.meta.env.VITE_API_ENDPOINT,
   depth: 2,
 });
+
+useHead({
+  title: concert.value.name, // This is the title of the page.
+  htmlAttrs: { lang: 'de' },
+  meta: [
+    {
+      name: 'description',
+      content: concert.value.subtitle, // This is the description of the page.
+    },
+    {
+      property: 'og:title',
+      content: concert.value.name, // This is the Open Graph title, used by Telegram for the title.
+    },
+    {
+      property: 'og:description',
+      content: concert.value.subtitle, // This is the Open Graph description, used by Telegram for the description.
+    },
+    {
+      property: 'og:image',
+      content:
+        concert.value.heroImage.sizes?.medium?.url ||
+        concert.value.heroImage.url, // This is the Open Graph image, used by Telegram for the image preview.
+    },
+    { property: 'twitter:card', content: concert.value.subtitle },
+    { property: 'twitter:title', content: concert.value.name },
+    {
+      property: 'twitter:description',
+      content: concert.value.subtitle,
+    },
+    {
+      property: 'twitter:image',
+      content:
+        concert.value.heroImage.sizes?.medium?.url ||
+        concert.value.heroImage.url,
+    },
+    {
+      name: 'keywords',
+      content: [
+        concert.value.venue?.name,
+        ...concert.value.genres?.map((it) => it.name),
+        concert.value.promoter?.name,
+      ].join(', '),
+    },
+  ],
+});
 </script>

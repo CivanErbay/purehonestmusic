@@ -1,13 +1,23 @@
 <template>
-  <div class="rounded-xl overflow-hidden mb-8 lg:mb-0">
-    <div class="flex bg-[#242424] rounded-lg relative h-full flex-col md:flex-row">
-      <div v-if="item.heroImage" class="w-full h-32 z-10 md:w-56 md:h-full relative">
+  <div class="rounded-xl overflow-hidden mb-8 xl:mb-0">
+    <div
+      class="flex bg-[#242424] rounded-lg relative h-full flex-col md:flex-row"
+    >
+      <div
+        v-if="item.heroImage"
+        class="w-full h-32 z-10 md:w-56 md:h-full relative"
+      >
         <!--  add hover:w-full for animation -->
         <div class="absolute z-10 inset-0 duration-300 transition-all">
           <!-- fallback to artist image if no concert image -->
-          <AtomMedia v-bind="item.heroImage ||
-            (item.artist.length > 0 && item.artist[0].heroImage)
-            " :isCover="true" class="h-full" />
+          <AtomMedia
+            v-bind="
+              item.heroImage ||
+              (item.artist.length > 0 && item.artist[0].heroImage)
+            "
+            :isCover="true"
+            class="h-full"
+          />
         </div>
       </div>
 
@@ -20,49 +30,85 @@
             <h4 class="text-3xl font-semibold text-text">
               {{ item.name }}
             </h4>
-            <div class="flex mt-2 md:mt-0 md:absolute md:top-0 md:right-0 items-center md:justify-center">
-              <button @click="handleShare"
-                class="rounded-full bg-[#2F2F2F] w-7 h-7 flex items-center justify-center mr-2">
+            <div
+              class="flex mt-2 md:mt-0 md:absolute md:top-0 md:right-0 items-center md:justify-center"
+            >
+              <button
+                @click="handleShare"
+                class="rounded-full bg-[#2F2F2F] w-7 h-7 flex items-center justify-center mr-2"
+              >
                 <NuxtImg class="w-4 h-4 ml-[1px] mb-[1px]" src="/share.svg" />
               </button>
-              <add-to-calendar-button v-if="item.date" class="flex items-center justify-center mr-2" :label="''"
-                customCss="/calendar.css" buttonStyle="custom" hideTextLabelButton
-                :name="`${item.name} @ ${item.venue.name}`" options="'Apple','Google'" :location="venueLocation"
-                :startDate="dateTimeStrings[0]" :endDate="dateTimeStrings[0]" :startTime="dateTimeStrings[1]"
-                :endTime="dateTimeStrings[2]" timeZone="Europe/Berlin">
+              <add-to-calendar-button
+                v-if="item.date"
+                class="flex items-center justify-center mr-2"
+                :label="''"
+                customCss="/calendar.css"
+                buttonStyle="custom"
+                hideTextLabelButton
+                :name="`${item.name} @ ${item.venue.name}`"
+                options="'Apple','Google'"
+                :location="venueLocation"
+                :startDate="dateTimeStrings[0]"
+                :endDate="dateTimeStrings[0]"
+                :startTime="dateTimeStrings[1]"
+                :endTime="dateTimeStrings[2]"
+                timeZone="Europe/Berlin"
+              >
                 <NuxtImg class="w-4 h-4" src="/addCalendar.svg" />
               </add-to-calendar-button>
 
-              <button v-if="
-                route.path.startsWith('/concerts') ||
-                route.path.startsWith('/locations')
-              " :class="[
-                'rounded-full w-7 h-7 flex items-center justify-center',
-                item.isUserFavorite
-                ? 'bg-[#2F2F2F]'
-                : 'bg-[#2F2F2F]',
-              ]" @click="() => toggleFavorite(item.id)">
-                <NuxtImg v-if="item.isUserFavorite " class="w-4 h-4 mt-[1px] transform transition-transform duration-300 hover:scale-110" src="/heart_default.svg" />
-                <NuxtImg v-else class="w-4 h-4 mt-[1px] transform transition-transform duration-300 hover:scale-110" src="/heart_active.svg" />
+              <button
+                v-if="
+                  route.path.startsWith('/concerts') ||
+                  route.path.startsWith('/locations')
+                "
+                :class="[
+                  'rounded-full w-7 h-7 flex items-center justify-center',
+                  item.isUserFavorite ? 'bg-[#2F2F2F]' : 'bg-[#2F2F2F]',
+                ]"
+                @click="() => toggleFavorite(item.id)"
+              >
+                <NuxtImg
+                  v-if="item.isUserFavorite"
+                  class="w-4 h-4 mt-[1px] transform transition-transform duration-300 hover:scale-110"
+                  src="/heart_default.svg"
+                />
+                <NuxtImg
+                  v-else
+                  class="w-4 h-4 mt-[1px] transform transition-transform duration-300 hover:scale-110"
+                  src="/heart_active.svg"
+                />
               </button>
             </div>
           </div>
-          <p class="text-sm text-white mb-4 opacity-50 overflow-hidden customLineHight">
+          <p
+            class="text-sm text-white mb-4 opacity-50 overflow-hidden customLineHight"
+          >
             {{ item.subtitle }}
           </p>
-          <UtilsRichTextRenderer :customClasses="'text-sm customLineHight'" :nodes="item.description" />
+          <UtilsRichTextRenderer
+            :customClasses="'text-sm customLineHight'"
+            :nodes="item.description"
+          />
         </div>
-        <div class="flex flex-col md:flex-row items-center text-white bg-[#2F2F2F]">
+        <div
+          class="flex flex-col md:flex-row items-center text-white bg-[#2F2F2F]"
+        >
           <div class="px-4 md:px-10 py-4 flex w-full">
             <!-- Conerts -->
             <div class="">
-              <div class="flex mb-4 mt-2  " v-if="item.date">
+              <div class="flex mb-4 mt-2" v-if="item.date">
                 <NuxtImg class="w-4 h-4" src="/calendar.svg" />
                 <p class="ml-1 opacity-40 text-xs">
                   {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
                 </p>
               </div>
-              <NuxtLink class="flex mb-4" v-if="item.venue?.name" :to="`/locations/${item.venue.slug}`">
+              <NuxtLink
+                class="flex mb-4"
+                v-if="item.venue?.name"
+                :to="`/locations/${item.venue.slug}`"
+              >
                 <NuxtImg class="w-4 h-4" src="/location.svg" />
                 <p class="ml-1 opacity-40 text-xs">{{ item.venue.name }}</p>
               </NuxtLink>
@@ -79,24 +125,37 @@
                   <p class="ml-1 opacity-40">{{ item.address.street }}</p>
                   <p class="ml-1 opacity-40">{{ item.address.zipCode }}</p>
                   <p class="ml-1 opacity-40">{{ item.address.city }}</p>
-                  <NuxtLink class="mt-2 ml-1 opacity-40 underline" :to="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                    venueLocation
-                  )}`" target="_blank">
+                  <NuxtLink
+                    class="mt-2 ml-1 opacity-40 underline"
+                    :to="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                      venueLocation
+                    )}`"
+                    target="_blank"
+                  >
                     In Maps öffnen
                   </NuxtLink>
                 </div>
               </div>
             </div>
-            <div v-if="
-              route.path.startsWith('/promoters') ||
-              route.path.startsWith('/locations')
-            " class="flex flex-col opacity-40 ml-8 w-fit">
+            <div
+              v-if="
+                route.path.startsWith('/promoters') ||
+                route.path.startsWith('/locations')
+              "
+              class="flex flex-col opacity-40 ml-8 w-fit"
+            >
               <p class="">Folgen auf:</p>
-              <NuxtLink class="underline" :to="item.website" target="_blank">Website</NuxtLink>
-              <NuxtLink class="underline" :to="item.instagram" target="_blank">Instagram</NuxtLink>
+              <NuxtLink class="underline" :to="item.website" target="_blank"
+                >Website</NuxtLink
+              >
+              <NuxtLink class="underline" :to="item.instagram" target="_blank"
+                >Instagram</NuxtLink
+              >
             </div>
           </div>
-          <div class="flex flex-col w-full items-start px-4 md:px-10 py-5 self-end">
+          <div
+            class="flex flex-col w-full items-start px-4 md:px-10 py-5 self-end"
+          >
             <!--<NuxtLink v-if="item.promoter" class="opacity-40 whitespace-nowrap text-sm"
               :to="`/promoters/${item.promoter.slug}`">
               Eine <span class="underline">{{ item.promoter.name }}</span>-Show
@@ -104,24 +163,50 @@
             <p v-if="item.price" class="text-lg md:text-2xl text-primary">
               {{ item.price }} €
             </p>
-            <p v-if="item.price" class="opacity-40 font-light text-xs md:text-md text-left leading-4">
+            <p
+              v-if="item.price"
+              class="opacity-40 font-light text-xs md:text-md text-left leading-4"
+            >
               ggf. zzgl. VVK-Gebühren<br class="hidden lg:block" />
               und Abwicklungskosten
             </p>
-            <div ref="originalButton" class="flex justify-center mt-3" v-if="route.path.startsWith('/concerts')">
-      <a :href="item.ticketsLink" target="_blank" rel="noopener noreferrer">
-        <button class="btn whitespace-nowrap" :disabled="!item.ticketsLink">
-          Zum externen Ticketkauf
-        </button>
-      </a>
-    </div>
-    <div ref="fixedButton" class="flex justify-center mt-3 mobile-bottom-fixed" v-if="route.path.startsWith('/concerts')">
-      <a :href="item.ticketsLink" target="_blank" rel="noopener noreferrer" class="w-full">
-        <button class="btn whitespace-nowrap w-full" :disabled="!item.ticketsLink">
-          Zum externen Ticketkauf
-        </button>
-      </a>
-    </div>
+            <div
+              ref="originalButton"
+              class="flex justify-center mt-3"
+              v-if="route.path.startsWith('/concerts')"
+            >
+              <a
+                :href="item.ticketsLink"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <button
+                  class="btn whitespace-nowrap"
+                  :disabled="!item.ticketsLink"
+                >
+                  Zum externen Ticketkauf
+                </button>
+              </a>
+            </div>
+            <div
+              ref="fixedButton"
+              class="flex justify-center mt-3 mobile-bottom-fixed"
+              v-if="route.path.startsWith('/concerts')"
+            >
+              <a
+                :href="item.ticketsLink"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-full"
+              >
+                <button
+                  class="btn whitespace-nowrap w-full"
+                  :disabled="!item.ticketsLink"
+                >
+                  Zum externen Ticketkauf
+                </button>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -178,7 +263,6 @@ function handleShare() {
     console.log('Share not supported on this browser, do it the old way.');
   }
 }
-
 </script>
 
 <style scoped>
