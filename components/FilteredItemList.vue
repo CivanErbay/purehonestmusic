@@ -26,7 +26,6 @@ const filteredItems = computed(() => {
 
   const selectedDate = route.query.date;
 
-  // return [];
   return (
     concertStore.concerts
       // .filter(

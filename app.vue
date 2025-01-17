@@ -73,13 +73,13 @@ useHead({
 
 const showBanner = ref(false);
 const loading = ref(true);
-const { loadFavorites } = useUserStore(); // needd to load the store
+const usersStore = useUserStore(); // needd to load the store
 
 onMounted(() => {
   if (import.meta.client) {
     loading.value = false;
   }
-  loadFavorites();
+  usersStore.loadFavorites();
 
   if (localStorage.getItem('acceptedCookies')) {
     showBanner.value = false;

@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 export const useConcertStore = defineStore('concerts', () => {
   const concerts = ref([]);
   const showUntilDaysFromNow = ref(7);
-  const concertsPerPage = 20;
+  const concertsPerPage = 100;
   const currentPage = ref(1);
   const totalConcerts = ref(0);
 

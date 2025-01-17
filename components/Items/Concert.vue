@@ -68,14 +68,20 @@
                   ? 'bg-[#242424] bg-opacity-50'
                   : 'bg-[#242424] bg-opacity-50',
               ]"
-              @click.stop.prevent="() => toggleFavoriteConcert(item.id)"
+              @click.stop.prevent="
+                () => usersStore.toggleFavoriteConcert(item.id)
+              "
             >
               <NuxtImg
                 v-if="item.isUserFavorite"
                 class="w-4 h-4 mt-[1px] transform transition-transform duration-300 hover:scale-110"
                 src="/heart_default.svg"
               />
-              <NuxtImg v-else class="w-4 h-4 mt-[1px] transform transition-transform duration-300 hover:scale-110" src="/heart.svg" />
+              <NuxtImg
+                v-else
+                class="w-4 h-4 mt-[1px] transform transition-transform duration-300 hover:scale-110"
+                src="/heart.svg"
+              />
             </button>
 
             <div class="flex flex-col items-end">
@@ -103,7 +109,7 @@
       class="lg:hidden flex flex-1 flex-col bg-[#242424] rounded-xl relative mb-5 lg:mb-0"
       @click="() => router.push(`/concerts/${item.slug}`)"
     >
-     <!--  <div
+      <!--  <div
         class="absolute top-0 left-0 bg-primary bg-opacity-50 py-1 px-3 h-fit rounded-br-xl rounded-tl-xl"
       >
         🔥 Empfohlen
@@ -123,17 +129,25 @@
               'rounded-full w-7 h-7 flex items-center justify-center absolute dynamicElementHeight right-3',
               item.isUserFavorite ? 'bg-[#242424]' : 'bg-[#242424]',
             ]"
-            @click.stop.prevent="() => toggleFavoriteConcert(item.id)"
+            @click.stop.prevent="
+              () => usersStore.toggleFavoriteConcert(item.id)
+            "
           >
             <NuxtImg
               v-if="item.isUserFavorite"
               class="w-4 h-4 mt-[1px]"
               src="/heart_default.svg"
             />
-            <NuxtImg v-else class="w-4 h-4 mt-[1px] transform transition-transform duration-300 hover:scale-110" src="/heart_active.svg" />
+            <NuxtImg
+              v-else
+              class="w-4 h-4 mt-[1px] transform transition-transform duration-300 hover:scale-110"
+              src="/heart_active.svg"
+            />
           </button>
           <h4 class="text-lg text-text">{{ item.name }}</h4>
-          <p class="text-sm text-white opacity-50 overflow-hidden dynamicLineHeight1">
+          <p
+            class="text-sm text-white opacity-50 overflow-hidden dynamicLineHeight1"
+          >
             {{ truncateSubtitle(item.subtitle) }}
           </p>
         </div>
@@ -172,7 +186,9 @@
               >-Show
             </NuxtLink>-->
             <p class="text-lg text-primary text-right">{{ item.price }} €</p>
-            <p class="opacity-40 text-[8px] dynamicLineHeight lg:text-[10p] text-right">
+            <p
+              class="opacity-40 text-[8px] dynamicLineHeight lg:text-[10p] text-right"
+            >
               ggf. zzgl. VVK-Gebühren <br class="hidden lg:block" />
               und Abwicklungskosten
             </p>
@@ -189,13 +205,12 @@ const props = defineProps({ item: Object });
 const router = useRouter();
 
 const usersStore = useUserStore();
-const { isConcertFavorite, toggleFavoriteConcert, user } = usersStore;
 
-watch(user.favoriteConcerts, () => {
-  props.item.isUserFavorite = isConcertFavorite(props.item.id);
+watch(usersStore.user.favoriteConcerts, () => {
+  props.item.isUserFavorite = usersStore.isConcertFavorite(props.item.id);
 });
 
 onMounted(() => {
-  props.item.isUserFavorite = isConcertFavorite(props.item.id);
+  props.item.isUserFavorite = usersStore.isConcertFavorite(props.item.id);
 });
 </script>

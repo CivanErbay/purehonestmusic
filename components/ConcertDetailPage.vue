@@ -3,7 +3,7 @@
     <AtomContentCard
       class="xl:col-start-3 xl:col-end-9 xl:mr-4"
       :item="item"
-      @toggleFavorite="toggleFavoriteConcert"
+      @toggleFavorite="usersStore._customPropertiestoggleFavoriteConcert"
     />
     <AtomArtistCard
       v-if="artist"
@@ -17,14 +17,13 @@
 const props = defineProps({ item: Object });
 
 const usersStore = useUserStore();
-const { isConcertFavorite, toggleFavoriteConcert, user } = usersStore;
 
-watch(user.favoriteConcerts, () => {
-  props.item.isUserFavorite = isConcertFavorite(props.item.id);
+watch(usersStore.user.favoriteConcerts, () => {
+  props.item.isUserFavorite = usersStore.isConcertFavorite(props.item.id);
 });
 
 onMounted(() => {
-  props.item.isUserFavorite = isConcertFavorite(props.item.id);
+  props.item.isUserFavorite = usersStore.isConcertFavorite(props.item.id);
 });
 
 const artist = computed(() => {
