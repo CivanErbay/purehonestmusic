@@ -59,18 +59,15 @@
               </add-to-calendar-button>
 
               <button
-                v-if="
-                  route.path.startsWith('/concerts') ||
-                  route.path.startsWith('/locations')
-                "
+                v-if="route.path.startsWith('/concerts')"
                 :class="[
                   'rounded-full w-7 h-7 flex items-center justify-center',
-                  item.isUserFavorite ? 'bg-[#2F2F2F]' : 'bg-[#2F2F2F]',
+                  isUserFavorite ? 'bg-[#2F2F2F]' : 'bg-[#2F2F2F]',
                 ]"
-                @click="() => toggleFavorite(item.id)"
+                @click="() => usersStore.toggleFavoriteConcert(item.id)"
               >
                 <NuxtImg
-                  v-if="item.isUserFavorite"
+                  v-if="isUserFavorite"
                   class="w-4 h-4 mt-[1px] transform transition-transform duration-300 hover:scale-110"
                   src="/heart_default.svg"
                 />
@@ -220,11 +217,11 @@ import 'add-to-calendar-button';
 const route = useRoute();
 
 const props = defineProps({ item: Object });
-const emit = defineEmits(['toggleFavorite']);
 
-function toggleFavorite(id) {
-  emit('toggleFavorite', id);
-}
+const usersStore = useUserStore();
+const isUserFavorite = computed(() => {
+  return usersStore.user.favoriteConcerts.includes(props.item.id);
+});
 
 const venueLocation = computed(() => {
   if (props.item.address) {

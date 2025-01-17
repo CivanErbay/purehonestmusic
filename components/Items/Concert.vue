@@ -64,7 +64,7 @@
             <button
               :class="[
                 'rounded-full w-7 h-7 flex items-center justify-center',
-                item.isUserFavorite
+                isUserFavorite
                   ? 'bg-[#242424] bg-opacity-50'
                   : 'bg-[#242424] bg-opacity-50',
               ]"
@@ -73,7 +73,7 @@
               "
             >
               <NuxtImg
-                v-if="item.isUserFavorite"
+                v-if="isUserFavorite"
                 class="w-4 h-4 mt-[1px] transform transition-transform duration-300 hover:scale-110"
                 src="/heart_default.svg"
               />
@@ -127,14 +127,14 @@
           <button
             :class="[
               'rounded-full w-7 h-7 flex items-center justify-center absolute dynamicElementHeight right-3',
-              item.isUserFavorite ? 'bg-[#242424]' : 'bg-[#242424]',
+              isUserFavorite ? 'bg-[#242424]' : 'bg-[#242424]',
             ]"
             @click.stop.prevent="
               () => usersStore.toggleFavoriteConcert(item.id)
             "
           >
             <NuxtImg
-              v-if="item.isUserFavorite"
+              v-if="isUserFavorite"
               class="w-4 h-4 mt-[1px]"
               src="/heart_default.svg"
             />
@@ -206,11 +206,7 @@ const router = useRouter();
 
 const usersStore = useUserStore();
 
-watch(usersStore.user.favoriteConcerts, () => {
-  props.item.isUserFavorite = usersStore.isConcertFavorite(props.item.id);
-});
-
-onMounted(() => {
-  props.item.isUserFavorite = usersStore.isConcertFavorite(props.item.id);
+const isUserFavorite = computed(() => {
+  return usersStore.user.favoriteConcerts.includes(props.item.id);
 });
 </script>

@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia';
+import { ref, watch } from 'vue'; // Add watch import
+import { useUserStore } from './useUserStore'; // Ensure correct import
 
 export const useConcertStore = defineStore('concerts', () => {
   const concerts = ref([]);
@@ -6,6 +8,8 @@ export const useConcertStore = defineStore('concerts', () => {
   const concertsPerPage = 100;
   const currentPage = ref(1);
   const totalConcerts = ref(0);
+
+  const usersStore = useUserStore();
 
   const loadConcerts = async () => {
     if (concerts.value.length !== 0) return;
@@ -27,7 +31,10 @@ export const useConcertStore = defineStore('concerts', () => {
     );
 
     totalConcerts.value = meta.totalDocs;
-    concerts.value = data.value;
+    concerts.value = data.value.map((concert) => ({
+      ...concert,
+      isUserFavorite: usersStore.user.favoriteConcerts.includes(concert.id),
+    }));
   };
 
   const showMoreConcerts = () => {

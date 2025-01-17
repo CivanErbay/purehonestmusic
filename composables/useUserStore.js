@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { reactive, watch } from 'vue'; // Add watch import
 
 export const useUserStore = defineStore('users', () => {
   const user = reactive({
