@@ -21,6 +21,24 @@
           />
         </div>
       </TransitionGroup>
+      <div v-if="showMoreButton" class="flex justify-center">
+        <button
+          @click="showMoreDays"
+          class="btn"
+          :class="{
+            'opacity-50 pointer-events-none':
+              totalVisibleConcerts >= items.length,
+          }"
+        >
+          Mehr Konzerte anzeigen
+        </button>
+      </div>
+
+      <div class="flex justify-center mt-2 text-gray-400 mb-16">
+        <p class="text-sm">
+          {{ totalVisibleConcerts }} von {{ items.length }} Konzerten
+        </p>
+      </div>
     </div>
   </DefaultGrid>
 </template>
@@ -46,13 +64,26 @@ const groupedItems = computed(() => {
   }, {});
 });
 
+const maxDays = ref(6);
+const showMoreButton = computed(
+  () => totalVisibleConcerts.value < items.length
+);
+
 const visibleGroupedItems = computed(() => {
   const groupedDates = Object.keys(groupedItems.value);
-  return groupedDates.reduce((result, date) => {
+  return groupedDates.slice(0, maxDays.value).reduce((result, date) => {
     result[date] = groupedItems.value[date];
     return result;
   }, {});
 });
+
+const totalVisibleConcerts = computed(() => {
+  return Object.values(visibleGroupedItems.value).flat().length;
+});
+
+const showMoreDays = () => {
+  maxDays.value += 6;
+};
 </script>
 
 <style>
