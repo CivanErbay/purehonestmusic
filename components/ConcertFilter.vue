@@ -242,6 +242,7 @@ onUnmounted(() => {
   text-decoration: none;
   transition: background-color 0.3s ease, color 0.3s ease;
   color: #fff;
+  cursor: pointer;
 }
 
 .cleartBtn:hover {
