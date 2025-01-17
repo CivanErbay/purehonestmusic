@@ -1,17 +1,32 @@
 <template>
   <ItemList :items="filteredItems" />
+  <div class="flex justify-center mt-2 text-gray-400 mb-16">
+    <p class="text-sm">
+      {{ filteredItems.length }} von
+      {{ concertStore.totalConcertCount }} Konzerten
+    </p>
+  </div>
+  <div
+    v-if="filteredItems.length < concertStore.totalConcertCount"
+    class="flex justify-center"
+  >
+    <button
+      @click="showMoreConcerts"
+      class="btn"
+      :class="{
+        'opacity-50 pointer-events-none':
+          filteredItems.length >= concertStore.totalConcertCount,
+      }"
+    >
+      Mehr Konzerte anzeigen
+    </button>
+  </div>
 </template>
 
 <script setup>
 import { useRoute } from 'vue-router';
 
-const { items } = defineProps({
-  items: {
-    type: Array,
-    required: true,
-    default: () => [],
-  },
-});
+const concertStore = useConcertStore();
 
 const route = useRoute();
 
@@ -32,15 +47,8 @@ const filteredItems = computed(() => {
 
   const selectedDate = route.query.date;
 
-  return items
-    .filter(
-      (item) =>
-        item.name.toLowerCase().includes(query) ||
-        item.venue?.address.city.toLowerCase().includes(query) ||
-        item.venue?.name.toLowerCase().includes(query) ||
-        item.promoter?.name.toLowerCase().includes(query) ||
-        item.genres.some((genre) => genre.name?.toLowerCase().includes(query))
-    )
+  const sortedItems = concertStore.concerts.value
+    .sort((a, b) => new Date(a.date) - new Date(b.date))
     .filter((item) => {
       const itemDate = new Date(item.date);
       if (selectedDate) {
@@ -48,7 +56,16 @@ const filteredItems = computed(() => {
         return newItemDate === selectedDate;
       }
       return itemDate >= today;
-    })
+    });
+
+  // const thresholdDate =
+  //   sortedItems[concertStore.displayConcertsCount - 1]?.date;
+  // const thresholdItems = sortedItems.filter(
+  //   (item) => item.date === thresholdDate
+  // );
+
+  return sortedItems
+    .filter((item, index, self) => self.indexOf(item) === index)
     .filter((item) => {
       const venueMatch =
         selectedVenues.length === 0 ||
@@ -63,8 +80,13 @@ const filteredItems = computed(() => {
         );
       return venueMatch && promoterMatch && genreMatch;
     })
-    .sort((a, b) => new Date(a.date) - new Date(b.date));
+    .slice(0, concertStore.displayConcertsCount);
+  // .concat(thresholdItems);
 });
+
+const showMoreConcerts = async () => {
+  concertStore.setDisplayConcertsCount(concertStore.displayConcertsCount + 20);
+};
 </script>
 
 <style lang="scss" scoped></style>

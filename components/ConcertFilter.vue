@@ -56,24 +56,7 @@
 import { reactive, watch, ref, computed, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-const props = defineProps({
-  venues: {
-    type: Array,
-    default: () => [],
-  },
-  genres: {
-    type: Array,
-    default: () => [],
-  },
-  promoters: {
-    type: Array,
-    default: () => [],
-  },
-  concerts: {
-    type: Array,
-    default: () => [],
-  },
-});
+const concertStore = useConcertStore();
 
 const route = useRoute();
 const router = useRouter();
@@ -91,49 +74,56 @@ const filters = reactive({
 });
 
 const updateFilters = () => {
-  filters.venues = props.venues
+  filters.venues = concertStore.venues.value
     .map(({ name, slug }) => ({
       name,
       slug,
       selected: route.query.venues
         ? route.query.venues.split(',').includes(slug)
         : false,
-      count: props.concerts.filter((concert) => concert.venue?.slug === slug)
-        .length,
+      count: concertStore.concerts.value.filter(
+        (concert) => concert.venue?.slug === slug
+      ).length,
     }))
     .filter((venue) => venue.count > 0)
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  filters.genres = props.genres
+  filters.genres = concertStore.genres.value
     .map(({ name }) => ({
       name: name,
       slug: name, // genres have no slug
       selected: route.query.genres
         ? route.query.genres.split(',').includes(name)
         : false,
-      count: props.concerts.filter(
+      count: concertStore.concerts.value.filter(
         (concert) => concert.genres.some((it) => it.name === name) // TODO check
       ).length,
     }))
     .filter((genre) => genre.count > 0)
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  filters.promoters = props.promoters
+  filters.promoters = concertStore.promoters.value
     .map(({ name, slug }) => ({
       name,
       slug,
       selected: route.query.promoters
         ? route.query.promoters.split(',').includes(slug)
         : false,
-      count: props.concerts.filter((concert) => concert.promoter?.slug === slug)
-        .length,
+      count: concertStore.concerts.value.filter(
+        (concert) => concert.promoter?.slug === slug
+      ).length,
     }))
     .filter((prom) => prom.count > 0)
     .sort((a, b) => a.name.localeCompare(b.name));
 };
 
 watch(
-  () => [props.venues, props.genres, props.promoters, props.concerts],
+  () => [
+    concertStore.venues.value,
+    concertStore.genres.value,
+    concertStore.promoters.value,
+    concertStore.concerts.value,
+  ],
   updateFilters,
   { immediate: true }
 );
