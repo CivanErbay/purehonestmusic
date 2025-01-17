@@ -24,9 +24,10 @@ export const fetchCollectionHandler = async (
   url = `${API_URL}/${collection}?${queryString}`;
 
   const { data, status, error, refresh, clear } = await useFetch(url);
-  const _data = computed(() => (slug ? data.value?.docs[0] : data.value?.docs));
+  const { docs, ...meta } = data.value || {};
+  const _data = computed(() => (slug ? docs[0] : docs));
 
-  return { data: _data, status };
+  return { data: _data, status, meta };
 };
 
 export const fetchGlobalHandler = async (slug) => {

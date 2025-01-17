@@ -21,13 +21,16 @@
           />
         </div>
       </TransitionGroup>
-      <div v-if="showMoreButton" class="flex justify-center">
+      <div
+        v-if="concertStore.totalConcerts > items.length"
+        class="flex justify-center"
+      >
         <button
-          @click="showMoreDays"
+          @click="concertStore.showMoreConcerts"
           class="btn"
           :class="{
             'opacity-50 pointer-events-none':
-              totalVisibleConcerts >= items.length,
+              totalVisibleConcerts >= concertStore.totalConcerts,
           }"
         >
           Mehr Konzerte anzeigen
@@ -36,7 +39,8 @@
 
       <div class="flex justify-center mt-2 text-gray-400 mb-16">
         <p class="text-sm">
-          {{ totalVisibleConcerts }} von {{ items.length }} Konzerten
+          {{ totalVisibleConcerts }} von
+          {{ concertStore.totalConcerts }} Konzerten
         </p>
       </div>
     </div>
@@ -51,6 +55,7 @@ const { items } = defineProps({
   },
 });
 
+const concertStore = useConcertStore();
 // console.log(items)
 
 const groupedItems = computed(() => {
@@ -64,14 +69,9 @@ const groupedItems = computed(() => {
   }, {});
 });
 
-const maxDays = ref(6);
-const showMoreButton = computed(
-  () => totalVisibleConcerts.value < items.length
-);
-
 const visibleGroupedItems = computed(() => {
   const groupedDates = Object.keys(groupedItems.value);
-  return groupedDates.slice(0, maxDays.value).reduce((result, date) => {
+  return groupedDates.reduce((result, date) => {
     result[date] = groupedItems.value[date];
     return result;
   }, {});
@@ -80,10 +80,6 @@ const visibleGroupedItems = computed(() => {
 const totalVisibleConcerts = computed(() => {
   return Object.values(visibleGroupedItems.value).flat().length;
 });
-
-const showMoreDays = () => {
-  maxDays.value += 6;
-};
 </script>
 
 <style>

@@ -7,13 +7,8 @@
     />
     <br />
     <br />
-    <ConcertFilter
-      :venues="venues"
-      :genres="genres"
-      :promoters="promoters"
-      :concerts="concerts"
-    />
-    <FilteredItemList :items="concerts" />
+    <ConcertFilter :venues="venues" :genres="genres" :promoters="promoters" />
+    <FilteredItemList />
 
     <Recommendations
       :items="landing.highlightedConcerts"
@@ -39,20 +34,14 @@
 </template>
 
 <script setup>
-const concertsPromise = fetchCollectionHandler('concerts', null, 1000, 0, {
-  sort: 'date',
-  where: {
-    date: {
-      greater_than: new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
-    },
-  },
-});
+const concertStore = useConcertStore();
+concertStore.loadConcerts();
+
 const venuesPromise = fetchCollectionHandler('venues');
 const genresPromise = fetchCollectionHandler('genres');
 const promotersPromise = fetchCollectionHandler('promoters');
 const landingPromise = fetchGlobalHandler('landing');
 
-const { data: concerts } = await concertsPromise;
 const { data: venues } = await venuesPromise;
 const { data: genres } = await genresPromise;
 const { data: promoters } = await promotersPromise;

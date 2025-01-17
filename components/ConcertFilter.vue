@@ -69,16 +69,14 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
-  concerts: {
-    type: Array,
-    default: () => [],
-  },
 });
 
 const route = useRoute();
 const router = useRouter();
 
 const openDropdown = ref(null);
+
+const concertStore = useConcertStore();
 
 const handleDropdownToggle = (dropdown) => {
   openDropdown.value = openDropdown.value === dropdown ? null : dropdown;
@@ -98,8 +96,9 @@ const updateFilters = () => {
       selected: route.query.venues
         ? route.query.venues.split(',').includes(slug)
         : false,
-      count: props.concerts.filter((concert) => concert.venue?.slug === slug)
-        .length,
+      count: concertStore.concerts.filter(
+        (concert) => concert.venue?.slug === slug
+      ).length,
     }))
     .filter((venue) => venue.count > 0)
     .sort((a, b) => a.name.localeCompare(b.name));
@@ -111,7 +110,7 @@ const updateFilters = () => {
       selected: route.query.genres
         ? route.query.genres.split(',').includes(name)
         : false,
-      count: props.concerts.filter(
+      count: concertStore.concerts.filter(
         (concert) => concert.genres.some((it) => it.name === name) // TODO check
       ).length,
     }))
@@ -125,15 +124,16 @@ const updateFilters = () => {
       selected: route.query.promoters
         ? route.query.promoters.split(',').includes(slug)
         : false,
-      count: props.concerts.filter((concert) => concert.promoter?.slug === slug)
-        .length,
+      count: concertStore.concerts.filter(
+        (concert) => concert.promoter?.slug === slug
+      ).length,
     }))
     .filter((prom) => prom.count > 0)
     .sort((a, b) => a.name.localeCompare(b.name));
 };
 
 watch(
-  () => [props.venues, props.genres, props.promoters, props.concerts],
+  () => [props.venues, props.genres, props.promoters, concertStore.concerts],
   updateFilters,
   { immediate: true }
 );
