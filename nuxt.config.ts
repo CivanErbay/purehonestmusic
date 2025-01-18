@@ -65,6 +65,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/seo',
     '@pinia/nuxt',
+    '@vite-pwa/nuxt',
   ],
   plugins: ['~/plugins/vue-datepicker'],
   devServer: {
@@ -76,5 +77,33 @@ export default defineNuxtConfig({
       'Josefin Sans': true, // Richtig, mit Leerzeichen statt `+`
     },
     display: 'swap', // Optional: Vermeidet FOUC (Flash of Unstyled Content)
+  },
+  pwa: {
+    manifest: {
+      name: 'PURE.HONEST.MUSIC',
+      short_name: 'PURE.HONEST.MUSIC',
+      lang: 'de',
+      display: 'standalone',
+      start_url: '/',
+      background_color: '#000000',
+    },
+    workbox: {
+      runtimeCaching: [
+        {
+          urlPattern: /.*\.(?:png|jpg|jpeg|svg|gif|mp4)$/, // Regex for media files
+          handler: 'CacheFirst', // Cache media files
+          options: {
+            cacheName: 'media-cache',
+            expiration: {
+              maxEntries: 100,
+              maxAgeSeconds: 7 * 24 * 60 * 60, // 1 week
+            },
+            cacheableResponse: {
+              statuses: [0, 200], // Cache responses with 200 or opaque status
+            },
+          },
+        },
+      ],
+    },
   },
 });
