@@ -21,28 +21,6 @@
           />
         </div>
       </TransitionGroup>
-      <div
-        v-if="concertStore.totalConcerts > items.length"
-        class="flex justify-center"
-      >
-        <button
-          @click="concertStore.showMoreConcerts"
-          class="btn"
-          :class="{
-            'opacity-50 pointer-events-none':
-              totalVisibleConcerts >= concertStore.totalConcerts,
-          }"
-        >
-          Mehr Konzerte anzeigen
-        </button>
-      </div>
-
-      <div class="flex justify-center mt-2 text-gray-400 mb-16">
-        <p class="text-sm">
-          {{ totalVisibleConcerts }} von
-          {{ concertStore.totalConcerts }} Konzerten
-        </p>
-      </div>
     </div>
   </DefaultGrid>
 </template>
@@ -55,7 +33,6 @@ const { items } = defineProps({
   },
 });
 
-const concertStore = useConcertStore();
 // console.log(items)
 
 const groupedItems = computed(() => {
@@ -75,10 +52,6 @@ const visibleGroupedItems = computed(() => {
     result[date] = groupedItems.value[date];
     return result;
   }, {});
-});
-
-const totalVisibleConcerts = computed(() => {
-  return Object.values(visibleGroupedItems.value).flat().length;
 });
 </script>
 
