@@ -90,7 +90,8 @@ export default defineNuxtConfig({
     workbox: {
       runtimeCaching: [
         {
-          urlPattern: /.*\.(?:png|jpg|jpeg|svg|gif|mp4|webp)$/, // Regex for media files
+          urlPattern: ({ url }) =>
+            url.pathname.match(/\.(?:png|jpg|jpeg|svg|gif|mp4|webp)$/), // Function for media files
           handler: 'StaleWhileRevalidate',
           options: {
             cacheName: 'media-cache',
