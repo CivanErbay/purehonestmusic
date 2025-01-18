@@ -7,7 +7,7 @@
     />
     <br />
     <br />
-    <ConcertFilter :venues="venues" :genres="genres" :promoters="promoters" />
+    <!-- <ConcertFilter :venues="venues" :genres="genres" :promoters="promoters" />-->
     <FilteredItemList />
 
     <Recommendations
