@@ -2,7 +2,7 @@
   <div class="">
     <ItemList :items="filteredItems" />
     <div
-      v-if="concertStore.totalConcerts > filteredItems.length"
+      v-if="beforeDateFilteredConcerts.length > filteredItems.length"
       class="flex justify-center"
     >
       <button
@@ -10,7 +10,7 @@
         class="btn"
         :class="{
           'opacity-50 pointer-events-none':
-            totalVisibleConcerts >= concertStore.totalConcerts,
+            filteredItems.length >= concertStore.totalConcerts,
         }"
       >
         Mehr Konzerte anzeigen
@@ -67,23 +67,53 @@ const filteredItems = computed(() => {
   today.setHours(0, 0, 0, 0);
   const selectedDate = route.query.date;
 
-  return beforeDateFilteredConcerts.value.filter((item) => {
+  // show only concerts from today on
+  let items = beforeDateFilteredConcerts.value.filter((item) => {
     const itemDate = new Date(item.date);
-    if (selectedDate) {
-      const newItemDate = new Date(itemDate).toISOString().split('T')[0];
-      return newItemDate === selectedDate;
-    }
-    const maxDate = new Date(today);
-    maxDate.setDate(maxDate.getDate() + concertStore.showUntilDaysFromNow);
-    maxDate.setHours(0, 0, 0, 0);
-
-    // we won't enforce a date filter if there are no more than 7 concerts
-    if (beforeDateFilteredConcerts.value.length > 7 && itemDate > maxDate) {
-      return false;
-    }
     return itemDate >= today;
   });
+
+  // show only concerts from selected date
+  if (selectedDate) {
+    return items.value.filter((item) => {
+      const itemDate = new Date(item.date);
+
+      const newItemDate = new Date(itemDate).toISOString().split('T')[0];
+      return newItemDate === selectedDate;
+    });
+  }
+
+  // show all items if less than 7
+  if (items.length < 7) {
+    return items;
+  }
+
+  // check maxDate if more than 7 items, but always show at least 7
+  const maxDate = new Date(today);
+  maxDate.setDate(maxDate.getDate() + concertStore.showUntilDaysFromNow);
+  maxDate.setHours(0, 0, 0, 0);
+
+  let count = 0;
+  return items.filter((item) => {
+    const itemDate = new Date(item.date);
+    count++;
+    return itemDate <= maxDate || count <= 7;
+  });
 });
+
+// this checks that we always show some concerts when clicking on show more
+watch(
+  [() => concertStore.showUntilDaysFromNow, () => filteredItems.value.length],
+  async (newVal, oldVal) => {
+    if (
+      newVal[0] >= oldVal[0] &&
+      newVal[1] === oldVal[1] &&
+      beforeDateFilteredConcerts.value.length !== newVal[1]
+    ) {
+      concertStore.showMoreConcerts();
+    }
+  }
+);
 </script>
 
 <style lang="scss" scoped></style>

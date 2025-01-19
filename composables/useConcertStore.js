@@ -76,6 +76,10 @@ export const useConcertStore = defineStore('concerts', () => {
     }
   );
 
+  const resetShowUntilDaysFromNow = () => {
+    showUntilDaysFromNow.value = 7;
+  };
+
   return {
     concerts,
     showUntilDaysFromNow,
@@ -83,5 +87,6 @@ export const useConcertStore = defineStore('concerts', () => {
     loadConcerts,
     showMoreConcerts,
     currentPage,
+    resetShowUntilDaysFromNow,
   };
 });

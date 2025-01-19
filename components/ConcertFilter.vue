@@ -210,6 +210,7 @@ const handleSelectedItem = (category, selectedItem) => {
 };
 
 const handleClearFilter = () => {
+  concertStore.resetShowUntilDaysFromNow();
   router.push({ query: {} });
 };
 
