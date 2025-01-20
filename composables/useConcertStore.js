@@ -5,7 +5,7 @@ import { useUserStore } from './useUserStore'; // Ensure correct import
 export const useConcertStore = defineStore('concerts', () => {
   const concerts = ref([]);
   const showUntilDaysFromNow = ref(7);
-  const concertsPerPage = 100;
+  const concertsPerPage = 200;
   const currentPage = ref(1);
   const totalConcerts = ref(0);
 
