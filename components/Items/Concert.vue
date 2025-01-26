@@ -16,6 +16,7 @@
         <!-- fallback to artist image if no concert image -->
         <NuxtLink :to="`/concerts/${item.slug}`">
           <AtomMedia
+            v-if="item.heroImage || (item.artist.length > 0 && item.artist[0].heroImage)"
             v-bind="
               item.heroImage ||
               (item.artist.length > 0 && item.artist[0].heroImage)
@@ -29,8 +30,8 @@
         >
           <div class="flex flex-col justify-between w-full lg:w-2/3">
             <div class="flex flex-col mb-3">
-              <h4 class="text-lg text-text font-semibold">{{ item.name }}</h4>
-              <p class="text-sm text-white opacity-50">
+              <h4 v-if="item.name" class="text-lg text-text font-semibold">{{ item.name }}</h4>
+              <p v-if="item.subtitle" class="text-sm text-white opacity-50">
                 {{ truncateSubtitle(item.subtitle) }}
               </p>
             </div>
@@ -39,7 +40,7 @@
             >
               <div class="flex">
                 <NuxtImg class="w-4 h-4" src="/calendar.svg" />
-                <p class="ml-1">
+                <p v-if="item.date" class="ml-1">
                   {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
                 </p>
               </div>
@@ -52,7 +53,7 @@
 
               <div class="flex lg:ml-6">
                 <NuxtImg class="w-4 h-4" src="/music.svg" />
-                <p class="ml-1">
+                <p v-if="item.genres" class="ml-1">
                   {{ item.genres.map((it) => it.name).join(', ') }}
                 </p>
               </div>
@@ -93,7 +94,7 @@
                 Eine <span class="underline">{{ item.promoter.name }}</span
                 >-Show
               </NuxtLink>-->
-              <p class="text-lg text-primary text-right">{{ item.price }} €</p>
+              <p v-if="item.price" class="text-lg text-primary text-right">{{ item.price }} €</p>
               <p class="opacity-40 text-[8px] lg:text-xs text-right">
                 ggf. zzgl. VVK-Gebühren <br class="hidden lg:block" />
                 und Abwicklungskosten
@@ -116,6 +117,7 @@
       </div> -->
       <NuxtLink :to="`/concerts/${item.slug}`">
         <AtomMedia
+          v-if="item.heroImage || (item.artist.length > 0 && item.artist[0].heroImage)"
           v-bind="item.heroImage"
           :isCover="true"
           class="w-full h-24 object-cover rounded-t-xl"
@@ -144,8 +146,8 @@
               src="/heart_active.svg"
             />
           </button>
-          <h4 class="text-lg text-text">{{ item.name }}</h4>
-          <p
+          <h4 v-if="item.name" class="text-lg text-text">{{ item.name }}</h4>
+          <p v-if="item.subtitle"
             class="text-sm text-white opacity-50 overflow-hidden dynamicLineHeight1"
           >
             {{ truncateSubtitle(item.subtitle) }}
@@ -155,7 +157,7 @@
           <div class="w-1/2 p-3 pb-4">
             <div class="flex">
               <NuxtImg class="w-4 h-4" src="/calendar.svg" />
-              <p class="ml-1 opacity-40">
+              <p v-if="item.date" class="ml-1 opacity-40">
                 {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
               </p>
             </div>
@@ -163,13 +165,13 @@
               <NuxtLink :to="`/locations/${item.venue.slug}`" v-if="item.venue">
                 <div class="flex my-4">
                   <NuxtImg class="w-4 h-4" src="/location.svg" />
-                  <p class="ml-1 opacity-40">{{ item.venue.name }}</p>
+                  <p v-if="item.venue" class="ml-1 opacity-40">{{ item.venue.name }}</p>
                 </div>
               </NuxtLink>
             </div>
             <div class="flex">
               <NuxtImg class="w-4 h-4" src="/music.svg" />
-              <p class="ml-1 opacity-40">
+              <p v-if="item.genres" class="ml-1 opacity-40">
                 {{ item.genres.map((it) => it.name).join(', ') }}
               </p>
             </div>
@@ -185,7 +187,7 @@
               Eine <span class="underline">{{ item.promoter.name }}</span
               >-Show
             </NuxtLink>-->
-            <p class="text-lg text-primary text-right">{{ item.price }} €</p>
+            <p v-if="item.price" class="text-lg text-primary text-right">{{ item.price }} €</p>
             <p
               class="opacity-40 text-[8px] dynamicLineHeight lg:text-[10p] text-right"
             >

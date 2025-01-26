@@ -62,6 +62,7 @@ const beforeDateFilteredConcerts = computed(() => {
   // .sort((a, b) => new Date(a.date) - new Date(b.date));
 });
 
+
 const filteredItems = computed(() => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -115,5 +116,3 @@ watch(
   }
 );
 </script>
-
-<style lang="scss" scoped></style>

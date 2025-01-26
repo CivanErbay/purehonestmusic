@@ -3,6 +3,7 @@
     <div class="xl:col-start-3 xl:col-end-11">
       <TransitionGroup name="list" tag="div">
         <div
+
           v-for="(group, date) of visibleGroupedItems"
           :key="date"
           class="mb-16"
@@ -32,8 +33,6 @@ const { items } = defineProps({
     default: () => [],
   },
 });
-
-// console.log(items)
 
 const groupedItems = computed(() => {
   return items.reduce((groups, item) => {
