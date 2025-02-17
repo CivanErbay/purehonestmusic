@@ -49,10 +49,19 @@
             class="flex flex-col lg:items-end lg:justify-between text-white text-sm bg-[#2F2F2F] -my-4 -mx-6 px-6 py-4 md:w-[240px]">
             <div class="flex">
               <div v-if="item.spotifyPreviewUrl" class="flex items-center justify-center mr-2">
-                <button @click.stop="toggleAudio(item.id)" class="w-7 h-7 rounded-full bg-[#242424] bg-opacity-50 flex items-center justify-center">
-                    <NuxtImg v-if="isPlaying === item.id" key="pause" class="w-3 h-3" src="/stop.svg" />
-                    <NuxtImg v-else key="play" class="ml-1 w-4 h-4" src="/play.svg" />
-                </button>
+                <button 
+                @click.stop="toggleAudio(item.id)" 
+                class="w-7 h-7 rounded-full bg-[#242424] bg-opacity-50 flex items-center justify-center relative overflow-hidden"
+              >
+              <NuxtImg 
+                :class="['w-3 h-3 absolute transition-opacity duration-300 ease-in-out', isPlaying === item.id ? 'opacity-100' : 'opacity-0']"
+                src="/stop.svg" 
+              />
+              <NuxtImg 
+                :class="['ml-1 w-4 h-4 absolute transition-opacity duration-300 ease-in-out', isPlaying !== item.id ? 'opacity-100' : 'opacity-0']"
+                src="/play.svg" 
+              />
+              </button>
                 <audio ref="audioElement" :src="item.spotifyPreviewUrl"></audio>
               </div>
               <button :class="[
@@ -118,8 +127,14 @@
             <button @click.stop="toggleAudio(item.id)"
               class="w-7 h-7 rounded-full bg-[#242424] flex items-center justify-center">
               <!--   <NuxtImg v-if="isPlaying" class="w-5 h-5" src="/pause.svg" /> -->
-              <NuxtImg v-if="isPlaying === item.id" key="pause" class="w-3 h-3" src="/stop.svg" />
-              <NuxtImg v-else key="play" class="ml-1 w-4 h-4" src="/play.svg" />
+              <NuxtImg 
+                :class="['w-3 h-3 absolute transition-opacity duration-300 ease-in-out', isPlaying === item.id ? 'opacity-100' : 'opacity-0']"
+                src="/stop.svg" 
+              />
+              <NuxtImg 
+                :class="['ml-1 w-4 h-4 absolute transition-opacity duration-300 ease-in-out', isPlaying !== item.id ? 'opacity-100' : 'opacity-0']"
+                src="/play.svg" 
+              />
             </button>
             <audio ref="audioElement" :src="item.spotifyPreviewUrl"></audio>
           </div>
@@ -200,4 +215,5 @@ const toggleAudio = (id) => {
   }
 };
 </script>
+
 
