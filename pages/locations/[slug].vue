@@ -10,12 +10,13 @@
         Konzerte in {{ venueData.name }}
       </h3>
     </DefaultGrid>
-    <ItemList :items="concerts" />
+    <ItemList :items="sortedConcerts" />
   </div>
 </template>
 
 <script setup>
 import { useRoute } from 'vue-router';
+import { ref, computed } from 'vue';
 
 const route = useRoute();
 
@@ -35,14 +36,12 @@ const { data: concerts } = await fetchCollectionHandler(
   { where: { venue: { equals: venueData.value.id } } }
 );
 
+const sortedConcerts = computed(() => {
+  const now = new Date();
+  return concerts.value
+    .filter(concert => new Date(concert.date) >= now)
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
+});
+
 const usersStore = useUserStore();
-const { isLocationFavorite, toggleFavoriteLocation, user } = usersStore;
-
-watch(user.favoriteLocations, () => {
-  venueData.value.isUserFavorite = isLocationFavorite(venueData.value.id);
-});
-
-onMounted(() => {
-  venueData.value.isUserFavorite = isLocationFavorite(venueData.value.id);
-});
 </script>
