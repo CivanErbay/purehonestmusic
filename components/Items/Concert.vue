@@ -49,10 +49,9 @@
             class="flex flex-col lg:items-end lg:justify-between text-white text-sm bg-[#2F2F2F] -my-4 -mx-6 px-6 py-4 md:w-[240px]">
             <div class="flex">
               <div v-if="item.spotifyPreviewUrl" class="flex items-center justify-center mr-2">
-                <button @click.stop="toggleAudio"
-                  class="w-7 h-7 rounded-full bg-[#242424] bg-opacity-50 flex items-center justify-center">
-                  <!--   <NuxtImg v-if="isPlaying" class="w-5 h-5" src="/pause.svg" /> -->
-                  <NuxtImg class="ml-1 w-4 h-4" src="/play.svg" />
+                <button @click.stop="toggleAudio(item.id)" class="w-7 h-7 rounded-full bg-[#242424] bg-opacity-50 flex items-center justify-center">
+                    <NuxtImg v-if="isPlaying === item.id" key="pause" class="w-3 h-3" src="/stop.svg" />
+                    <NuxtImg v-else key="play" class="ml-1 w-4 h-4" src="/play.svg" />
                 </button>
                 <audio ref="audioElement" :src="item.spotifyPreviewUrl"></audio>
               </div>
@@ -116,10 +115,11 @@
           </button>
           <div v-if="item.spotifyPreviewUrl"
             class="absolute right-11 dynamicElementHeight flex items-center justify-center">
-            <button @click.stop="toggleAudio"
+            <button @click.stop="toggleAudio(item.id)"
               class="w-7 h-7 rounded-full bg-[#242424] flex items-center justify-center">
               <!--   <NuxtImg v-if="isPlaying" class="w-5 h-5" src="/pause.svg" /> -->
-              <NuxtImg class="ml-1 w-4 h-4" src="/play.svg" />
+              <NuxtImg v-if="isPlaying === item.id" key="pause" class="w-3 h-3" src="/stop.svg" />
+              <NuxtImg v-else key="play" class="ml-1 w-4 h-4" src="/play.svg" />
             </button>
             <audio ref="audioElement" :src="item.spotifyPreviewUrl"></audio>
           </div>
@@ -183,16 +183,21 @@ const isUserFavorite = computed(() => {
   return usersStore.user.favoriteConcerts.includes(props.item.id);
 });
 
-const isPlaying = ref(false);
+const isPlaying = ref(null);
 const audioElement = ref(null);
 
-const toggleAudio = () => {
-  if (!audioElement.value) return;
-  if (isPlaying.value) {
+const toggleAudio = (id) => {
+  if (isPlaying.value && isPlaying.value !== id) {
+    document.querySelectorAll("audio").forEach(audio => audio.pause());
+  }
+  
+  if (isPlaying.value === id) {
     audioElement.value.pause();
+    isPlaying.value = null;
   } else {
     audioElement.value.play();
+    isPlaying.value = id;
   }
-  isPlaying.value = !isPlaying.value;
 };
 </script>
+
