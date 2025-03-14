@@ -9,7 +9,7 @@
           <NuxtLink
             class="xl:ml-6 ml-2 py-1"
             target="_blank"
-            to="https://www.instagram.com/pure.honest.music/"
+            to="https://www.instagram.com/purehonestmusic_/"
           >
             <NuxtImg src="/instagram.svg" class="w-6 h-6 ml-2" />
           </NuxtLink>
