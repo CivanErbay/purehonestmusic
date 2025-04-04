@@ -7,11 +7,8 @@
         :item="promoterData"
       />
       <h2 class="text-3xl mt-8 lg:mt-16 lg:col-start-3 lg:col-end-11 mb-4">
-        Mehr von {{ promoterData.name }} <br>
+        Bevorstehende {{ promoterData.name }} Konzerte:  <br>
       </h2>
-      <h3 class="text-3xl lg:col-start-3 lg:col-end-11 mb-4">
-      Bevorstehende Konzerte:
-    </h3>
     </DefaultGrid>
 
     <!-- Bevorstehende Konzerte -->
@@ -20,7 +17,7 @@
     <!-- Vergangene Konzerte -->
     <div v-if="pastConcerts.length">
       <DefaultGrid :no-spacing="true" class="mt-10 mb-4">
-        <h3 class="text-3xl lg:col-start-3 lg:col-end-11 mb-4">Vergangene Konzerte:</h3>
+        <h3 class="text-3xl lg:col-start-3 lg:col-end-11 mb-4">Vergangene {{ promoterData.name }} Konzerte:</h3>
       </DefaultGrid>
       <ItemList :items="pastConcerts" :hideDateHeaders="true" />
     </div>

@@ -18,7 +18,7 @@
 <!-- Vergangene Konzerte -->
     <div v-if="pastConcerts.length">
       <DefaultGrid :no-spacing="true" class="mt-10 mb-4">
-        <h3 class="text-3xl lg:col-start-3 lg:col-end-11 mb-4">Vergangene Konzerte:</h3>
+        <h3 class="text-3xl lg:col-start-3 lg:col-end-11 mb-4">Vergangene Konzerte im {{ venueData.name }}:</h3>
       </DefaultGrid>
       <ItemList :items="pastConcerts" :hideDateHeaders="true" />
     </div>
