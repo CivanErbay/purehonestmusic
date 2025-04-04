@@ -1,19 +1,24 @@
 <template>
   <div class="">
     <ItemList :items="filteredItems" />
+
+    <!-- Button mit fixierter Breite & zentrierten, größeren hüpfenden Punkten -->
     <div
       v-if="beforeDateFilteredConcerts.length > filteredItems.length"
       class="flex justify-center"
     >
       <button
-        @click="concertStore.showMoreConcerts"
-        class="btn"
+        @click="handleShowMore"
+        class="btn relative flex items-center justify-center gap-2 px-6 py-2 min-h-[42px] w-[300px]"
         :class="{
-          'opacity-50 pointer-events-none':
-            filteredItems.length >= concertStore.totalConcerts,
+          'opacity-50 pointer-events-none': isLoading || filteredItems.length >= concertStore.totalConcerts,
         }"
       >
-        Mehr Konzerte anzeigen
+        <!-- Dots centered via flex and absolute positioning -->
+        <div v-if="isLoading" class="absolute inset-0 flex items-center justify-center">
+          <div class="dots-loader"><div></div></div>
+        </div>
+        <span v-else>Mehr Konzerte anzeigen</span>
       </button>
     </div>
 
@@ -27,14 +32,24 @@
 </template>
 
 <script setup>
+import { ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
-const concertStore = useConcertStore();
+const isLoading = ref(false);
 
+const concertStore = useConcertStore();
 const route = useRoute();
 
+const handleShowMore = async () => {
+  if (isLoading.value) return;
+
+  isLoading.value = true;
+  await new Promise((resolve) => setTimeout(resolve, 600)); // künstlicher Delay
+  concertStore.showMoreConcerts();
+  isLoading.value = false;
+};
+
 const beforeDateFilteredConcerts = computed(() => {
-  // const query = route.query.q ? route.query.q.toLowerCase() : '';
   const selectedVenues = route.query.venues
     ? route.query.venues.split(',')
     : [];
@@ -58,38 +73,30 @@ const beforeDateFilteredConcerts = computed(() => {
       );
     return venueMatch && promoterMatch && genreMatch;
   });
-
-  // .sort((a, b) => new Date(a.date) - new Date(b.date));
 });
-
 
 const filteredItems = computed(() => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const selectedDate = route.query.date;
 
-  // show only concerts from today on
   let items = beforeDateFilteredConcerts.value.filter((item) => {
     const itemDate = new Date(item.date);
     return itemDate >= today;
   });
 
-  // show only concerts from selected date
   if (selectedDate) {
-    return items.value.filter((item) => {
+    return items.filter((item) => {
       const itemDate = new Date(item.date);
-
       const newItemDate = new Date(itemDate).toISOString().split('T')[0];
       return newItemDate === selectedDate;
     });
   }
 
-  // show all items if less than 7
   if (items.length < 7) {
     return items;
   }
 
-  // check maxDate if more than 7 items, but always show at least 7
   const maxDate = new Date(today);
   maxDate.setDate(maxDate.getDate() + concertStore.showUntilDaysFromNow);
   maxDate.setHours(0, 0, 0, 0);
@@ -102,7 +109,7 @@ const filteredItems = computed(() => {
   });
 });
 
-// this checks that we always show some concerts when clicking on show more
+// auto load fallback
 watch(
   [() => concertStore.showUntilDaysFromNow, () => filteredItems.value.length],
   async (newVal, oldVal) => {
@@ -116,3 +123,40 @@ watch(
   }
 );
 </script>
+
+<style scoped>
+.dots-loader {
+  display: flex;
+  gap: 6px;
+  height: 1rem;
+}
+
+.dots-loader::before,
+.dots-loader::after,
+.dots-loader div {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background: #d1d1d1;
+  border-radius: 50%;
+  animation: bounce 0.22s infinite alternate; /* ⬅️ schneller gemacht */
+}
+
+.dots-loader::after {
+  animation-delay: 0.15s; /* leicht angepasst */
+}
+.dots-loader div {
+  animation-delay: 0.21s;  /* leicht angepasst */
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+</style>
