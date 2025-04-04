@@ -3,17 +3,21 @@
     <div class="xl:col-start-3 xl:col-end-11">
       <TransitionGroup name="list" tag="div">
         <div
-
           v-for="(group, date) of visibleGroupedItems"
           :key="date"
-          class="mb-16"
+          :class="hideDateHeaders ? 'mb-5' : 'mb-16'"
         >
-          <p class="text-2xl font-semibold mb-6">
-            <span :class="{ underline: weekDay(group[0].date) === 'Heute' }"
-              >{{ weekDay(group[0].date) }},</span
-            >
-            {{ date }}
+          <!-- Datumstitel nur anzeigen, wenn nicht ausgeblendet -->
+          <p v-if="!hideDateHeaders" class="text-2xl font-semibold mb-6">
+            <template v-if="weekDay(group[0].date) === 'Heute'">
+            <span class="underline">Heute</span>, {{ date }}
+            </template>
+            <template v-else>
+              {{ weekDay(group[0].date) }}, {{ date }}
+            </template>
           </p>
+
+          <!-- Konzert-Items -->
           <ItemsConcert
             v-for="item in group"
             :key="item.id"
@@ -25,15 +29,44 @@
     </div>
   </DefaultGrid>
 </template>
+
 <script setup>
-const { items } = defineProps({
+import { computed } from 'vue';
+import { format } from 'date-fns';
+import { de } from 'date-fns/locale';
+
+const { items, hideDateHeaders = false } = defineProps({
   items: {
     type: Array,
     required: true,
     default: () => [],
   },
+  hideDateHeaders: {
+    type: Boolean,
+    default: false,
+  },
 });
 
+// Gibt "Heute" oder den Wochentag zurück
+function weekDay(dateStr) {
+  const date = new Date(dateStr);
+  const today = new Date();
+
+  // Datum ohne Uhrzeit vergleichen
+  const sameDay =
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear();
+
+  return sameDay ? 'Heute' : format(date, 'EEEE', { locale: de });
+}
+
+// Formatiert Datum als "13.03.2025"
+function formattedDate(dateStr) {
+  return format(new Date(dateStr), 'dd.MM.yyyy');
+}
+
+// Gruppierung nach Datum
 const groupedItems = computed(() => {
   return items.reduce((groups, item) => {
     const dateKey = formattedDate(item.date);
@@ -45,6 +78,7 @@ const groupedItems = computed(() => {
   }, {});
 });
 
+// Sichtbare Gruppen zurückgeben (z. B. alle)
 const visibleGroupedItems = computed(() => {
   const groupedDates = Object.keys(groupedItems.value);
   return groupedDates.reduce((result, date) => {
@@ -55,7 +89,7 @@ const visibleGroupedItems = computed(() => {
 </script>
 
 <style>
-.list-move, /* apply transition to moving elements */
+.list-move,
 .list-enter-active,
 .list-leave-active {
   transition: all 0.5s ease;
@@ -67,8 +101,6 @@ const visibleGroupedItems = computed(() => {
   transform: translateY(30px);
 }
 
-/* ensure leaving items are taken out of layout flow so that moving
-   animations can be calculated correctly. */
 .list-leave-active {
   position: absolute;
 }
