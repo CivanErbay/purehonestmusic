@@ -4,13 +4,13 @@
       <TransitionGroup name="list" tag="div">
         <div
           v-for="(group, date) of visibleGroupedItems"
-          :key="date"
+          :key="`${date}-${group[0]?.id || ''}`"
           :class="hideDateHeaders ? 'mb-5' : 'mb-16'"
         >
           <!-- Datumstitel nur anzeigen, wenn nicht ausgeblendet -->
           <p v-if="!hideDateHeaders" class="text-2xl font-semibold mb-6">
             <template v-if="weekDay(group[0].date) === 'Heute'">
-            <span class="underline">Heute</span>, {{ date }}
+              <span class="underline">Heute</span>, {{ date }}
             </template>
             <template v-else>
               {{ weekDay(group[0].date) }}, {{ date }}
@@ -103,5 +103,10 @@ const visibleGroupedItems = computed(() => {
 
 .list-leave-active {
   position: absolute;
+  width: 100%;
+}
+
+.list-move {
+  transition: transform 0.5s ease;
 }
 </style>
