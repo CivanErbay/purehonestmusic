@@ -229,7 +229,7 @@ const showEuroSymbol = computed(() => {
   if (!price) return false;
 
   const normalized = price.toString().replace(/\s/g, '').toLowerCase();
-  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse'];
+  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis', 'eintrittfrei!'];
   const containsExcluded = excludedTerms.some(term =>
     normalized.includes(term)
   );
@@ -243,7 +243,7 @@ const showFeeHint = computed(() => {
   if (!price) return false;
 
   const normalized = price.toString().replace(/\s/g, '').toLowerCase();
-  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse'];
+  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis', 'eintrittfrei!'];
   return !excludedTerms.some(term => normalized.includes(term));
 });
 </script>

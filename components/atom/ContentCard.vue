@@ -258,7 +258,7 @@ const showEuroSymbol = computed(() => {
   const price = props.item?.price;
   if (!price) return false;
   const normalized = price.toString().replace(/\s/g, '').toLowerCase();
-  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis'];
+  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis', 'eintrittfrei!'];
   const containsExcluded = excludedTerms.some(term => normalized.includes(term));
   const alreadyHasEuro = normalized.includes('€');
   return !containsExcluded && !alreadyHasEuro;
@@ -268,7 +268,7 @@ const showFeeHint = computed(() => {
   const price = props.item?.price;
   if (!price) return false;
   const normalized = price.toString().replace(/\s/g, '').toLowerCase();
-  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis'];
+  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis', 'eintrittfrei!'];
   return !excludedTerms.some(term => normalized.includes(term));
 });
 
@@ -278,7 +278,12 @@ const isInfoOnlyPrice = computed(() => {
   const normalized = price.toString().trim().toLowerCase();
   return (
     normalized.includes('nur abendkasse') ||
-    normalized.includes('eintritt auf spenden basis')
+    normalized.includes('eintritt frei') ||
+    normalized.includes('eintritt frei!') ||
+    normalized.includes('konzert:5') || // vollständig kleingeschrieben & ohne Leerzeichen
+    normalized.includes('konzert: 5') || // zusätzlicher check mit leerzeichen
+    normalized.includes('eintritt auf spendenbasis')
+    
   );
 });
 </script>

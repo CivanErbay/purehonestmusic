@@ -121,7 +121,7 @@ const showEuroSymbol = computed(() => {
   const price = props.item?.price;
   if (!price) return false;
   const normalized = price.toString().replace(/\s/g, '').toLowerCase();
-  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis'];
+  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis', 'eintrittfrei!'];
   const containsExcluded = excludedTerms.some(term => normalized.includes(term));
   const alreadyHasEuro = normalized.includes('€');
   return !containsExcluded && !alreadyHasEuro;
@@ -131,7 +131,7 @@ const showFeeHint = computed(() => {
   const price = props.item?.price;
   if (!price) return false;
   const normalized = price.toString().replace(/\s/g, '').toLowerCase();
-  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis'];
+  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis', 'eintrittfrei!'];
   return !excludedTerms.some(term => normalized.includes(term));
 });
 </script>
