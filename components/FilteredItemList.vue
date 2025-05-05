@@ -9,13 +9,13 @@
     >
       <button
         @click="handleShowMore"
-        class="btn relative flex items-center justify-center gap-2 px-6 py-2 min-h-[42px] w-[300px]"
+        class="btn relative flex items-center justify-center gap-2 px-6 py-5 min-h-[64px] w-[300px]"
         :class="{
           'opacity-50 pointer-events-none': isLoading || filteredItems.length >= concertStore.totalConcerts,
         }"
       >
         <!-- Dots centered via flex and absolute positioning -->
-        <div v-if="isLoading" class="absolute inset-0 flex items-center justify-center">
+        <div v-if="isLoading" class="absolute inset-0 flex items-center py-5 justify-center">
           <div class="dots-loader"><div></div></div>
         </div>
         <span v-else>Mehr Konzerte anzeigen</span>

@@ -23,9 +23,9 @@
           @click.stop.prevent="() => toggleFavoriteConcert(item.id)"
         >
           <NuxtImg
-          v-if="item.isUserFavorite"
-    class="w-4 h-4 mt-[1px] dynamicZIndex transform transition-transform duration-300 hover:scale-110"
-    src="/heart_default.svg"
+            v-if="item.isUserFavorite"
+            class="w-4 h-4 mt-[1px] dynamicZIndex transform transition-transform duration-300 hover:scale-110"
+            src="/heart_default.svg"
           />
           <NuxtImg
             v-else
@@ -63,8 +63,13 @@
         <div
           class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-6 rounded-tl-xl"
         >
-          <p class="text-lg text-primary text-right">{{ item.price }} €</p>
-          <p class="opacity-40 text-[8px] lg:text-[10p] text-right dynamicLineHeight">
+          <p v-if="showPrice" class="text-lg text-primary text-right">
+            {{ item.price }}<span v-if="showEuroSymbol"> €</span>
+          </p>
+          <p
+            v-if="showFeeHint"
+            class="opacity-40 text-[8px] lg:text-[10p] text-right dynamicLineHeight"
+          >
             ggf. zzgl. VVK-Gebühren <br class="hidden lg:block" />
             und Abwicklungskosten
           </p>
@@ -90,6 +95,8 @@
 </style>
 
 <script setup>
+import { computed, onMounted, watch } from 'vue';
+
 const props = defineProps({
   item: Object,
 });
@@ -103,5 +110,28 @@ watch(user.favoriteConcerts, () => {
 
 onMounted(() => {
   props.item.isUserFavorite = isConcertFavorite(props.item.id);
+});
+
+const showPrice = computed(() => {
+  const price = props.item?.price;
+  return price !== null && price !== undefined && price !== '';
+});
+
+const showEuroSymbol = computed(() => {
+  const price = props.item?.price;
+  if (!price) return false;
+  const normalized = price.toString().replace(/\s/g, '').toLowerCase();
+  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis'];
+  const containsExcluded = excludedTerms.some(term => normalized.includes(term));
+  const alreadyHasEuro = normalized.includes('€');
+  return !containsExcluded && !alreadyHasEuro;
+});
+
+const showFeeHint = computed(() => {
+  const price = props.item?.price;
+  if (!price) return false;
+  const normalized = price.toString().replace(/\s/g, '').toLowerCase();
+  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis'];
+  return !excludedTerms.some(term => normalized.includes(term));
 });
 </script>

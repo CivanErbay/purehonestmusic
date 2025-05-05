@@ -47,7 +47,7 @@
             </div>
           </div>
 
-          <div class="flex flex-col lg:items-end lg:justify-between text-white text-sm bg-[#2F2F2F] -my-4 -mx-6 px-6 py-4 md:w-[240px]">
+          <div class="flex flex-col lg:items-end lg:justify-between text-white text-sm bg-[#2F2F2F] -my-4 -mx-6 px-6 py-4 md:w-[250px]">
             <div class="flex">
               <div v-if="item.spotifyPreviewUrl" class="flex items-center justify-center mr-2">
                 <button
@@ -94,8 +94,10 @@
               >
                 Eine <span class="underline">{{ item.promoter.name }}</span>-Show
               </NuxtLink>
-              <p v-if="item.price" class="text-lg text-primary text-right">{{ item.price }} €</p>
-              <p class="opacity-40 text-[8px] lg:text-xs text-right">
+              <p v-if="showPrice" class="text-lg text-primary text-right">
+                {{ item.price }}<span v-if="showEuroSymbol"> €</span>
+              </p>
+              <p v-if="showFeeHint" class="opacity-40 text-[8px] lg:text-xs text-right">
                 ggf. zzgl. VVK-Gebühren <br class="hidden lg:block" />
                 und Abwicklungskosten
               </p>
@@ -180,7 +182,7 @@
             </div>
           </div>
 
-          <div class="flex flex-col items-end w-1/2 bg-[#2F2F2F] px-3 py-5 rounded-tl-xl rounded-br-xl">
+          <div class="flex flex-col text-right items-end w-1/2 bg-[#2F2F2F] px-3 py-5 rounded-tl-xl rounded-br-xl">
             <NuxtLink
               v-if="item.promoter"
               class="opacity-40"
@@ -188,8 +190,10 @@
             >
               Eine <span class="underline">{{ item.promoter.name }}</span>-Show
             </NuxtLink>
-            <p v-if="item.price" class="text-lg text-primary text-right">{{ item.price }} €</p>
-            <p class="opacity-40 text-[8px] dynamicLineHeight lg:text-[10p] text-right">
+            <p v-if="showPrice" class="text-lg text-primary text-right">
+              {{ item.price }}<span v-if="showEuroSymbol">€</span>
+            </p>
+            <p v-if="showFeeHint" class="opacity-40 text-[8px] dynamicLineHeight lg:text-[10p] text-right">
               ggf. zzgl. VVK-Gebühren <br class="hidden lg:block" />
               und Abwicklungskosten
             </p>
@@ -213,4 +217,33 @@ const { registerAudio, toggleAudio, isPlaying } = useAudioManager();
 const isUserFavorite = computed(() =>
   usersStore.user.favoriteConcerts.includes(props.item.id)
 );
+
+// Preislogik
+const showPrice = computed(() => {
+  const price = props.item?.price;
+  return price !== null && price !== undefined && price !== '';
+});
+
+const showEuroSymbol = computed(() => {
+  const price = props.item?.price;
+  if (!price) return false;
+
+  const normalized = price.toString().replace(/\s/g, '').toLowerCase();
+  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse'];
+  const containsExcluded = excludedTerms.some(term =>
+    normalized.includes(term)
+  );
+  const alreadyHasEuro = normalized.includes('€');
+
+  return !containsExcluded && !alreadyHasEuro;
+});
+
+const showFeeHint = computed(() => {
+  const price = props.item?.price;
+  if (!price) return false;
+
+  const normalized = price.toString().replace(/\s/g, '').toLowerCase();
+  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse'];
+  return !excludedTerms.some(term => normalized.includes(term));
+});
 </script>

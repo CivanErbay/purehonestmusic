@@ -133,11 +133,12 @@
               Eine <span class="underline">{{ item.promoter.name }}</span>-Show
             </NuxtLink>
 
-            <p v-if="item.price" class="text-lg md:text-2xl text-primary">
-              {{ item.price }} €
+            <p v-if="showPrice" class="text-lg md:text-2xl text-primary">
+              {{ item.price }}<span v-if="showEuroSymbol"> €</span>
             </p>
+
             <p
-              v-if="item.price"
+              v-if="showFeeHint"
               class="opacity-40 font-light text-xs md:text-md text-left leading-4"
             >
               ggf. zzgl. VVK-Gebühren<br class="hidden lg:block" />
@@ -153,9 +154,15 @@
               <a :href="item.ticketsLink" target="_blank" rel="noopener noreferrer">
                 <button
                   class="btn whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
-                  :disabled="isPastConcert"
+                  :disabled="!isInfoOnlyPrice && isPastConcert"
                 >
-                  {{ isPastConcert ? 'Vorverkauf beendet' : 'Zum externen Ticketkauf' }}
+                  {{
+                    isInfoOnlyPrice
+                      ? 'Weitere Informationen'
+                      : isPastConcert
+                        ? 'Vorverkauf beendet'
+                        : 'Zum externen Ticketkauf'
+                  }}
                 </button>
               </a>
             </div>
@@ -174,9 +181,15 @@
               >
                 <button
                   class="btn whitespace-nowrap w-full disabled:opacity-50 disabled:cursor-not-allowed"
-                  :disabled="isPastConcert"
+                  :disabled="!isInfoOnlyPrice && isPastConcert"
                 >
-                  {{ isPastConcert ? 'Vorverkauf beendet' : 'Zum externen Ticketkauf' }}
+                  {{
+                    isInfoOnlyPrice
+                      ? 'Weitere Informationen'
+                      : isPastConcert
+                        ? 'Vorverkauf beendet'
+                        : 'Zum externen Ticketkauf'
+                  }}
                 </button>
               </a>
             </div>
@@ -199,7 +212,6 @@ const isUserFavorite = computed(() =>
   usersStore.user.favoriteConcerts.includes(props.item.id)
 );
 
-// Konzert in Vergangenheit?
 const isPastConcert = computed(() => {
   if (!props.item?.date) return false;
   const concertDate = new Date(props.item.date);
@@ -221,9 +233,7 @@ const dateTimeStrings = computed(() => {
     const date = new Date(props.item.date).toISOString().split('T');
     const date2 = new Date(
       new Date(props.item.date).getTime() + 2 * 60 * 60 * 1000
-    )
-      .toISOString()
-      .split('T');
+    ).toISOString().split('T');
     return [date[0], date[1].slice(0, 5), date2[1].slice(0, 5)];
   }
   return [];
@@ -231,28 +241,55 @@ const dateTimeStrings = computed(() => {
 
 function handleShare() {
   if (navigator.share) {
-    navigator
-      .share({
-        title: document.title,
-        url: window.location.href,
-      })
+    navigator.share({ title: document.title, url: window.location.href })
       .then(() => console.log('Thanks for sharing!'))
       .catch(console.error);
   } else {
     console.log('Share not supported on this browser.');
   }
 }
+
+const showPrice = computed(() => {
+  const price = props.item?.price;
+  return price !== null && price !== undefined && price !== '';
+});
+
+const showEuroSymbol = computed(() => {
+  const price = props.item?.price;
+  if (!price) return false;
+  const normalized = price.toString().replace(/\s/g, '').toLowerCase();
+  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis'];
+  const containsExcluded = excludedTerms.some(term => normalized.includes(term));
+  const alreadyHasEuro = normalized.includes('€');
+  return !containsExcluded && !alreadyHasEuro;
+});
+
+const showFeeHint = computed(() => {
+  const price = props.item?.price;
+  if (!price) return false;
+  const normalized = price.toString().replace(/\s/g, '').toLowerCase();
+  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis'];
+  return !excludedTerms.some(term => normalized.includes(term));
+});
+
+const isInfoOnlyPrice = computed(() => {
+  const price = props.item?.price;
+  if (!price) return false;
+  const normalized = price.toString().trim().toLowerCase();
+  return (
+    normalized.includes('nur abendkasse') ||
+    normalized.includes('eintritt auf spenden basis')
+  );
+});
 </script>
 
 <style scoped>
 .atcb-button {
   background-color: black;
 }
-
 .mobile-bottom-fixed {
   display: none;
 }
-
 @media (max-width: 767px) {
   .mobile-bottom-fixed {
     display: flex;
