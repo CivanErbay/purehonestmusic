@@ -258,7 +258,7 @@ const showEuroSymbol = computed(() => {
   const price = props.item?.price;
   if (!price) return false;
   const normalized = price.toString().replace(/\s/g, '').toLowerCase();
-  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis', 'eintrittfrei!', 'konzert:5', 'Konzert: 5 '];
+  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis', 'eintrittfrei!', 'konzert:5', 'Konzert: 5 ', 'eintrittkonzert:5'];
   const containsExcluded = excludedTerms.some(term => normalized.includes(term));
   const alreadyHasEuro = normalized.includes('€');
   return !containsExcluded && !alreadyHasEuro;
@@ -268,7 +268,7 @@ const showFeeHint = computed(() => {
   const price = props.item?.price;
   if (!price) return false;
   const normalized = price.toString().replace(/\s/g, '').toLowerCase();
-  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis', 'eintrittfrei!', 'konzert:5', 'Konzert: 5 '];
+  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis', 'eintrittfrei!', 'konzert:5', 'Konzert: 5 ', 'eintrittkonzert:5'];
   return !excludedTerms.some(term => normalized.includes(term));
 });
 
