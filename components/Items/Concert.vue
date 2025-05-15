@@ -191,7 +191,7 @@
               Eine <span class="underline">{{ item.promoter.name }}</span>-Show
             </NuxtLink>
             <p v-if="showPrice" class="text-lg text-primary text-right">
-              {{ item.price }}<span v-if="showEuroSymbol">€</span>
+              {{ item.price }}<span v-if="showEuroSymbol"> €</span>
             </p>
             <p v-if="showFeeHint" class="opacity-40 text-[8px] dynamicLineHeight lg:text-[10p] text-right">
               ggf. zzgl. VVK-Gebühren <br class="hidden lg:block" />
