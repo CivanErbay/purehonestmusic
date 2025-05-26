@@ -11,6 +11,17 @@
           Alle auf dieser Website veröffentlichten Beiträge, Interviews und Medien dienen ausschließlich der Unterstützung und Wertschätzung von Künstler*innen und ihrer Musik. Sollte dennoch ein Inhalt unbeabsichtigt gegen Rechte Dritter verstoßen, bitten wir um eine kurze Nachricht – wir werden das Anliegen umgehend prüfen und gegebenenfalls entsprechende Maßnahmen ergreifen.
           Vielen Dank für eure Unterstützung und euer Interesse an unserer Website! 
         </p>
+            <div class="mt-12 text-center">
+  <h4 class="text-text text-lg font-semibold mb-4">
+    PURE.HONEST.MUSIC unterstützt die Kampagne <a href="https://www.keinkoelschfuernazis.cologne/die-kampagne" target="_blank" rel="noopener" class="text-primary underline hover:opacity-80">
+      „KEIN KÖLSCH FÜR NAZIS„
+    </a>
+  </h4>
+  <a href="https://www.keinkoelschfuernazis.cologne/die-kampagne" target="_blank" rel="noopener">
+    <img src="/public/Koelsch_Bierdeckel_Vorn_rund_2024_Kurven_400-400.png" alt="Kein Kölsch für Nazis Logo"
+         class="mx-auto h-[240px] w-[240px] hover:opacity-80 transition-opacity duration-300 mt-10 mb-10">
+  </a>
+</div>
       </div>
     </div>
   </DefaultGrid>
