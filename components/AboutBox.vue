@@ -15,18 +15,19 @@
           Du bist Musiker:in, organisierst Konzerte oder betreibst eine Location in Köln – und Deine Veranstaltung fehlt noch auf PURE.HONEST.MUSIC?
           Dann schick uns eine kurze E-Mail mit den wichtigsten Angaben zu Deinem Event. Wir freuen uns über jede Nachricht und prüfen, ob Dein Konzert oder Festival in unsere kuratierte Auswahl passt.
 
-          Reiche dein Event <a href="mailto:info@purehonestmusic.com?subject=Konzertankündigung auf PURE.HONEST.MUSIC" class="text-primary underline">hier</a> ein!
+          Reiche dein Event <a href="mailto:info@purehonestmusic.com?subject=Konzertankündigung auf PURE.HONEST.MUSIC" class="text-primary underline hover:opacity-80 duration-300">hier</a> ein!
         </p>
-            <div class="mt-12 text-center">
+            <div class="mt-16 text-center">
   <h4 class="uppercase text-text text-[18px] font-semibold mb-5">
-    PURE.HONEST.MUSIC unterstützt die Kampagne <a href="https://www.keinkoelschfuernazis.cologne/die-kampagne" target="_blank" rel="noopener" class="text-primary underline hover:opacity-80">
-      „KEIN KÖLSCH FÜR NAZIS„
+    PURE.HONEST.MUSIC unterstützt die Kampagne <a href="https://www.keinkoelschfuernazis.cologne/die-kampagne" target="_blank" rel="noopener" class="text-primary underline hover:opacity-80 duration-300">
+      „KEIN KÖLSCH FÜR NAZIS“
     </a>
   </h4>
-  <a href="https://www.keinkoelschfuernazis.cologne/die-kampagne" target="_blank" rel="noopener">
-    <img src="/public/Koelsch_Bierdeckel_Vorn_rund_2024_Kurven_400-400.png" alt="Kein Kölsch für Nazis Logo"
-         class="mx-auto h-[240px] w-[240px] hover:opacity-80 transition-opacity duration-300 mt-10 mb-10">
-  </a>
+<a href="https://www.keinkoelschfuernazis.cologne/die-kampagne" target="_blank" rel="noopener" class="inline-block">
+  <img src="/public/Koelsch_Bierdeckel_Vorn_rund_2024_Kurven_400-400.png" 
+       alt="Kein Kölsch für Nazis Logo"
+       class="mx-auto h-[240px] w-[240px] hover:opacity-80 hover:scale-105 transition-all duration-300 mt-4 mb-10">
+</a>
 </div>
       </div>
     </div>
