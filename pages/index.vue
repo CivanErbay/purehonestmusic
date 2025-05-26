@@ -10,11 +10,11 @@
     <ConcertFilter :venues="venues" :genres="genres" :promoters="promoters" />
     <FilteredItemList />
 
-    <Recommendations
+    <!--<Recommendations
       :items="landing.highlightedConcerts"
       headline="Unsere
         Konzertempfehlungen"
-    />
+    />-->
     <!--<Recommendations
       v-if="
         landing.genreConcerts1 && landing.genreConcerts1.concerts.length > 2
