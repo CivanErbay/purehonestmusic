@@ -26,7 +26,7 @@
 <a href="https://www.keinkoelschfuernazis.cologne/die-kampagne" target="_blank" rel="noopener" class="inline-block">
   <img src="/public/Koelsch_Bierdeckel_Vorn_rund_2024_Kurven_400-400.png" 
        alt="Kein Kölsch für Nazis Logo"
-       class="mx-auto h-[240px] w-[240px] hover:opacity-80 hover:scale-105 transition-all duration-300 mt-4 mb-10">
+       class="mx-auto h-[220px] w-[220px] transition-all duration-300 mt-4 mb-10 transform hover:opacity-80 hover:scale-105 hover:[transform:rotate(10deg)_scale(1.05)]">
 </a>
 </div>
       </div>
