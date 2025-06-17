@@ -17,7 +17,7 @@ const { data: concert } = useLivePreview({
 });
 
 useHead({
-  title: `${concert.value.name} am ${formattedDate(concert.value.date)} in ${concert.value.venue?.name}`, // This is the title of the page.
+  title: `${concert.value.name} live – Konzert am ${formattedDate(concert.value.date)} in KÖLN @ ${concert.value.venue?.name}`, // This is the title of the page.
   htmlAttrs: { lang: 'de' },
   meta: [
     {
