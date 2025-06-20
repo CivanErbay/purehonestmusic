@@ -14,11 +14,35 @@
         <h5 class="opacity-70 text-sm text-center px-3">
           {{ artist.genres?.map((it) => it.name).join(', ') }}
         </h5>
-        <div class="flex-1 px-3 mt-8 mb-4 text-faded">
+
+
+<div class="mt-2 flex justify-center items-center">
+  <!-- Instagram Link mit Icon -->
+  <NuxtLink
+    v-if="artist.instagramLink"
+    :to="artist.instagramLink"
+    class="flex items-center justify-center w-10 h-10 py-1"
+    target="_blank"
+  >
+    <NuxtImg src="/instagram.svg" class="w-5 h-5" />
+  </NuxtLink>
+
+  <!-- Spotify Link mit Icon -->
+  <NuxtLink
+    v-if="artist.spotifyLink"
+    :to="artist.spotifyLink"
+    class="flex items-center justify-center w-10 h-10 py-1"
+    target="_blank"
+  >
+    <NuxtImg src="/spotify.svg" class="w-5 h-5" />
+  </NuxtLink>
+</div>
+
+        <div class="flex-1 px-3 mt-5 mb-4 text-faded">
           <UtilsRichTextRenderer v-if="artist.description" :nodes="artist.description" :customClasses="'text-sm customLineHight'" />
         </div>
         <ClientOnly>
-          <div v-if="artist.spotifyIframe" v-html="artist.spotifyIframe"></div>
+          <div class="mt-4" v-if="artist.spotifyIframe" v-html="artist.spotifyIframe"></div>
         </ClientOnly>
       </div>
     </div>
