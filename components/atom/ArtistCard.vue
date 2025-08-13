@@ -9,7 +9,7 @@
         </div>
       </div>
 
-      <div class="pt-12 flex flex-col h-full flex-1 z-10 bg-[#242424]">
+      <div class="pt-12 flex flex-col rounded-t-none rounded-b-xl z-10 bg-[#242424]">
         <h6 class="text-center px-3 pt-3 font-semibold">{{ artist.name }}</h6>
         <h5 class="opacity-70 text-sm text-center px-3">
           {{ artist.genres?.map((it) => it.name).join(', ') }}

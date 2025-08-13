@@ -5,8 +5,6 @@
       :title="landing.title"
       :subtitle="landing.subtitle"
     />
-    <br />
-    <br />
     <ConcertFilter :venues="venues" :genres="genres" :promoters="promoters" />
     <FilteredItemList />
 

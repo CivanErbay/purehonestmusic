@@ -2,12 +2,16 @@
   <div>
     <!-- Promoter-Infos -->
     <DefaultGrid :no-spacing="true" class="mt-5 lg:mt-10 mb-8">
-      <AtomContentCard
-        class="lg:col-start-3 lg:col-end-11"
-        :item="promoterData"
-      />
-      <h2 class="text-3xl mt-8 lg:mt-16 lg:col-start-3 lg:col-end-11 mb-4">
-        Bevorstehende {{ promoterData.name }} Konzerte:  <br>
+      <!-- Wrapper ist das Grid-Item: ab lg über alle 12 Spalten, <xl ohnehin 1-spaltig = volle Breite -->
+      <div class="lg:col-start-1 lg:col-end-[-1] w-full">
+        <AtomContentCard
+          :item="promoterData"
+          class="w-full block max-w-none"
+        />
+      </div>
+
+      <h2 class="text-3xl mt-8 lg:mt-16 lg:col-start-2 lg:col-end-[-1]">
+        Bevorstehende {{ promoterData.name }} Konzerte: <br>
       </h2>
     </DefaultGrid>
 
@@ -17,7 +21,9 @@
     <!-- Vergangene Konzerte -->
     <div v-if="pastConcerts.length">
       <DefaultGrid :no-spacing="true" class="mt-10 mb-4">
-        <h3 class="text-3xl lg:col-start-3 lg:col-end-11 mb-4">Vergangene {{ promoterData.name }} Konzerte:</h3>
+        <h3 class="text-3xl lg:col-start-2 lg:col-end-[-1] mb-4">
+          Vergangene {{ promoterData.name }} Konzerte:
+        </h3>
       </DefaultGrid>
       <ItemList :items="pastConcerts" :hideDateHeaders="true" />
     </div>

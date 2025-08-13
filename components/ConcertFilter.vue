@@ -1,18 +1,15 @@
 <template>
   <DefaultGrid :no-spacing="true">
     <div
-      class="xl:col-start-3 xl:col-end-11 flex flex-col sm:flex-row sm:items-center mb-12"
+      class="xl:col-start-2 xl:col-end-11 flex flex-row flex-wrap items-center mb-6 mt-6"
     >
-      <div class="text-2xl mr-12">Filter:</div>
-      <div class="flex flex-wrap sm:items-center gap-2 sm:gap-4 my-6 relative">
-        <!-- <ItemsDatepicker
-          class="w-36"
-          slug="date"
-          :open="openDropdown === 'date'"
-          :selected-date="filters.date"
-          @update:date="handleDateChange"
-          @update:toggle="handleDropdownToggle"
-        /> -->
+      <!-- Label -->
+      <div class="text-2xl mr-3 sm:mr-4 md:mr-8 xl:mr-12 flex-none shrink-0 max-[375px]:hidden">
+        Filter:
+      </div>
+
+      <!-- Dropdown-Container -->
+      <div class="flex flex-row flex-wrap items-center gap-2 sm:gap-4 my-6 lg:my-0 relative">
         <ItemsDropdown
           title="Location"
           class="font-medium"
@@ -31,19 +28,14 @@
           @update:selected-items="handleSelectedItem"
           @update:toggle="handleDropdownToggle"
         />
-        <!-- <ItemsDropdown
-          title="Veranstalter"
-          class="font-medium "
-          slug="promoters"
-          :items="filters.promoters"
-          :open="openDropdown === 'promoters'"
-          @update:selected-items="handleSelectedItem"
-          @update:toggle="handleDropdownToggle"
-        /> -->
+        <!-- ggf. weitere Dropdowns -->
       </div>
+
+      <!-- Clear-Button -->
       <div
         v-if="activeFilter"
-        class="cleartBtn min-[320px]:text-center sm:ml-4"
+        class="cleartBtn text-center order-last w-full sm:w-full sm:ml-0
+               lg:w-auto lg:ml-4 lg:order-none lg:inline-flex lg:items-center lg:justify-center"
         @click="handleClearFilter"
       >
         Filter zurücksetzen
@@ -52,92 +44,218 @@
   </DefaultGrid>
 </template>
 
+
 <script setup>
 import { reactive, watch, ref, computed, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const props = defineProps({
-  venues: {
-    type: Array,
-    default: () => [],
-  },
-  genres: {
-    type: Array,
-    default: () => [],
-  },
-  promoters: {
-    type: Array,
-    default: () => [],
-  },
+  venues: { type: Array, default: () => [] },     // bleiben ungenutzt, falls vorhanden ok
+  genres: { type: Array, default: () => [] },
+  promoters: { type: Array, default: () => [] },
 });
 
 const route = useRoute();
 const router = useRouter();
-
-const openDropdown = ref(null);
-
 const concertStore = useConcertStore();
 
+const openDropdown = ref(null);
 const handleDropdownToggle = (dropdown) => {
   openDropdown.value = openDropdown.value === dropdown ? null : dropdown;
 };
 
+/* ---------------- Suche (?q=...) + Normalisierung ---------------- */
+const qString = computed(() => {
+  const q = route.query.q;
+  return Array.isArray(q) ? q[0] : (q ?? '');
+});
+
+const normalize = (s) =>
+  (s ?? '')
+    .toString()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue')
+    .replace(/Ä/g, 'Ae').replace(/Ö/g, 'Oe').replace(/Ü/g, 'Ue')
+    .replace(/ß/g, 'ss')
+    .toLowerCase()
+    .trim();
+
+const terms = computed(() => normalize(qString.value).split(/\s+/).filter(Boolean));
+
+const matchesText = (item) => {
+  if (!terms.value.length) return true;
+  const hay = normalize([
+    item?.name,
+    item?.subtitle,
+    Array.isArray(item?.artist) ? item.artist.map(a => a?.name).join(' ') : item?.artist?.name,
+    item?.venue?.name,
+    Array.isArray(item?.genres) ? item.genres.map(g => g?.name).join(' ') : item?.genres,
+    item?.promoter?.name,
+    item?.slug
+  ].filter(Boolean).join(' '));
+  return terms.value.every(t => hay.includes(t));
+};
+
+/* ---------------- Auswahl aus URL ---------------- */
+const selectedVenues = computed(() =>
+  route.query.venues ? route.query.venues.split(',').filter(Boolean) : []
+);
+const selectedPromoters = computed(() =>
+  route.query.promoters ? route.query.promoters.split(',').filter(Boolean) : []
+);
+// Genres nutzen Namen statt Slug
+const selectedGenres = computed(() =>
+  route.query.genres ? route.query.genres.split(',').filter(Boolean) : []
+);
+
+/* ---------------- Basisitems (>= heute, optional ?date=) + Textsuche ---------------- */
+const baseItems = computed(() => {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const selectedDate = route.query.date;
+  let list = (concertStore.concerts ?? []).filter(it => new Date(it.date) >= today);
+  if (selectedDate) {
+    list = list.filter(it => new Date(it.date).toISOString().split('T')[0] === selectedDate);
+  }
+  return terms.value.length ? list.filter(matchesText) : list;
+});
+
+/* ---------------- Facetten anwenden (AND mit anderen, OHNE sich selbst) ---------------- */
+const applyFacets = (items, { withVenues=true, withPromoters=true, withGenres=true } = {}) => {
+  return items.filter((it) => {
+    const venueOk    = !withVenues    || selectedVenues.value.length === 0    || selectedVenues.value.includes(it.venue?.slug);
+    const promoterOk = !withPromoters || selectedPromoters.value.length === 0 || selectedPromoters.value.includes(it.promoter?.slug);
+    const genreOk    = !withGenres    || selectedGenres.value.length === 0    ||
+      selectedGenres.value.some(g => (it.genres || []).map(x => x.name).includes(g));
+    return venueOk && promoterOk && genreOk;
+  });
+};
+
+// Items-Mengen je Facette
+const itemsForLocationOptions = computed(() => applyFacets(baseItems.value, { withVenues:false, withPromoters:true,  withGenres:true  }));
+const itemsForPromoterOptions = computed(() => applyFacets(baseItems.value, { withVenues:true,  withPromoters:false, withGenres:true  }));
+const itemsForGenreOptions    = computed(() => applyFacets(baseItems.value, { withVenues:true,  withPromoters:true,  withGenres:false }));
+
+/* ---------------- Optionen mit Count & Selected ---------------- */
 const filters = reactive({
   venues: [],
   genres: [],
   promoters: [],
 });
 
-const updateFilters = () => {
-  filters.venues = props.venues
-    .map(({ name, slug }) => ({
-      name,
+const buildFilters = () => {
+  // Venues
+  const venueScoped = applyFacets(baseItems.value, { withVenues:false, withPromoters:true, withGenres:true });
+  const venueCounts = new Map();
+  for (const it of venueScoped) {
+    const slug = it.venue?.slug;
+    if (!slug) continue;
+    venueCounts.set(slug, (venueCounts.get(slug) || 0) + 1);
+  }
+  const venueMap = new Map();
+  for (const it of venueScoped) {
+    if (it.venue?.slug) venueMap.set(it.venue.slug, it.venue.name);
+  }
+  filters.venues = [...venueCounts.entries()]
+    .map(([slug, count]) => ({
+      name: venueMap.get(slug),
       slug,
-      selected: route.query.venues
-        ? route.query.venues.split(',').includes(slug)
-        : false,
-      count: concertStore.concerts.filter(
-        (concert) => concert.venue?.slug === slug
-      ).length,
+      selected: selectedVenues.value.includes(slug),
+      count,
     }))
-    .filter((venue) => venue.count > 0)
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .filter(v => v.count > 0)
+    .sort((a, b) => a.name.localeCompare(b.name, 'de', { sensitivity: 'base' }));
 
-  filters.genres = props.genres
-    .map(({ name }) => ({
-      name: name,
-      slug: name, // genres have no slug
-      selected: route.query.genres
-        ? route.query.genres.split(',').includes(name)
-        : false,
-      count: concertStore.concerts.filter(
-        (concert) => concert.genres.some((it) => it.name === name) // TODO check
-      ).length,
-    }))
-    .filter((genre) => genre.count > 0)
-    .sort((a, b) => a.name.localeCompare(b.name));
-
-  filters.promoters = props.promoters
-    .map(({ name, slug }) => ({
-      name,
+  // Promoters
+  const promScoped = applyFacets(baseItems.value, { withVenues:true, withPromoters:false, withGenres:true });
+  const promCounts = new Map();
+  const promMap = new Map();
+  for (const it of promScoped) {
+    const slug = it.promoter?.slug;
+    if (!slug) continue;
+    promCounts.set(slug, (promCounts.get(slug) || 0) + 1);
+    promMap.set(slug, it.promoter.name);
+  }
+  filters.promoters = [...promCounts.entries()]
+    .map(([slug, count]) => ({
+      name: promMap.get(slug),
       slug,
-      selected: route.query.promoters
-        ? route.query.promoters.split(',').includes(slug)
-        : false,
-      count: concertStore.concerts.filter(
-        (concert) => concert.promoter?.slug === slug
-      ).length,
+      selected: selectedPromoters.value.includes(slug),
+      count,
     }))
-    .filter((prom) => prom.count > 0)
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .filter(p => p.count > 0)
+    .sort((a, b) => a.name.localeCompare(b.name, 'de', { sensitivity: 'base' }));
+
+  // Genres (value = Name)
+  const genreScoped = applyFacets(baseItems.value, { withVenues:true, withPromoters:true, withGenres:false });
+  const genreCounts = new Map();
+  for (const it of genreScoped) {
+    for (const g of (it.genres || [])) {
+      if (!g?.name) continue;
+      const key = g.name;
+      genreCounts.set(key, (genreCounts.get(key) || 0) + 1);
+    }
+  }
+  filters.genres = [...genreCounts.entries()]
+    .map(([name, count]) => ({
+      name,
+      slug: name, // Genres benutzen Namen in der URL
+      selected: selectedGenres.value.includes(name),
+      count,
+    }))
+    .filter(g => g.count > 0)
+    .sort((a, b) => a.name.localeCompare(b.name, 'de', { sensitivity: 'base' }));
 };
 
+// initial + bei Änderungen neu berechnen
 watch(
-  () => [props.venues, props.genres, props.promoters, concertStore.concerts],
-  updateFilters,
+  () => [
+    concertStore.concerts,
+    route.query.q,
+    route.query.date,
+    route.query.venues,
+    route.query.promoters,
+    route.query.genres,
+  ],
+  buildFilters,
   { immediate: true }
 );
 
+/* ---------------- Route-Query Helper + Pruning ---------------- */
+const replaceQuery = (next) => router.replace({ query: next });
+
+const pruneIfNeeded = () => {
+  const next = { ...route.query };
+
+  const allowedVenues = new Set(filters.venues.map(v => v.slug));
+  const allowedProms  = new Set(filters.promoters.map(p => p.slug));
+  const allowedGenres = new Set(filters.genres.map(g => g.slug));
+
+  const prune = (val, allowed) => {
+    if (!val) return null;
+    const arr = val.split(',').filter(Boolean).filter(v => allowed.has(v));
+    return arr.length ? arr.join(',') : null;
+  };
+
+  const prunedVenues    = prune(route.query.venues,    allowedVenues);
+  const prunedPromoters = prune(route.query.promoters, allowedProms);
+  const prunedGenres    = prune(route.query.genres,    allowedGenres);
+
+  let changed = false;
+  if (prunedVenues !== (route.query.venues ?? null))   { changed = true; if (prunedVenues) next.venues = prunedVenues; else delete next.venues; }
+  if (prunedPromoters !== (route.query.promoters ?? null)) { changed = true; if (prunedPromoters) next.promoters = prunedPromoters; else delete next.promoters; }
+  if (prunedGenres !== (route.query.genres ?? null))   { changed = true; if (prunedGenres) next.genres = prunedGenres; else delete next.genres; }
+
+  if (changed) replaceQuery(next);
+};
+
+watch(
+  () => [filters.venues, filters.promoters, filters.genres],
+  pruneIfNeeded,
+  { deep: true }
+);
+
+/* ---------------- Aktive Filter-Anzeige ---------------- */
 const activeFilter = computed(
   () =>
     route.query.venues ||
@@ -146,71 +264,24 @@ const activeFilter = computed(
     route.query.date
 );
 
-watch(
-  () => route.query,
-  (newQuery) => {
-    filters.venues.forEach((venue) => {
-      venue.selected = newQuery.venues
-        ? newQuery.venues.split(',').includes(venue.slug)
-        : false;
-    });
-    filters.genres.forEach((genre) => {
-      genre.selected = newQuery.genres
-        ? newQuery.genres.split(',').includes(genre.name)
-        : false;
-    });
-    filters.promoters.forEach((promoter) => {
-      promoter.selected = newQuery.promoters
-        ? newQuery.promoters.split(',').includes(promoter.slug)
-        : false;
-    });
-  }
-);
-
-const handleDateChange = (date) => {
-  const query = { ...route.query };
-
-  if (date) {
-    const formattedDate = new Date(date).toISOString();
-    filters.date = formattedDate.split('T')[0];
-    query.date = formattedDate.split('T')[0];
-  } else {
-    filters.date = null;
-    delete query.date;
-  }
-
-  router.push({ query });
-};
-
-watch(
-  () => route.query.date,
-  (newDate) => {
-    filters.date = newDate || null;
-  }
-);
-
+/* ---------------- Auswahl-Handler ---------------- */
 const handleSelectedItem = (category, selectedItem) => {
   const query = { ...route.query };
   const selectedItems = query[category] ? query[category].split(',') : [];
 
-  if (selectedItems.includes(selectedItem.slug)) {
-    const index = selectedItems.indexOf(selectedItem.slug);
-    selectedItems.splice(index, 1);
-  } else {
-    selectedItems.push(selectedItem.slug);
-  }
+  const key = selectedItem.slug;
+  const idx = selectedItems.indexOf(key);
+  if (idx >= 0) selectedItems.splice(idx, 1);
+  else selectedItems.push(key);
 
-  if (selectedItems.length > 0) {
-    query[category] = selectedItems.join(',');
-  } else {
-    delete query[category];
-  }
+  if (selectedItems.length > 0) query[category] = selectedItems.join(',');
+  else delete query[category];
 
   router.push({ query });
 };
 
 const handleClearFilter = () => {
-  concertStore.resetShowUntilDaysFromNow();
+  concertStore.resetShowUntilDaysFromNow?.();
   router.push({ query: {} });
 };
 
@@ -219,14 +290,8 @@ const handleClickOutside = (event) => {
     openDropdown.value = null;
   }
 };
-
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside);
-});
-
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside);
-});
+onMounted(() => document.addEventListener('click', handleClickOutside));
+onUnmounted(() => document.removeEventListener('click', handleClickOutside));
 </script>
 
 <style scoped>
@@ -245,9 +310,5 @@ onUnmounted(() => {
   color: #fff;
   cursor: pointer;
 }
-
-.cleartBtn:hover {
-  background-color: #e0e0e0;
-  color: #000;
-}
+.cleartBtn:hover { background-color: #e0e0e0; color: #000; }
 </style>

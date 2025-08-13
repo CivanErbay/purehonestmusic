@@ -1,18 +1,25 @@
 <template>
-  <div class="rounded-xl overflow-hidden mb-8 xl:mb-0">
-    <div class="flex bg-[#242424] rounded-lg relative h-full flex-col md:flex-row">
-      <div v-if="item.heroImage" class="w-full h-32 z-10 md:w-56 md:h-full relative">
-        <div class="absolute z-10 inset-0 duration-300 transition-all">
-          <AtomMedia
-            v-bind="item.heroImage || (item.artist.length > 0 && item.artist[0].heroImage)"
-            :isCover="true"
-            class="h-full"
-          />
+  <!-- links bündig im 12er-Grid: Spalten 1–8 -->
+  <div class="rounded-xl overflow-hidden mb-8 xl:mb-0 xl:col-start-1 xl:col-end-10 xl:self-start">
+    <div class="flex bg-[#242424] rounded-lg relative flex-col">
+      <!-- Inhaltsspalte inkl. Bild oben -->
+      <!-- ⬇️ justify-between entfernt, optional gap ergänzt -->
+      <div class="flex flex-col relative gap-6">
+        <!-- HERO IMAGE OBEN -->
+        <div
+          v-if="item.heroImage || (item.artist && item.artist.length > 0 && item.artist[0].heroImage)"
+          class="w-full h-40 md:h-64 relative overflow-hidden"
+        >
+          <div class="absolute inset-0 duration-300 transition-all">
+            <AtomMedia
+              v-bind="item.heroImage || (item.artist.length > 0 && item.artist[0].heroImage)"
+              :isCover="true"
+              class="h-full"
+            />
+          </div>
         </div>
-      </div>
 
-      <div class="h-full flex flex-1 flex-col justify-between relative">
-        <div class="flex flex-col py-10 px-4 md:px-6">
+        <div class="flex flex-col px-4 md:px-6">
           <div class="relative w-full mb-4">
             <p v-if="item.date" class="text-primary">
               {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
@@ -20,7 +27,7 @@
             <h4 class="text-3xl font-semibold text-text">
               {{ item.name }}
             </h4>
-            <div class="flex mt-2 md:mt-0 md:absolute md:top-0 md:right-0 items-center md:justify-center">
+            <div class="flex mt-2 md:mt-0 md:absolute md:top-[-82px] md:right-0 items-center md:justify-center">
               <button
                 @click="handleShare"
                 class="rounded-full bg-[#2F2F2F] w-7 h-7 flex items-center justify-center mr-2"
@@ -151,9 +158,14 @@
               class="flex justify-center mt-3"
               v-if="route.path.startsWith('/concerts')"
             >
-              <a :href="item.ticketsLink" target="_blank" rel="noopener noreferrer">
+              <a
+                :href="item.ticketsLink"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex justify-center w-full"
+              >
                 <button
-                  class="btn whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="btn whitespace-nowrap w-full max-w-[350px] text-center disabled:opacity-50 disabled:cursor-not-allowed"
                   :disabled="!isInfoOnlyPrice && isPastConcert"
                 >
                   {{
@@ -170,17 +182,19 @@
             <!-- Mobile Button -->
             <div
               ref="fixedButton"
-              class="flex justify-center mt-3 mobile-bottom-fixed"
+              class="flex justify-center mt-3 mobile-bottom-fixed transition-all duration-300"
               v-if="route.path.startsWith('/concerts')"
+              :class="showFixedButton ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-4 pointer-events-none'"
+              :aria-hidden="!showFixedButton"
             >
               <a
                 :href="item.ticketsLink"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="w-full"
+                class="w-full flex justify-center"
               >
                 <button
-                  class="btn whitespace-nowrap w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="btn whitespace-nowrap w-full max-w-[350px] text-center disabled:opacity-50 disabled:cursor-not-allowed"
                   :disabled="!isInfoOnlyPrice && isPastConcert"
                 >
                   {{
@@ -196,17 +210,19 @@
           </div>
         </div>
       </div>
+      <!-- Ende Inhaltsspalte -->
     </div>
   </div>
 </template>
 
 <script setup>
 import 'add-to-calendar-button';
-import { computed } from 'vue';
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 
 const route = useRoute();
 const props = defineProps({ item: Object });
 
+/* ===== Favorites etc. ===== */
 const usersStore = useUserStore();
 const isUserFavorite = computed(() =>
   usersStore.user.favoriteConcerts.includes(props.item.id)
@@ -249,6 +265,7 @@ function handleShare() {
   }
 }
 
+/* ===== Preis-Helper ===== */
 const showPrice = computed(() => {
   const price = props.item?.price;
   return price !== null && price !== undefined && price !== '';
@@ -258,7 +275,7 @@ const showEuroSymbol = computed(() => {
   const price = props.item?.price;
   if (!price) return false;
   const normalized = price.toString().replace(/\s/g, '').toLowerCase();
-  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis', 'eintrittfrei!', 'konzert:5', 'Konzert: 5 ', 'eintrittkonzert:5'];
+  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis', 'eintrittfrei!', 'konzert:5', 'konzert: 5', 'eintrittkonzert:5'];
   const containsExcluded = excludedTerms.some(term => normalized.includes(term));
   const alreadyHasEuro = normalized.includes('€');
   return !containsExcluded && !alreadyHasEuro;
@@ -268,7 +285,7 @@ const showFeeHint = computed(() => {
   const price = props.item?.price;
   if (!price) return false;
   const normalized = price.toString().replace(/\s/g, '').toLowerCase();
-  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis', 'eintrittfrei!', 'konzert:5', 'Konzert: 5 ', 'eintrittkonzert:5'];
+  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis', 'eintrittfrei!', 'konzert:5', 'konzert: 5', 'eintrittkonzert:5'];
   return !excludedTerms.some(term => normalized.includes(term));
 });
 
@@ -280,11 +297,40 @@ const isInfoOnlyPrice = computed(() => {
     normalized.includes('nur abendkasse') ||
     normalized.includes('eintritt frei') ||
     normalized.includes('eintritt frei!') ||
-    normalized.includes('konzert:5') || // vollständig kleingeschrieben & ohne Leerzeichen
-    normalized.includes('konzert: 5') || // zusätzlicher check mit leerzeichen
+    normalized.includes('konzert:5') ||
+    normalized.includes('konzert: 5') ||
     normalized.includes('eintritt auf spendenbasis')
-    
   );
+});
+
+/* ===== Sichtbarkeit Mobile-Button (fade in/out) ===== */
+const originalButton = ref(null);
+const fixedButton = ref(null);
+const isOriginalInView = ref(false);
+const showFixedButton = computed(() => route.path.startsWith('/concerts') && !isOriginalInView.value);
+
+let io;
+onMounted(() => {
+  if (originalButton.value && typeof IntersectionObserver !== 'undefined') {
+    io = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        isOriginalInView.value = entry.isIntersecting;
+      },
+      {
+        root: null,
+        threshold: 0.1,
+      }
+    );
+    io.observe(originalButton.value);
+  }
+});
+
+onBeforeUnmount(() => {
+  if (io && originalButton.value) {
+    io.unobserve(originalButton.value);
+    io.disconnect();
+  }
 });
 </script>
 
@@ -295,7 +341,7 @@ const isInfoOnlyPrice = computed(() => {
 .mobile-bottom-fixed {
   display: none;
 }
-@media (max-width: 767px) {
+@media (max-width: 1536px) {
   .mobile-bottom-fixed {
     display: flex;
     position: fixed;
@@ -307,6 +353,7 @@ const isInfoOnlyPrice = computed(() => {
     backdrop-filter: blur(30px);
     background-color: rgba(19, 19, 19, 0.6);
     padding: 10px;
+    will-change: opacity, transform;
   }
 }
 </style>

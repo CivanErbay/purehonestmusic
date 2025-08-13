@@ -1,6 +1,7 @@
 <template>
   <DefaultGrid>
-    <div class="xl:col-start-3 xl:col-end-11">
+    <!-- volle Breite im 12er-Grid -->
+    <div class="xl:col-start-1 xl:col-end-[-1]">
       <div class="bg-[#242424] w-full p-8 rounded-xl">
         <h2 class="uppercase text-primary text-base">Willkommen bei PURE.HONEST.MUSIC</h2>
         <h3 class="uppercase text-text text-[22px] font-semibold mb-5">
@@ -17,18 +18,22 @@
 
           Reiche dein Event <a href="mailto:info@purehonestmusic.com?subject=Konzertankündigung auf PURE.HONEST.MUSIC" class="text-primary underline hover:opacity-80 duration-300">hier</a> ein!
         </p>
-            <div class="mt-16 text-center">
-  <h4 class="uppercase text-text text-[18px] font-semibold mb-5">
-    PURE.HONEST.MUSIC unterstützt die Kampagne <a href="https://www.keinkoelschfuernazis.cologne/die-kampagne" target="_blank" rel="noopener" class="text-primary underline hover:opacity-80 duration-300">
-      „KEIN KÖLSCH FÜR NAZIS“
-    </a>
-  </h4>
-<a href="https://www.keinkoelschfuernazis.cologne/die-kampagne" target="_blank" rel="noopener" class="inline-block">
-  <img src="/public/Koelsch_Bierdeckel_Vorn_rund_2024_Kurven_400-400.png" 
-       alt="Kein Kölsch für Nazis Logo"
-       class="mx-auto h-[220px] w-[220px] transition-all duration-300 mt-4 mb-10 transform hover:opacity-80 hover:scale-105 hover:[transform:rotate(10deg)_scale(1.05)]">
-</a>
-</div>
+
+        <div class="mt-16 text-center">
+          <h4 class="uppercase text-text text-[18px] font-semibold mb-5">
+            PURE.HONEST.MUSIC unterstützt die Kampagne
+            <a href="https://www.keinkoelschfuernazis.cologne/die-kampagne" target="_blank" rel="noopener" class="text-primary underline hover:opacity-80 duration-300">
+              „KEIN KÖLSCH FÜR NAZIS“
+            </a>
+          </h4>
+          <a href="https://www.keinkoelschfuernazis.cologne/die-kampagne" target="_blank" rel="noopener" class="inline-block">
+            <img
+              src="/public/Koelsch_Bierdeckel_Vorn_rund_2024_Kurven_400-400.png"
+              alt="Kein Kölsch für Nazis Logo"
+              class="mx-auto h-[220px] w-[220px] transition-all duration-300 mt-4 mb-10 transform hover:opacity-80 hover:scale-105 hover:[transform:rotate(10deg)_scale(1.05)]"
+            >
+          </a>
+        </div>
       </div>
     </div>
   </DefaultGrid>

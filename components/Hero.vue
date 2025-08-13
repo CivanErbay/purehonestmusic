@@ -5,8 +5,14 @@
         :style="backgroundStyles">
         <div class="absolute inset-0 bg-black opacity-50 rounded-xl"></div>
         <DefaultGrid :no-spacing="true" class="relative z-10">
-          <h3 
-            class="xl:col-start-3 xl:col-end-8 text-2xl xl:text-4xl 2xl:text-6xl w-2/3 dynamicElementHeight2 xl:w-full ml-4 xl:ml-0 lg:whitespace-nowrap font-bold">
+         <h3
+            class="xl:col-start-2 xl:col-end-11
+                   text-[clamp(1.5rem,calc(1.05rem+1.6vw),3.75rem)]
+                   leading-[clamp(1.2,1.12+0.2vw,1.28)]
+                   w-2/3 dynamicElementHeight2 xl:w-full
+                   ml-[clamp(1.25rem,5vw,2.5rem)] xl:ml-0
+                   lg:whitespace-normal font-bold"
+          >
             {{ title }}
             <br class="hidden lg:block" />
             {{ subtitle }}
