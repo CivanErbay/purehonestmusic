@@ -51,7 +51,10 @@
               <div class="flex">
                 <NuxtImg class="w-4 h-4" src="/calendar.svg" alt="" aria-hidden="true" role="presentation" />
                 <p v-if="item.date" class="ml-1">
-                  {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
+                  <span :class="isToday(item.date) ? 'underline decoration-orange-500 underline-offset-2' : ''">
+                    {{ weekDay(item.date) }}
+                  </span>,
+                  {{ formattedDate(item.date) }}
                 </p>
               </div>
               <NuxtLink :to="`/locations/${item.venue.slug}`" v-if="item.venue">
@@ -216,7 +219,10 @@
             <div class="flex">
               <NuxtImg class="w-4 h-4" src="/calendar.svg" alt="" aria-hidden="true" role="presentation" />
               <p v-if="item.date" class="ml-1 opacity-40">
-                {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
+                <span :class="isToday(item.date) ? 'underline decoration-orange-500 underline-offset-2' : ''">
+                  {{ weekDay(item.date) }}
+                </span>,
+                {{ formattedDate(item.date) }}
               </p>
             </div>
             <div>
@@ -258,7 +264,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAudioManager } from '@/composables/useAudioManager'
 
@@ -318,6 +324,29 @@ const heroAltFallback = computed(() => {
   return n ? `${n} – Konzertbild` : 'Konzertbild'
 })
 
+/* Client-Flag für korrekte Lokalzeit-Checks */
+const isClient = ref(false)
+onMounted(() => { isClient.value = true })
+
+/* YYYY-MM-DD als lokale Mitternacht parsen (statt UTC) */
+function parseLocalDate(dateStr) {
+  if (!dateStr) return new Date(NaN)
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr)
+  if (m) return new Date(+m[1], +m[2] - 1, +m[3])
+  return new Date(dateStr)
+}
+
+function isToday(dateStr) {
+  if (!isClient.value) return false // vermeidet falsches SSR-Ergebnis
+  const d = parseLocalDate(dateStr)
+  const t = new Date()
+  return (
+    d.getFullYear() === t.getFullYear() &&
+    d.getMonth() === t.getMonth() &&
+    d.getDate() === t.getDate()
+  )
+}
+
 /* ARIA Label für die ganze Karte */
 const cardAriaLabel = computed(() => {
   const title = props.item?.name ?? 'Konzert'
@@ -334,25 +363,18 @@ function onCardKeydown(e, slug) {
   router.push(`/concerts/${slug}`)
 }
 
-// --- Wochentag abgekürzt, ohne Punkt; „Heute“ als Sonderfall
+// --- Wochentag abgekürzt, ohne Punkt; „Heute“ als Sonderfall (clientseitig)
 function weekDay(dateStr) {
-  const d = new Date(dateStr)
+  const d = parseLocalDate(dateStr)
   if (isNaN(d)) return ''
-
-  const t = new Date()
-  const same =
-    d.getFullYear() === t.getFullYear() &&
-    d.getMonth() === t.getMonth() &&
-    d.getDate() === t.getDate()
-  if (same) return 'Heute'
-
+  if (isToday(dateStr)) return 'Heute'
   const abbr = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'] // 0 = Sonntag
   return abbr[d.getDay()]
 }
 
 // --- dd.MM.yyyy
 function formattedDate(dateStr) {
-  const d = new Date(dateStr)
+  const d = parseLocalDate(dateStr)
   if (isNaN(d)) return ''
   const dd = String(d.getDate()).padStart(2, '0')
   const mm = String(d.getMonth() + 1).toString().padStart(2, '0')
