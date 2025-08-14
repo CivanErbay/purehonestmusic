@@ -6,15 +6,29 @@
         <div
           v-for="(group, date) of visibleGroupedItems"
           :key="`${date}-${group[0]?.id || ''}`"
-          :class="!hideDateHeaders ? 'mb-16' : 'mb-5'"
+          :class="!hideDateHeaders ? 'mb-2' : 'mb-2'"
         >
-          <!-- Datumstitel: bleibt sichtbar, sobald die Gruppe Treffer hat -->
-          <p v-if="!hideDateHeaders" class="text-2xl font-semibold mb-6">
+          <!-- Datumstitel -->
+          <p
+            v-if="!hideDateHeaders"
+            class="md:text-2xl font-semibold mb-2 sticky top-0 z-10 pt-4 pb-2 fs-mobile-13"
+            style="
+              display: flex;
+              align-items: center;
+              -webkit-backdrop-filter: blur(30px);
+              backdrop-filter: blur(30px);
+              background-color: rgba(19, 19, 19, 0.6);
+              width: 100%;
+              will-change: opacity, transform;
+            "
+          >
             <template v-if="weekDay(group[0].date) === 'Heute'">
-              <span class="underline">Heute</span>, {{ date }}
+              <span class="underline text-[#E77000]">Heute,&nbsp;</span>
+              <span>{{ date }}</span>
             </template>
             <template v-else>
-              {{ weekDay(group[0].date) }}, {{ date }}
+              <span class="text-current">{{ weekDay(group[0].date) }},&nbsp;</span>
+              <span>{{ date }}</span>
             </template>
           </p>
 
@@ -29,37 +43,41 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { format } from 'date-fns';
-import { de } from 'date-fns/locale';
-import { useRoute } from 'vue-router';
+import { computed } from 'vue'
+import { format } from 'date-fns'
+import { useRoute } from 'vue-router'
 
-const route = useRoute();
+const route = useRoute()
 
 const { items, hideDateHeaders = false } = defineProps({
   items: { type: Array, required: true, default: () => [] },
   hideDateHeaders: { type: Boolean, default: false },
-});
+})
 
+// Abkürzungen ohne Punkt: So, Mo, Di, Mi, Do, Fr, Sa (Heute bleibt speziell)
 function weekDay(dateStr) {
-  const date = new Date(dateStr);
-  const today = new Date();
+  const date = new Date(dateStr)
+  const today = new Date()
   const sameDay =
     date.getDate() === today.getDate() &&
     date.getMonth() === today.getMonth() &&
-    date.getFullYear() === today.getFullYear();
-  return sameDay ? 'Heute' : format(date, 'EEEE', { locale: de });
+    date.getFullYear() === today.getFullYear()
+
+  if (sameDay) return 'Heute'
+
+  const abbr = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'] // 0 = Sonntag
+  return abbr[date.getDay()]
 }
 
 function formattedDate(dateStr) {
-  return format(new Date(dateStr), 'dd.MM.yyyy');
+  return format(new Date(dateStr), 'dd.MM.yyyy')
 }
 
 // --- Suche (aus URL ?q=...) ---
 const qString = computed(() => {
-  const q = route.query.q;
-  return Array.isArray(q) ? q[0] : (q ?? '');
-});
+  const q = route.query.q
+  return Array.isArray(q) ? q[0] : (q ?? '')
+})
 
 const normalize = (s) =>
   (s ?? '')
@@ -70,13 +88,13 @@ const normalize = (s) =>
     .replace(/Ä/g, 'Ae').replace(/Ö/g, 'Oe').replace(/Ü/g, 'Ue')
     .replace(/ß/g, 'ss')
     .toLowerCase()
-    .trim();
+    .trim()
 
-const terms = computed(() => normalize(qString.value).split(/\s+/).filter(Boolean));
-const isSearching = computed(() => terms.value.length > 0);
+const terms = computed(() => normalize(qString.value).split(/\s+/).filter(Boolean))
+const isSearching = computed(() => terms.value.length > 0)
 
 const matches = (item) => {
-  if (!isSearching.value) return true;
+  if (!isSearching.value) return true
   const hay = normalize([
     item?.name,
     item?.subtitle,
@@ -85,39 +103,43 @@ const matches = (item) => {
     Array.isArray(item?.genres) ? item.genres.map(g => g?.name).join(' ') : item?.genres,
     item?.promoter?.name,
     item?.slug
-  ].filter(Boolean).join(' '));
-  return terms.value.every(t => hay.includes(t));
-};
+  ].filter(Boolean).join(' '))
+  return terms.value.every(t => hay.includes(t))
+}
 
 // Gruppieren nach Datum
 const groupedItems = computed(() =>
   items.reduce((groups, item) => {
-    const dateKey = formattedDate(item.date);
-    (groups[dateKey] ||= []).push(item);
-    return groups;
+    const dateKey = formattedDate(item.date)
+    ;(groups[dateKey] ||= []).push(item)
+    return groups
   }, {})
-);
+)
 
-// Sichtbare Gruppen:
-// - ohne Suche: alle Items unverändert
-// - mit Suche: je Datum nur die gematchten Items; leere Tage werden weggelassen
+// Sichtbare Gruppen
 const visibleGroupedItems = computed(() => {
-  const result = {};
+  const result = {}
   for (const [date, group] of Object.entries(groupedItems.value)) {
     if (!isSearching.value) {
-      result[date] = group;
-      continue;
+      result[date] = group
+      continue
     }
-    const matched = group.filter(matches);
+    const matched = group.filter(matches)
     if (matched.length) {
-      result[date] = matched;
+      result[date] = matched
     }
   }
-  return result;
-});
+  return result
+})
 </script>
 
-<style>
+<style scoped>
+/* Mobile: < 640px -> 1.3rem */
+@media (max-width: 768px) {
+  .fs-mobile-13 { font-size: 1.3rem; }
+}
+
+/* Animations */
 .list-move,
 .list-enter-active,
 .list-leave-active {

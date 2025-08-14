@@ -4,7 +4,7 @@
       class="xl:col-start-2 xl:col-end-11 flex flex-row flex-wrap items-center mb-6 mt-6"
     >
       <!-- Label -->
-      <div class="text-2xl mr-3 sm:mr-4 md:mr-8 xl:mr-12 flex-none shrink-0 max-[375px]:hidden">
+      <div class="text-2xl mr-3 sm:mr-4 md:mr-8 xl:mr-12 flex-none shrink-0 max-[414px]:hidden">
         Filter:
       </div>
 
