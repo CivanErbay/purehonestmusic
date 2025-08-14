@@ -27,7 +27,7 @@
             <h4 class="text-3xl font-semibold text-text">
               {{ item.name }}
             </h4>
-            <div class="flex mt-2 md:mt-0 md:absolute md:top-[-82px] md:right-0 items-center md:justify-center">
+            <div class="flex mt-2 md:mt-0 md:absolute md:top-[-74px] md:right-0 items-center md:justify-center">
               <button
                 @click="handleShare"
                 class="rounded-full bg-[#2F2F2F] w-7 h-7 flex items-center justify-center mr-2"

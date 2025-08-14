@@ -9,7 +9,7 @@
     <!-- Grid -->
     <DefaultGrid :no-spacing="true" class="relative grid items-center mb-4 mt-4">
       <!-- Logo -->
-      <div class="flex items-end xl:col-start-1 xl:col-end-4">
+      <div class="flex items-end pb-2 lg:pb-0 xl:col-start-1 xl:col-end-4">
         <NuxtLink to="/" class="tracking-widest md:mt-0">
           <h1 class="text-lg logo dynamicLetterSpacingLogo">PURE.HONEST.MUSIC</h1>
           <h2 class="text-xs text-[#454545] w-max logo">ENTDECKE KONZERTE IN KÖLN</h2>
