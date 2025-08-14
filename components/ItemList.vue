@@ -23,11 +23,13 @@
             "
           >
             <template v-if="weekDay(group[0].date) === 'Heute'">
-              <span class="underline text-[#E77000]">Heute,&nbsp;</span>
+              <span class="underline text-[#E77000]">Heute,</span>
+              <span class="no-underline text-current" aria-hidden="true">&nbsp;</span>
               <span>{{ date }}</span>
             </template>
             <template v-else>
-              <span class="text-current">{{ weekDay(group[0].date) }},&nbsp;</span>
+              <span class="text-current">{{ weekDay(group[0].date) }},</span>
+              <span class="no-underline text-current" aria-hidden="true">&nbsp;</span>
               <span>{{ date }}</span>
             </template>
           </p>

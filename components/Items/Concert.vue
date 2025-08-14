@@ -25,7 +25,7 @@
             v-if="heroAltPayload"
             class="hidden lg:block absolute bottom-0 left-0 z-10 text-[10px] leading-none px-2 py-1
                    bg-black/60 text-white/80 rounded-tr pointer-events-none
-                   opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-out"
+                   opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"
           >
             {{ heroAltPayload }}
           </span>
@@ -42,7 +42,7 @@
         <div class="flex flex-col lg:flex-row justify-between px-4 py-3 lg:px-6 lg:py-4 w-full">
           <div class="flex flex-col justify-between w-full lg:w-2/3">
             <div class="flex flex-col mb-3">
-              <h4 v-if="item.name" class="text-lg text-text font-semibold">{{ item.name }}</h4>
+              <h4 v-if="item.name" class="text-lg text-text font-semibold mb-2">{{ item.name }}</h4>
               <p v-if="item.subtitle" class="text-sm text-white opacity-50">
                 {{ truncateSubtitle(item.subtitle) }}
               </p>
@@ -75,18 +75,19 @@
                 <button
                   @click.stop="toggleAudio(item.id)"
                   class="w-7 h-7 rounded-full bg-[#242424] bg-opacity-50 flex items-center justify-center relative overflow-hidden"
-                  :aria-label="isPlaying(item.id) ? 'Vorschau stoppen' : 'Vorschau abspielen'"
+                  :aria-label="isPlayingUi(item.id) ? 'Vorschau stoppen' : 'Vorschau abspielen'"
                 >
                   <NuxtImg
-                    :class="['w-3 h-3 absolute transition-opacity duration-300 ease-in-out', isPlaying(item.id) ? 'opacity-100' : 'opacity-0']"
+                    :class="['w-3 h-3 absolute transition-opacity duration-300 ease-in-out', isPlayingUi(item.id) ? 'opacity-100' : 'opacity-0']"
                     src="/stop.svg" alt="" aria-hidden="true" role="presentation"
                   />
                   <NuxtImg
-                    :class="['ml-1 w-4 h-4 absolute transition-opacity duration-300 ease-in-out', !isPlaying(item.id) ? 'opacity-100' : 'opacity-0']"
+                    :class="['ml-1 w-4 h-4 absolute transition-opacity duration-300 ease-in-out', !isPlayingUi(item.id) ? 'opacity-100' : 'opacity-0']"
                     src="/play.svg" alt="" aria-hidden="true" role="presentation"
                   />
                 </button>
-                <audio :ref="el => registerAudio(item.id, el)" :src="item.spotifyPreviewUrl" />
+                <!-- wichtig: Wrapper mit End-Handler -->
+                <audio :ref="el => registerAudioWithEnd(item.id, el)" :src="item.spotifyPreviewUrl" />
               </div>
 
               <button
@@ -189,21 +190,22 @@
             <button
               @click.stop="toggleAudio(item.id)"
               class="w-7 h-7 rounded-full bg-[#242424] flex items-center justify-center"
-              :aria-label="isPlaying(item.id) ? 'Vorschau stoppen' : 'Vorschau abspielen'"
+              :aria-label="isPlayingUi(item.id) ? 'Vorschau stoppen' : 'Vorschau abspielen'"
             >
               <NuxtImg
-                :class="['w-3 h-3 absolute transition-opacity duration-300 ease-in-out', isPlaying(item.id) ? 'opacity-100' : 'opacity-0']"
+                :class="['w-3 h-3 absolute transition-opacity duration-300 ease-in-out', isPlayingUi(item.id) ? 'opacity-100' : 'opacity-0']"
                 src="/stop.svg" alt="" aria-hidden="true" role="presentation"
               />
               <NuxtImg
-                :class="['ml-1 w-4 h-4 absolute transition-opacity duration-300 ease-in-out', !isPlaying(item.id) ? 'opacity-100' : 'opacity-0']"
+                :class="['ml-1 w-4 h-4 absolute transition-opacity duration-300 ease-in-out', !isPlayingUi(item.id) ? 'opacity-100' : 'opacity-0']"
                 src="/play.svg" alt="" aria-hidden="true" role="presentation"
               />
             </button>
-            <audio :ref="el => registerAudio(item.id, el)" :src="item.spotifyPreviewUrl" />
+            <!-- wichtig: Wrapper mit End-Handler -->
+            <audio :ref="el => registerAudioWithEnd(item.id, el)" :src="item.spotifyPreviewUrl" />
           </div>
 
-          <h4 v-if="item.name" class="text-lg text-text">{{ item.name }}</h4>
+          <h4 v-if="item.name" class="text-lg text-text mb-2">{{ item.name }}</h4>
           <p v-if="item.subtitle" class="text-sm text-white opacity-50 overflow-hidden dynamicLineHeight1">
             {{ truncateSubtitle(item.subtitle) }}
           </p>
@@ -256,7 +258,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAudioManager } from '@/composables/useAudioManager'
 
@@ -268,6 +270,40 @@ const { registerAudio, toggleAudio, isPlaying } = useAudioManager()
 const isUserFavorite = computed(() =>
   usersStore.user.favoriteConcerts.includes(props.item.id)
 )
+
+/** UI-Flag für „per ended gestoppt“ */
+const endedFlags = ref({}) // Record<string, boolean>
+const markEnded = (id) => { endedFlags.value[id] = true }
+const clearEnded = (id) => { if (endedFlags.value[id]) delete endedFlags.value[id] }
+/** UI-Playing = Composable-Playing UND nicht „ended“ geflaggt */
+const isPlayingUi = (id) => isPlaying(id) && !endedFlags.value[id]
+
+/** Ref-Wrapper: registriert zusätzlich 'ended' und 'play' */
+function registerAudioWithEnd(id, el) {
+  registerAudio(id, el)
+  if (!el) return
+
+  // alte Listener sauber entfernen
+  if (el.__phmEndedHandler) el.removeEventListener('ended', el.__phmEndedHandler)
+  if (el.__phmPlayHandler) el.removeEventListener('play', el.__phmPlayHandler)
+
+  el.__phmEndedHandler = () => {
+    // Zeit resetten, sicherheitshalber pausieren
+    try { el.currentTime = 0 } catch {}
+    try { el.pause?.() } catch {}
+    // Composable via künstlichem 'pause' informieren (falls es auf 'pause' hört)
+    try { el.dispatchEvent(new Event('pause')) } catch {}
+    // UI-Flag setzen, damit Icons sicher zurückspringen
+    markEnded(id)
+  }
+  el.__phmPlayHandler = () => {
+    // sobald wieder abgespielt wird, Flag löschen
+    clearEnded(id)
+  }
+
+  el.addEventListener('ended', el.__phmEndedHandler)
+  el.addEventListener('play', el.__phmPlayHandler)
+}
 
 /* Alt aus Payload (heroImage oder artist[0].heroImage) */
 const heroAltPayload = computed(() =>
@@ -319,7 +355,7 @@ function formattedDate(dateStr) {
   const d = new Date(dateStr)
   if (isNaN(d)) return ''
   const dd = String(d.getDate()).padStart(2, '0')
-  const mm = String(d.getMonth() + 1).padStart(2, '0')
+  const mm = String(d.getMonth() + 1).toString().padStart(2, '0')
   const yyyy = d.getFullYear()
   return `${dd}.${mm}.${yyyy}`
 }

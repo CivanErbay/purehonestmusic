@@ -9,7 +9,7 @@
     >
       <button
         @click="handleShowMore"
-        class="btn relative flex items-center justify-center gap-2 px-6 py-5 min-h-[64px] w-[300px]"
+        class="btn relative flex items-center justify-center gap-2 px-6 py-5 mt-10 min-h-[64px] w-[280px]"
         :class="{
           'opacity-50 pointer-events-none': isLoading || (filteredItems.length >= fullAvailableItems.length),
         }"
@@ -22,7 +22,7 @@
           </div>
 
     <!-- Counter: immer zeigen – „gezeigt von gesamt gefiltert“ -->
-    <div class="flex justify-center mt-2 text-gray-400 mb-16">
+    <div class="flex justify-center mt-2 text-gray-400 mb-12">
       <p class="text-sm">
         {{ filteredItems.length }} von
         {{ fullAvailableItems.length }} Konzerten
