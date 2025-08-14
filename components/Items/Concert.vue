@@ -326,7 +326,8 @@ const heroAltFallback = computed(() => {
 
 /* Client-Flag für korrekte Lokalzeit-Checks */
 const isClient = ref(false)
-onMounted(() => { isClient.value = true })
+const now = ref(new Date())
+onMounted(() => { isClient.value = true; now.value = new Date() })
 
 /* YYYY-MM-DD als lokale Mitternacht parsen (statt UTC) */
 function parseLocalDate(dateStr) {
@@ -337,9 +338,8 @@ function parseLocalDate(dateStr) {
 }
 
 function isToday(dateStr) {
-  if (!isClient.value) return false // vermeidet falsches SSR-Ergebnis
   const d = parseLocalDate(dateStr)
-  const t = new Date()
+  const t = now.value // reactive: triggers re-render after mount without user input
   return (
     d.getFullYear() === t.getFullYear() &&
     d.getMonth() === t.getMonth() &&
