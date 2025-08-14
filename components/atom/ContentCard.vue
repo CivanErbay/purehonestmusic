@@ -341,7 +341,7 @@ onBeforeUnmount(() => {
 .mobile-bottom-fixed {
   display: none;
 }
-@media (max-width: 1536px) {
+@media (max-width: 1920px) {
   .mobile-bottom-fixed {
     display: flex;
     position: fixed;
