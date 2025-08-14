@@ -173,7 +173,7 @@
                       ? 'Weitere Informationen'
                       : isPastConcert
                         ? 'Vorverkauf beendet'
-                        : 'Zum externen Ticketkauf'
+                        : 'Zum offiziellen Ticketshop'
                   }}
                 </button>
               </a>
@@ -202,7 +202,7 @@
                       ? 'Weitere Informationen'
                       : isPastConcert
                         ? 'Vorverkauf beendet'
-                        : 'Zum externen Ticketkauf'
+                        : 'Zum offiziellen Ticketshop'
                   }}
                 </button>
               </a>
