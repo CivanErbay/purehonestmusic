@@ -3,31 +3,33 @@
     :no-spacing="true"
     class="mb-5 mt-5 xl:mt-10 gap-x-4 xl:gap-x-6"
   >
-    <!-- LINKS BÜNDIG: von xl:col-start-3 auf xl:col-start-1, mr entfernt -->
-    <AtomContentCard
-      class="xl:col-start-1 xl:col-end-10"
-      :item="item"
-    />
+    <!-- LINKS: Concert groß – Spalten 2–9 (8 Spalten, linke Gutter frei) -->
+    <div class="xl:col-start-2 xl:col-end-9 xl:self-start">
+      <AtomContentCard :item="item" />
+    </div>
 
-    <!-- RECHTS BÜNDIG (wie schon bei dir funktionierend) -->
-    <AtomArtistCard
-      v-if="artist"
-      :artist="artist"
-      class="xl:col-start-10 xl:col-end-[-1]"
-    />
+    <!-- RECHTS: Artist klein – Spalten 10–12 (3 Spalten) -->
+    <div class="xl:col-start-9 xl:col-end-12 xl:self-start">
+      <AtomArtistCard
+        v-if="artist"
+        :artist="artist"
+      />
+    </div>
   </DefaultGrid>
 </template>
 
 <script setup>
-const props = defineProps({ item: Object });
+import { computed } from 'vue'
 
+const props = defineProps({ item: Object })
+
+// Artist ermitteln + Hero-Fallback OHNE Props zu mutieren
 const artist = computed(() => {
-  if (props.item.artist.length === 0) {
-    return null;
+  const first = props.item?.artist?.[0]
+  if (!first) return null
+  return {
+    ...first,
+    heroImage: first.heroImage ?? props.item?.heroImage ?? null
   }
-  if (props.item.artist[0].heroImage === null) {
-    props.item.artist[0].heroImage = props.item.heroImage;
-  }
-  return props.item.artist[0];
-});
+})
 </script>

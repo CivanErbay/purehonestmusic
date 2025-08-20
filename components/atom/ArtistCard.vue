@@ -1,5 +1,6 @@
 <template>
-  <div class="">
+  <!-- Card selbst hat KEINE Grid-Spaltenklassen mehr -->
+  <div class="mb-8 xl:mb-0">
     <div class="rounded-xl overflow-hidden h-full flex flex-col">
       <div class="h-24 w-full relative">
         <AtomMedia class="w-full h-full blur-sm relative" :isCover="true" v-bind="artist.heroImage" />
@@ -15,32 +16,36 @@
           {{ artist.genres?.map((it) => it.name).join(', ') }}
         </h5>
 
+        <div class="mt-2 flex justify-center items-center">
+          <!-- Instagram Link mit Icon -->
+          <NuxtLink
+            v-if="artist.instagramLink"
+            :to="artist.instagramLink"
+            class="flex items-center justify-center w-10 h-10 py-1"
+            target="_blank"
+          >
+            <NuxtImg src="/instagram.svg" class="w-5 h-5" />
+          </NuxtLink>
 
-<div class="mt-2 flex justify-center items-center">
-  <!-- Instagram Link mit Icon -->
-  <NuxtLink
-    v-if="artist.instagramLink"
-    :to="artist.instagramLink"
-    class="flex items-center justify-center w-10 h-10 py-1"
-    target="_blank"
-  >
-    <NuxtImg src="/instagram.svg" class="w-5 h-5" />
-  </NuxtLink>
-
-  <!-- Spotify Link mit Icon -->
-  <NuxtLink
-    v-if="artist.spotifyLink"
-    :to="artist.spotifyLink"
-    class="flex items-center justify-center w-10 h-10 py-1"
-    target="_blank"
-  >
-    <NuxtImg src="/spotify.svg" class="w-5 h-5" />
-  </NuxtLink>
-</div>
+          <!-- Spotify Link mit Icon -->
+          <NuxtLink
+            v-if="artist.spotifyLink"
+            :to="artist.spotifyLink"
+            class="flex items-center justify-center w-10 h-10 py-1"
+            target="_blank"
+          >
+            <NuxtImg src="/spotify.svg" class="w-5 h-5" />
+          </NuxtLink>
+        </div>
 
         <div class="flex-1 px-3 mt-5 mb-4 text-faded">
-          <UtilsRichTextRenderer v-if="artist.description" :nodes="artist.description" :customClasses="'text-sm customLineHight'" />
+          <UtilsRichTextRenderer
+            v-if="artist.description"
+            :nodes="artist.description"
+            :customClasses="'text-sm customLineHight'"
+          />
         </div>
+
         <ClientOnly>
           <div class="mt-4" v-if="artist.spotifyIframe" v-html="artist.spotifyIframe"></div>
         </ClientOnly>
@@ -54,4 +59,3 @@ const props = defineProps({ artist: Object });
 </script>
 
 <style lang="scss" scoped></style>
-

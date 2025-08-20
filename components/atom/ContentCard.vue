@@ -1,9 +1,8 @@
 <template>
-  <!-- links bündig im 12er-Grid: Spalten 1–8 -->
-  <div class="rounded-xl overflow-hidden mb-8 xl:mb-0 xl:col-start-1 xl:col-end-10 xl:self-start">
+  <!-- Card selbst hat KEINE Grid-Spaltenklassen mehr -->
+  <div class="rounded-xl overflow-hidden mb-8 xl:mb-0">
     <div class="flex bg-[#242424] rounded-lg relative flex-col">
       <!-- Inhaltsspalte inkl. Bild oben -->
-      <!-- ⬇️ justify-between entfernt, optional gap ergänzt -->
       <div class="flex flex-col relative gap-6">
         <!-- HERO IMAGE OBEN -->
         <div
@@ -341,7 +340,7 @@ onBeforeUnmount(() => {
 .mobile-bottom-fixed {
   display: none;
 }
-@media (max-width: 1920px) {
+@media (max-width: 2056px) {
   .mobile-bottom-fixed {
     display: flex;
     position: fixed;
