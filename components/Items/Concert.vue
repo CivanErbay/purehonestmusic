@@ -13,7 +13,26 @@
           router.push(`/concerts/${item.slug}`);
       }"
     >
-      <div class="flex bg-[#242424] mb-5 rounded-xl overflow-hidden relative min-h-52">
+      <!-- PHM-Highlight: Border -->
+      <div
+        :class="[
+          'flex bg-[#242424] mb-5 rounded-xl overflow-hidden relative min-h-52',
+          isPHM ? 'border-2' : ''
+        ]"
+        :style="isPHM ? { borderColor: 'rgb(231 112 0 / var(--tw-text-opacity, 1))' } : null"
+      >
+        <!-- ✅ PHM-Badge: bündig oben links, leicht transparent -->
+        <span
+          v-if="isPHM"
+          class="absolute top-0 left-0 z-20 px-2 py-1 text-xs select-none pointer-events-none rounded-br-md"
+          :style="{
+            backgroundColor: 'rgb(231 112 0 / 1)',   /* leichte Transparenz */
+            color: 'rgb(211 211 211 / var(--tw-text-opacity, 1))'
+          }"
+        >
+         🎤 P.H.M präsentiert:
+        </span>
+
         <NuxtLink
           :to="`/concerts/${item.slug}`"
           class="relative inline-block group
@@ -89,7 +108,6 @@
                     src="/play.svg" alt="" aria-hidden="true" role="presentation"
                   />
                 </button>
-                <!-- wichtig: Wrapper mit End-Handler -->
                 <audio :ref="el => registerAudioWithEnd(item.id, el)" :src="item.spotifyPreviewUrl" />
               </div>
 
@@ -138,20 +156,34 @@
 
     <!-- Mobile -->
     <div
-      class="lg:hidden flex flex-1 flex-col bg-[#242424] rounded-xl relative mb-5 lg:mb-0
-             outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a1a1a]"
+      :class="[
+        'lg:hidden flex flex-1 flex-col bg-[#242424] rounded-xl relative mb-5 lg:mb-0 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a1a1a]',
+        isPHM ? 'border-2' : ''
+      ]"
+      :style="isPHM ? { borderColor: 'rgb(231 112 0 / var(--tw-text-opacity, 1))' } : null"
       role="link"
       :aria-label="cardAriaLabel"
       tabindex="0"
       @keydown="onCardKeydown($event, item.slug)"
       @click="() => router.push(`/concerts/${item.slug}`)"
     >
+      <!-- ✅ PHM-Badge (mobile) bündig, transparent -->
+      <span
+        v-if="isPHM"
+        class="absolute top-0 left-0 z-20 px-2 py-1 text-xs select-none pointer-events-none rounded-tl-xl rounded-br-md custom-border custom-font"
+        :style="{
+          backgroundColor: 'rgb(231 112 0 / 1)',
+          color: 'rgb(211 211 211 / var(--tw-text-opacity, 1))'
+        }"
+      >
+       🎤 P.H.M präsentiert:
+      </span>
+
       <NuxtLink
         :to="`/concerts/${item.slug}`"
         class="relative block rounded-t-xl outline-none
                focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset"
       >
-        <!-- Badge vorläufig komplett ausblenden -->
         <span
           v-if="heroAltPayload"
           class="hidden absolute bottom-0 left-0 z-10 text-[10px] leading-none px-2 py-1
@@ -204,7 +236,6 @@
                 src="/play.svg" alt="" aria-hidden="true" role="presentation"
               />
             </button>
-            <!-- wichtig: Wrapper mit End-Handler -->
             <audio :ref="el => registerAudioWithEnd(item.id, el)" :src="item.spotifyPreviewUrl" />
           </div>
 
@@ -273,63 +304,48 @@ const router = useRouter()
 const usersStore = useUserStore()
 const { registerAudio, toggleAudio, isPlaying } = useAudioManager()
 
+/* PHM-Highlight + Badge */
+const isPHM = computed(() => {
+  const n = props.item?.promoter?.name || ''
+  return n.trim().toUpperCase() === 'PURE.HONEST.MUSIC'
+})
+
 const isUserFavorite = computed(() =>
   usersStore.user.favoriteConcerts.includes(props.item.id)
 )
 
-/** UI-Flag für „per ended gestoppt“ */
-const endedFlags = ref({}) // Record<string, boolean>
+/** UI-Flag „per ended gestoppt“ */
+const endedFlags = ref({})
 const markEnded = (id) => { endedFlags.value[id] = true }
 const clearEnded = (id) => { if (endedFlags.value[id]) delete endedFlags.value[id] }
-/** UI-Playing = Composable-Playing UND nicht „ended“ geflaggt */
 const isPlayingUi = (id) => isPlaying(id) && !endedFlags.value[id]
 
-/** Ref-Wrapper: registriert zusätzlich 'ended' und 'play' */
 function registerAudioWithEnd(id, el) {
   registerAudio(id, el)
   if (!el) return
-
-  // alte Listener sauber entfernen
   if (el.__phmEndedHandler) el.removeEventListener('ended', el.__phmEndedHandler)
   if (el.__phmPlayHandler) el.removeEventListener('play', el.__phmPlayHandler)
-
-  el.__phmEndedHandler = () => {
-    // Zeit resetten, sicherheitshalber pausieren
-    try { el.currentTime = 0 } catch {}
-    try { el.pause?.() } catch {}
-    // Composable via künstlichem 'pause' informieren (falls es auf 'pause' hört)
-    try { el.dispatchEvent(new Event('pause')) } catch {}
-    // UI-Flag setzen, damit Icons sicher zurückspringen
-    markEnded(id)
-  }
-  el.__phmPlayHandler = () => {
-    // sobald wieder abgespielt wird, Flag löschen
-    clearEnded(id)
-  }
-
+  el.__phmEndedHandler = () => { try { el.currentTime = 0; el.pause?.(); el.dispatchEvent(new Event('pause')) } catch {} ; markEnded(id) }
+  el.__phmPlayHandler = () => { clearEnded(id) }
   el.addEventListener('ended', el.__phmEndedHandler)
   el.addEventListener('play', el.__phmPlayHandler)
 }
 
-/* Alt aus Payload (heroImage oder artist[0].heroImage) */
 const heroAltPayload = computed(() =>
   props.item?.heroImage?.alt ||
   props.item?.artist?.[0]?.heroImage?.alt ||
   ''
 )
 
-/* Fallback alt */
 const heroAltFallback = computed(() => {
   const n = props.item?.name || props.item?.artist?.[0]?.name
   return n ? `${n} – Konzertbild` : 'Konzertbild'
 })
 
-/* Client-Flag für korrekte Lokalzeit-Checks */
 const isClient = ref(false)
 const now = ref(new Date())
 onMounted(() => { isClient.value = true; now.value = new Date() })
 
-/* YYYY-MM-DD als lokale Mitternacht parsen (statt UTC) */
 function parseLocalDate(dateStr) {
   if (!dateStr) return new Date(NaN)
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr)
@@ -339,22 +355,16 @@ function parseLocalDate(dateStr) {
 
 function isToday(dateStr) {
   const d = parseLocalDate(dateStr)
-  const t = now.value // reactive: triggers re-render after mount without user input
-  return (
-    d.getFullYear() === t.getFullYear() &&
-    d.getMonth() === t.getMonth() &&
-    d.getDate() === t.getDate()
-  )
+  const t = now.value
+  return d.getFullYear() === t.getFullYear() && d.getMonth() === t.getMonth() && d.getDate() === t.getDate()
 }
 
-/* ARIA Label für die ganze Karte */
 const cardAriaLabel = computed(() => {
   const title = props.item?.name ?? 'Konzert'
   const date = props.item?.date ? `${weekDay(props.item.date)}, ${formattedDate(props.item.date)}` : ''
   return date ? `${title} – ${date} öffnen` : `${title} öffnen`
 })
 
-/* Keyboard: Enter/Space -> Route, aber nicht wenn auf Links/Buttons */
 function onCardKeydown(e, slug) {
   const key = e.key
   if (key !== 'Enter' && key !== ' ') return
@@ -363,16 +373,14 @@ function onCardKeydown(e, slug) {
   router.push(`/concerts/${slug}`)
 }
 
-// --- Wochentag abgekürzt, ohne Punkt; „Heute“ als Sonderfall (clientseitig)
 function weekDay(dateStr) {
   const d = parseLocalDate(dateStr)
   if (isNaN(d)) return ''
   if (isToday(dateStr)) return 'Heute'
-  const abbr = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'] // 0 = Sonntag
+  const abbr = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa']
   return abbr[d.getDay()]
 }
 
-// --- dd.MM.yyyy
 function formattedDate(dateStr) {
   const d = parseLocalDate(dateStr)
   if (isNaN(d)) return ''
@@ -382,7 +390,6 @@ function formattedDate(dateStr) {
   return `${dd}.${mm}.${yyyy}`
 }
 
-// Preislogik
 const showPrice = computed(() => {
   const price = props.item?.price
   return price !== null && price !== undefined && price !== ''
@@ -391,21 +398,30 @@ const showPrice = computed(() => {
 const showEuroSymbol = computed(() => {
   const price = props.item?.price
   if (!price) return false
-
   const normalized = price.toString().replace(/\s/g, '').toLowerCase()
   const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis', 'eintrittfrei!', 'konzert:5', 'konzert: 5 ', 'eintrittkonzert:5']
   const containsExcluded = excludedTerms.some(term => normalized.includes(term))
   const alreadyHasEuro = normalized.includes('€')
-
   return !containsExcluded && !alreadyHasEuro
 })
 
 const showFeeHint = computed(() => {
   const price = props.item?.price
   if (!price) return false
-
   const normalized = price.toString().replace(/\s/g, '').toLowerCase()
   const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis', 'eintrittfrei!', 'konzert:5', 'konzert: 5 ', 'eintrittkonzert:5']
   return !excludedTerms.some(term => normalized.includes(term))
 })
 </script>
+
+<style scoped>
+.custom-border {
+  border-top-left-radius: 0.6rem !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.custom-font {
+  font-weight: 600 !important;
+}
+</style>
