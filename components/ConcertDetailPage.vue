@@ -9,7 +9,7 @@
     </div>
 
     <!-- RECHTS: Artist klein – Spalten 10–12 (3 Spalten) -->
-    <div class="xl:col-start-9 xl:col-end-11 xl:self-start">
+    <div class="xl:col-start-9 xl:col-end-12 xl:self-start">
       <AtomArtistCard
         v-if="artist"
         :artist="artist"
