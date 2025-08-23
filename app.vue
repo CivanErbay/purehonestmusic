@@ -7,8 +7,8 @@
       <transition name="fade">
         <CookieBanner
           v-if="showBanner"
-          @acceptCookies="acceptCookies"
-          @declineCookies="declineCookies"
+          @accept-cookies="acceptCookies"
+          @decline-cookies="declineCookies"
           :settings="settings"
         />
       </transition>
@@ -31,26 +31,17 @@ useSeoMeta({
 });
 
 useHead({
-  title: settings.value.metaTitle, // This is the title of the page.
+  title: settings.value.metaTitle,
   htmlAttrs: { lang: 'de' },
   meta: [
-    {
-      name: 'description',
-      content: settings.value.metaDescription, // This is the description of the page.
-    },
-    {
-      property: 'og:title',
-      content: settings.value.metaTitle, // This is the Open Graph title, used by Telegram for the title.
-    },
-    {
-      property: 'og:description',
-      content: settings.value.metaDescription, // This is the Open Graph description, used by Telegram for the description.
-    },
+    { name: 'description', content: settings.value.metaDescription },
+    { property: 'og:title', content: settings.value.metaTitle },
+    { property: 'og:description', content: settings.value.metaDescription },
     {
       property: 'og:image',
       content:
         settings.value.socialMediaImage.sizes?.medium?.url ||
-        settings.value.socialMediaImage.url, // This is the Open Graph image, used by Telegram for the image preview.
+        settings.value.socialMediaImage.url,
     },
     { property: 'twitter:card', content: settings.value.socialMediaCard },
     { property: 'twitter:title', content: settings.value.socialMediaTitle },
@@ -64,10 +55,7 @@ useHead({
         settings.value.socialMediaImage.sizes?.medium?.url ||
         settings.value.socialMediaImage.url,
     },
-    {
-      name: 'keywords',
-      content: settings.value.keywords,
-    },
+    { name: 'keywords', content: settings.value.keywords },
   ],
 });
 
@@ -84,6 +72,7 @@ onMounted(() => {
   if (localStorage.getItem('acceptedCookies')) {
     showBanner.value = false;
     loadGoogleAnalytics();
+    // Mouseflow wird beim Start vom Plugin geladen (weil acceptedCookies vorhanden)
   } else if (localStorage.getItem('declinedCookies')) {
     showBanner.value = false;
   } else {
@@ -94,6 +83,10 @@ onMounted(() => {
 const acceptCookies = () => {
   showBanner.value = false;
   localStorage.setItem('acceptedCookies', new Date());
+
+  // >>> NEU: Plugin informieren – lädt Mouseflow sofort
+  window.dispatchEvent(new CustomEvent('consent:analytics-granted'));
+
   loadGoogleAnalytics();
 };
 
@@ -107,10 +100,9 @@ const loadGoogleAnalytics = () => {
   script.async = true;
   script.src = `https://www.googletagmanager.com/gtag/js?id=G-BWMWPYMSMH`;
   document.head.appendChild(script);
+
   window.dataLayer = window.dataLayer || [];
-  function gtag() {
-    window.dataLayer.push(arguments);
-  }
+  function gtag(){ window.dataLayer.push(arguments); }
   gtag('js', new Date());
   gtag('config', 'G-BWMWPYMSMH', {
     page_path: window.location.pathname,
