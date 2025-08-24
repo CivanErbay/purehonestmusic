@@ -23,9 +23,14 @@
             <p v-if="item.date" class="text-primary">
               {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
             </p>
-            <h4 class="text-3xl font-semibold text-text">
+
+            <!-- Titel: robustes Umbrechen bei langen Wörtern -->
+            <h4
+              class="text-3xl font-semibold text-text break-words max-w-full [overflow-wrap:anywhere] [hyphens:auto]"
+            >
               {{ item.name }}
             </h4>
+
             <div class="flex mt-2 md:mt-0 md:absolute md:top-[-74px] md:right-0 items-center md:justify-center">
               <button
                 @click="handleShare"
@@ -93,11 +98,11 @@
                 </p>
               </div>
 
-              <!-- Uhrzeit -->
+              <!-- Uhrzeit
               <div class="flex mb-4" v-if="item.date">
                 <NuxtImg class="w-4 h-4" src="/clock.svg" />
                 <p class="ml-1 opacity-40 text-xs">{{ timeString }}</p>
-              </div>
+              </div> -->
 
               <!-- Location -->
               <NuxtLink class="flex mb-4" v-if="item.venue?.name" :to="`/locations/${item.venue.slug}`">
@@ -277,21 +282,6 @@ const venueLocation = computed(() => {
   } else if (props.item.venue) {
     return `${props.item.venue.name}, ${props.item.venue.address.street}, ${props.item.venue.address.zipCode} ${props.item.venue.address.city}`;
   }
-  return '';
-});
-
-/* Uhrzeit "HH:MM Uhr" direkt aus dem ISO-String (keine TZ-Umrechnung) */
-const timeString = computed(() => {
-  const raw = props.item?.date;
-  if (!raw) return '';
-  const str = String(raw);
-  const m = str.match(/T(\d{2}):(\d{2})/);
-  if (m) return `${m[1]}:${m[2]} Uhr`;
-  try {
-    const iso = new Date(str).toISOString();
-    const m2 = iso.match(/T(\d{2}):(\d{2})/);
-    if (m2) return `${m2[1]}:${m2[2]} Uhr`;
-  } catch (_) {}
   return '';
 });
 
