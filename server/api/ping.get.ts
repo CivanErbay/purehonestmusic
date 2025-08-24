@@ -1,0 +1,1 @@
+export default () => ({ ok: true, message: 'server api works' })

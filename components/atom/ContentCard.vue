@@ -33,6 +33,7 @@
               >
                 <NuxtImg class="w-4 h-4 ml-[1px] mb-[1px]" src="/share.svg" />
               </button>
+
               <add-to-calendar-button
                 v-if="item.date"
                 class="flex items-center justify-center mr-2"
@@ -40,7 +41,7 @@
                 customCss="/calendar.css"
                 buttonStyle="custom"
                 hideTextLabelButton
-                :name="`${item.name} @ ${item.venue.name}`"
+                :name="`${item.name}${item?.venue?.name ? ' @ ' + item.venue.name : ''}`"
                 options="'Apple','Google'"
                 :location="venueLocation"
                 :startDate="dateTimeStrings[0]"
@@ -54,10 +55,7 @@
 
               <button
                 v-if="route.path.startsWith('/concerts')"
-                :class="[
-                  'rounded-full w-7 h-7 flex items-center justify-center',
-                  isUserFavorite ? 'bg-[#2F2F2F]' : 'bg-[#2F2F2F]',
-                ]"
+                class="rounded-full w-7 h-7 flex items-center justify-center bg-[#2F2F2F]"
                 @click="() => usersStore.toggleFavoriteConcert(item.id)"
               >
                 <NuxtImg
@@ -87,22 +85,35 @@
         <div class="flex flex-col md:flex-row items-center text-white bg-[#2F2F2F]">
           <div class="px-4 md:px-10 py-4 flex w-full">
             <div>
+              <!-- Datum -->
               <div class="flex mb-4 mt-2" v-if="item.date">
                 <NuxtImg class="w-4 h-4" src="/calendar.svg" />
                 <p class="ml-1 opacity-40 text-xs">
                   {{ weekDay(item.date) }}, {{ formattedDate(item.date) }}
                 </p>
               </div>
+
+              <!-- Uhrzeit -->
+              <div class="flex mb-4" v-if="item.date">
+                <NuxtImg class="w-4 h-4" src="/clock.svg" />
+                <p class="ml-1 opacity-40 text-xs">{{ timeString }}</p>
+              </div>
+
+              <!-- Location -->
               <NuxtLink class="flex mb-4" v-if="item.venue?.name" :to="`/locations/${item.venue.slug}`">
                 <NuxtImg class="w-4 h-4" src="/location.svg" />
                 <p class="ml-1 opacity-40 text-xs">{{ item.venue.name }}</p>
               </NuxtLink>
+
+              <!-- Genres -->
               <div class="flex" v-if="item.genres">
                 <NuxtImg class="w-4 h-4" src="/music.svg" />
                 <p class="ml-1 opacity-40 text-xs">
                   {{ item.genres.map((it) => it.name).join(', ') }}
                 </p>
               </div>
+
+              <!-- Adresse -->
               <div v-if="item.address" class="flex">
                 <NuxtImg class="w-4 h-4" src="/location.svg" />
                 <div class="flex flex-col">
@@ -151,20 +162,20 @@
               und Abwicklungskosten
             </p>
 
-            <!-- Desktop Button -->
+            <!-- Desktop Button (md: links +4px Innenabstand) -->
             <div
               ref="originalButton"
-              class="flex justify-center mt-3"
+              class="w-full mt-3"
               v-if="route.path.startsWith('/concerts')"
             >
               <a
                 :href="item.ticketsLink"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="flex justify-center w-full"
+                class="block w-full md:w-[280px]"
               >
                 <button
-                  class="btn whitespace-nowrap w-full max-w-[350px] text-center disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="btn w-full flex items-center justify-center gap-1 group text-center whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed !py-[0.8rem] md:!pl-[calc(2.5rem+2px)]"
                   :disabled="!isInfoOnlyPrice && isPastConcert"
                 >
                   {{
@@ -174,11 +185,24 @@
                         ? 'Vorverkauf beendet'
                         : 'Zum offiziellen Ticketshop'
                   }}
+                  <svg
+                    class="w-5 h-5 shrink-0 transition-transform duration-200 md:group-hover:translate-x-1"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
                 </button>
               </a>
             </div>
 
-            <!-- Mobile Button -->
+            <!-- Mobile Button (fix) – bekommt die +4px nur auf Desktop -->
             <div
               ref="fixedButton"
               class="flex justify-center mt-3 mobile-bottom-fixed transition-all duration-300"
@@ -193,7 +217,7 @@
                 class="w-full flex justify-center"
               >
                 <button
-                  class="btn whitespace-nowrap w-full max-w-[350px] text-center disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="btn whitespace-nowrap w-full max-w-[350px] flex items-center justify-center gap-1 group text-center disabled:opacity-50 disabled:cursor-not-allowed !py-[0.8rem] md:!pl-[calc(2rem+4px)]"
                   :disabled="!isInfoOnlyPrice && isPastConcert"
                 >
                   {{
@@ -203,6 +227,19 @@
                         ? 'Vorverkauf beendet'
                         : 'Zum offiziellen Ticketshop'
                   }}
+                  <svg
+                    class="w-5 h-5 shrink-0 transition-transform duration-200 md:group-hover:translate-x-1"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
                 </button>
               </a>
             </div>
@@ -243,6 +280,21 @@ const venueLocation = computed(() => {
   return '';
 });
 
+/* Uhrzeit "HH:MM Uhr" direkt aus dem ISO-String (keine TZ-Umrechnung) */
+const timeString = computed(() => {
+  const raw = props.item?.date;
+  if (!raw) return '';
+  const str = String(raw);
+  const m = str.match(/T(\d{2}):(\d{2})/);
+  if (m) return `${m[1]}:${m[2]} Uhr`;
+  try {
+    const iso = new Date(str).toISOString();
+    const m2 = iso.match(/T(\d{2}):(\d{2})/);
+    if (m2) return `${m2[1]}:${m2[2]} Uhr`;
+  } catch (_) {}
+  return '';
+});
+
 const dateTimeStrings = computed(() => {
   if (props.item.date) {
     const date = new Date(props.item.date).toISOString().split('T');
@@ -264,7 +316,7 @@ function handleShare() {
   }
 }
 
-/* ===== Preis-Helper ===== */
+/* Preis-Helper */
 const showPrice = computed(() => {
   const price = props.item?.price;
   return price !== null && price !== undefined && price !== '';
@@ -274,7 +326,7 @@ const showEuroSymbol = computed(() => {
   const price = props.item?.price;
   if (!price) return false;
   const normalized = price.toString().replace(/\s/g, '').toLowerCase();
-  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis', 'eintrittfrei!', 'konzert:5', 'konzert: 5', 'eintrittkonzert:5'];
+  const excludedTerms = ['ausverkauft','tba','nurabendkasse','eintrittaufspendenbasis','eintrittfrei!','konzert:5','konzert: 5','eintrittkonzert:5'];
   const containsExcluded = excludedTerms.some(term => normalized.includes(term));
   const alreadyHasEuro = normalized.includes('€');
   return !containsExcluded && !alreadyHasEuro;
@@ -284,7 +336,7 @@ const showFeeHint = computed(() => {
   const price = props.item?.price;
   if (!price) return false;
   const normalized = price.toString().replace(/\s/g, '').toLowerCase();
-  const excludedTerms = ['ausverkauft', 'tba', 'nurabendkasse', 'eintrittaufspendenbasis', 'eintrittfrei!', 'konzert:5', 'konzert: 5', 'eintrittkonzert:5'];
+  const excludedTerms = ['ausverkauft','tba','nurabendkasse','eintrittaufspendenbasis','eintrittfrei!','konzert:5','konzert: 5','eintrittkonzert:5'];
   return !excludedTerms.some(term => normalized.includes(term));
 });
 
@@ -302,7 +354,7 @@ const isInfoOnlyPrice = computed(() => {
   );
 });
 
-/* ===== Sichtbarkeit Mobile-Button (fade in/out) ===== */
+/* Sichtbarkeit Mobile-Button (fade in/out) */
 const originalButton = ref(null);
 const fixedButton = ref(null);
 const isOriginalInView = ref(false);
@@ -316,10 +368,7 @@ onMounted(() => {
         const entry = entries[0];
         isOriginalInView.value = entry.isIntersecting;
       },
-      {
-        root: null,
-        threshold: 0.1,
-      }
+      { root: null, threshold: 0.1 }
     );
     io.observe(originalButton.value);
   }
@@ -334,21 +383,15 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.atcb-button {
-  background-color: black;
-}
-.mobile-bottom-fixed {
-  display: none;
-}
+.atcb-button { background-color: black; }
+.mobile-bottom-fixed { display: none; }
+
 @media (max-width: 2056px) {
   .mobile-bottom-fixed {
     display: flex;
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    z-index: 1000;
+    bottom: 0; left: 0; right: 0;
+    width: 100%; z-index: 1000;
     backdrop-filter: blur(30px);
     background-color: rgba(19, 19, 19, 0.6);
     padding: 10px;

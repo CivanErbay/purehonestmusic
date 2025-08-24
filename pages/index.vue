@@ -27,6 +27,12 @@
       :items="landing.genreConcerts2.concerts"
       :headline="`Top Konzerte aus dem Genre: ${landing.genreConcerts2.genre.name}`"
     />-->
+<DefaultGrid :no-spacing="true" class="gap-x-4 xl:gap-x-6">
+  <div class="xl:col-start-2 xl:col-end-12">
+    <SubscribeForm />
+  </div>
+</DefaultGrid>
+
     <AboutBox />
   </div>
 </template>
