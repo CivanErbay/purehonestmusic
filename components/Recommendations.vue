@@ -7,10 +7,10 @@
       </h4>
     </div>
 
-    <!-- Row: Linker Pfeil in Spalte 1 (horizontal MITTIG), vertikal mittig zur Slider-Reihe -->
+    <!-- Row: Linker Pfeil -->
     <div class="hidden xl:flex xl:col-start-1 xl:col-end-2 items-center justify-center z-10">
       <button
-        v-if="items.length > 3"
+        v-if="normalizedItems.length > 3"
         class="arrow"
         type="button"
         aria-label="Vorheriger Slide"
@@ -24,17 +24,18 @@
       </button>
     </div>
 
-    <!-- Slider in Spalten 2–11 (grid line 2 / 12) -->
+    <!-- Slider -->
     <div class="xl:col-start-2 xl:col-end-12 col-span-12 relative">
       <ClientOnly>
-        <ConcertSlider ref="sliderRef" :items="items" />
+        <!-- WICHTIG: wir geben normalisierte Items weiter -->
+        <ConcertSlider ref="sliderRef" :items="normalizedItems" />
       </ClientOnly>
     </div>
 
-    <!-- Row: Rechter Pfeil in Spalte 12 (horizontal MITTIG), vertikal mittig -->
+    <!-- Row: Rechter Pfeil -->
     <div class="hidden xl:flex xl:col-start-12 xl:col-end-13 items-center justify-center z-10">
       <button
-        v-if="items.length > 3"
+        v-if="normalizedItems.length > 3"
         class="arrow"
         type="button"
         aria-label="Nächster Slide"
@@ -51,15 +52,35 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import ConcertSlider from '~/components/Items/ConcertSlider.vue';
+import { ref, computed } from 'vue'
+import ConcertSlider from '~/components/Items/ConcertSlider.vue'
 
-const sliderRef = ref(null);
+const sliderRef = ref(null)
 
-const { items, headline } = defineProps({
+const props = defineProps({
   items: { type: Array, required: true, default: () => [] },
-  headline: { type: String, required: false, default: '' }
-});
+  headline: { type: String, required: false, default: '' },
+})
+
+/**
+ * Normalisierung:
+ * - Setzt `item.to` auf named route { name: 'concerts-slug', params: { slug } }
+ * - Setzt `item.href` als absolute URL '/concerts/<slug>' (Fallback)
+ * - Lässt vorhandene `to`/`href` unberührt
+ */
+const normalizedItems = computed(() =>
+  (props.items ?? []).map((i) => {
+    const slug = i?.slug
+    const to =
+      i?.to ??
+      (slug ? { name: 'concerts-slug', params: { slug } } : null)
+    const href =
+      i?.href ??
+      (slug ? `/concerts/${slug}` : null)
+
+    return { ...i, to, href }
+  })
+)
 </script>
 
 <style scoped>

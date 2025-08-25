@@ -62,7 +62,7 @@
               <!-- Veranstalter -->
               <li>
                 <ItemsDropdown
-                  title="Veranstalter"
+                  title="Veranstaltende"
                   class="font-medium"
                   slug="promoters"
                   :items="filters.promoters"
