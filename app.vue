@@ -14,9 +14,18 @@
         />
       </transition>
     </div>
+
+    <!-- bestehender Overlay (unverändert) -->
     <transition name="fade">
       <div class="absolute z-50 inset-0 bg-bg" v-if="loading"></div>
     </transition>
+
+    <!-- NEU: Topmost Overlay via Teleport -->
+    <Teleport to="body">
+      <transition name="fade">
+        <div v-if="loading" class="fixed inset-0 z-[9999] bg-bg"></div>
+      </transition>
+    </Teleport>
   </div>
 </template>
 

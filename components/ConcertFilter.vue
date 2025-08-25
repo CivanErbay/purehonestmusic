@@ -495,6 +495,7 @@ onBeforeUnmount(() => {
   flex-wrap: wrap;
   gap: .5rem .5rem;
   margin-top: 1.4rem;
+  margin-left: 0; /* <-- hinzugefügt */
   padding-left: 0;
   list-style: none;
   position: relative;
@@ -502,6 +503,10 @@ onBeforeUnmount(() => {
 .active-pills > li{
   flex: 0 0 auto;
   will-change: transform;
+}
+
+.active-pills > ul{
+  margin-left: 0px !important; /* Tippfehler korrigiert */
 }
 
 .chip{
