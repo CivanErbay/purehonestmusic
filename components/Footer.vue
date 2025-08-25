@@ -7,20 +7,53 @@
       >
         <div class="flex justify-center items-center">
           <p>Folge uns auf:</p>
+
           <NuxtLink
             class="xl:ml-6 ml-2 py-1"
             target="_blank"
             to="https://www.instagram.com/purehonestmusic_/"
+            aria-label="Instagram"
           >
             <NuxtImg src="/instagram.svg" class="w-6 h-6 ml-2" />
           </NuxtLink>
-        <NuxtLink
+
+          <NuxtLink
+            class="xl:ml-1 py-1"
+            target="_blank"
+            to="https://www.tiktok.com/@pure.honest.music"
+            aria-label="TikTok"
+          >
+            <NuxtImg src="/tiktok.svg" class="w-6 h-6 ml-2" />
+          </NuxtLink>
+
+          <NuxtLink
+            class="xl:ml-1 py-1"
+            target="_blank"
+            to="https://www.facebook.com/profile.php?id=61575611863774"
+            aria-label="Facebook"
+          >
+            <NuxtImg src="/facebook.svg" class="w-6 h-6 ml-2" />
+          </NuxtLink>
+
+          <NuxtLink
             class="xl:ml-1 py-1"
             target="_blank"
             to="https://open.spotify.com/user/31aufngbfn6v5zypjtwzevzw47ra"
+            aria-label="Spotify"
           >
             <NuxtImg src="/spotify.svg" class="w-6 h-6 ml-2" />
           </NuxtLink>
+
+          <!-- YOUTUBE (vorbereitet, auskommentiert)
+          <NuxtLink
+            class="xl:ml-1 py-1"
+            target="_blank"
+            to="https://www.youtube.com/@purehonestmusic"   Link ggf. anpassen
+            aria-label="YouTube"
+          > 
+            <NuxtImg src="/youtube.svg" class="w-6 h-6 ml-2" />
+          </NuxtLink>
+          -->
         </div>
 
         <NuxtLink class="py-1 hover:underline" to="/about-us">Über uns</NuxtLink>

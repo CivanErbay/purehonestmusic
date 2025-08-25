@@ -13,7 +13,8 @@ const props = defineProps({
 
 const gridClasses = computed(() => {
   return [
-    'relative grid xl:grid-cols-12',
+    // 12er-Grid, mit horizontalen Gaps
+    'relative grid xl:grid-cols-12 gap-x-6 xl:gap-x-8',
     props.noSpacing ? '' : 'mb-12 xl:mb-20'
   ].join(' ');
 });
@@ -21,7 +22,5 @@ const gridClasses = computed(() => {
 
 <style>
 /* WICHTIG: Grid-Kinder dürfen schrumpfen, damit horizontale Overflow-Container funktionieren */
-.default-grid > * {
-  min-width: 0;
-}
+.default-grid > * { min-width: 0; }
 </style>

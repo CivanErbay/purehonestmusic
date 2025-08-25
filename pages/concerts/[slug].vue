@@ -1,21 +1,34 @@
+<!-- pages/concerts/[slug].vue -->
 <template>
   <div>
     <ConcertDetailPage :item="concert" />
+
+    <!-- Empfehlungen unter dem Detailblock (Wrapper nutzt shared Cache & blendet das aktuelle Konzert aus) -->
+    <GlobalRecommendations
+      :excludeSlug="concert?.slug || route.params.slug"
+      headline="Unsere
+        Konzertempfehlungen"
+    />
   </div>
 </template>
 
 <script setup>
-const route = useRoute();
-const { data } = await fetchCollectionHandler('concerts', route.params.slug);
+const route = useRoute()
 
-// The hook will take over from here and keep the preview in sync with the changes you make.
-// The `data` property will contain the live data of the document only when viewed from the Preview view of the Admin UI.
+// Aktuelles Konzert laden
+const { data } = await fetchCollectionHandler('concerts', route.params.slug)
+
+// Live Preview wie gehabt
 const { data: concert } = useLivePreview({
   initialData: data.value,
   serverURL: import.meta.env.VITE_API_ENDPOINT,
   depth: 2,
-});
+})
 
+// Optional: Cache für Landing/Empfehlungen hier vorwärmen (SSR-Vollständigkeit)
+await useLanding()
+
+// SEO bleibt wie bei dir
 useHead({
   title: `${concert.value.name} live – Konzert am ${formattedDate(concert.value.date)} in KÖLN @ ${concert.value.venue?.name}`, // This is the title of the page.
   htmlAttrs: { lang: 'de' },
@@ -64,10 +77,10 @@ useHead({
         concert.value.name,
         concert.value.subtitle,
         concert.value.venue?.name,
-        ...concert.value.genres?.map((it) => it.name),
+        ...((concert.value.genres?.map((it) => it.name)) || []),
         concert.value.promoter?.name,
       ].join(', '),
     },
   ],
-});
+})
 </script>
