@@ -1,7 +1,8 @@
 <template>
   <div class="dropdown relative text-lg font-thin" ref="triggerRef">
+    <!-- Trigger (einheitliche Höhe) -->
     <button
-      class="p-4 sm:px-6 sm:py-4 bg-bg-light rounded-lg align-middle border inline-flex items-center font-medium dropdown-hover"
+      class="phm-filter-btn bg-bg-light rounded-lg align-middle border inline-flex items-center font-medium dropdown-hover"
       :class="{ 'border-primary': open, 'border-bg-light': !open }"
       @click="onOpenClick"
       type="button"
@@ -17,40 +18,40 @@
       </svg>
     </button>
 
-    <!-- TELEPORT: Overlay + Menü -->
+    <!-- Teleport -->
     <teleport to="body">
-      <!-- Blur-Overlay -->
-      <transition name="overlay-fade">
-        <div
-          v-if="open"
-          class="phm-blur-overlay"
-          @click="closeViaOverlay"
-          aria-hidden="true"
-        />
+      <transition name="fade-fast">
+        <div v-if="open" class="phm-overlay" @click="confirmAndClose(false)"></div>
       </transition>
 
-      <!-- Menü -->
       <div v-if="open" class="dropdown dropdown-portal">
-        <div ref="menuRef" class="dropdown-menu" :style="menuStyle">
+        <div ref="menuRef" class="dropdown-menu rounded-lg border border-[#1f1f1f] p-0" :style="menuStyle">
           <!-- Header -->
-          <div class="mb-2 grid grid-cols-[32px_1fr_32px] items-center px-4 pt-4">
-            <button class="h-8 w-8 rounded-lg text-white/90 hover:bg-white/10" @click="prevMonth" aria-label="Vorheriger Monat">‹</button>
-            <div class="text-center font-semibold">{{ monthTitle }}</div>
-            <button class="h-8 w-8 rounded-lg text-white/90 hover:bg-white/10" @click="nextMonth" aria-label="Nächster Monat">›</button>
+          <div class="px-4 pt-4 pb-2">
+            <div class="mb-2 grid grid-cols-[32px_1fr_32px] items-center">
+              <button class="h-8 w-8 rounded-lg text-white/90 hover:bg-white/10" @click="prevMonth" aria-label="Vorheriger Monat">‹</button>
+              <div class="text-center font-semibold">{{ monthTitle }}</div>
+              <button class="h-8 w-8 rounded-lg text-white/90 hover:bg-white/10" @click="nextMonth" aria-label="Nächster Monat">›</button>
+            </div>
+            <div class="grid grid-cols-7 gap-1.5 text-[12px] opacity-80">
+              <div v-for="d in dow" :key="d" class="py-1 text-center">{{ d }}</div>
+            </div>
           </div>
 
-          <!-- Kalender -->
-          <div class="dropdown-scroll px-4 pb-2">
+          <!-- Kalender (nur aktueller Monat) -->
+          <div class="px-4 pb-2">
             <div class="grid grid-cols-7 gap-1.5">
-              <div v-for="d in dow" :key="d" class="py-1 text-center text-[12px] opacity-80">{{ d }}</div>
+              <!-- leere Offsets für Wochenstart -->
+              <div v-for="n in firstOffset" :key="'off-'+n" class="h-10"></div>
 
+              <!-- Tage 1..N -->
               <button
-                v-for="cell in cells"
+                v-for="cell in days"
                 :key="cell.key"
                 type="button"
                 class="relative h-10 rounded-lg border border-transparent text-white transition-colors"
                 :class="[
-                  cell.hasConcert ? 'opacity-100 hover:bg-[#242424] cursor-pointer' : 'opacity-45 cursor-not-allowed',
+                  !cell.hasConcert ? 'opacity-45 cursor-not-allowed' : 'opacity-100 hover:bg-[#242424] cursor-pointer',
                   cell.isToday ? 'border-[rgba(231,112,0,.55)]' : 'border-transparent',
                   cell.isSelected ? 'bg-[#e77000] hover:bg-[#e77000]' : ''
                 ]"
@@ -67,7 +68,7 @@
 
           <!-- Footer -->
           <div class="menu-footer">
-            <button type="button" class="btn-confirm" @click="confirmAndClose">
+            <button type="button" class="btn w-full" @click="confirmAndClose(true)">
               Bestätigen
             </button>
           </div>
@@ -96,26 +97,29 @@ const formatDE = (d) => `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullY
 const today = new Date(); today.setHours(0,0,0,0);
 const viewYear  = ref(today.getFullYear());
 const viewMonth = ref(today.getMonth());
+const sameYMD = (a,b)=>a&&b&&a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();
 
 const availableSet = computed(()=> new Set(props.availableDates||[]));
+
 const monthTitle = computed(()=> new Intl.DateTimeFormat('de-DE',{month:'long',year:'numeric'}).format(new Date(viewYear.value,viewMonth.value,1)));
 const dow = ['Mo','Di','Mi','Do','Fr','Sa','So'];
+const mondayIndex = d => (d.getDay()+6)%7;
 
-const daysInMonth = (y,m) => new Date(y, m+1, 0).getDate();
+const firstOfMonth = computed(() => new Date(viewYear.value, viewMonth.value, 1));
+const firstOffset  = computed(() => mondayIndex(firstOfMonth.value)); // leere Zellen vor dem 1.
+const daysInMonth  = computed(() => new Date(viewYear.value, viewMonth.value + 1, 0).getDate());
 
-const cells = computed(()=>{
-  // Nur echte Tage des aktuellen Monats
+const days = computed(() => {
   const out = [];
-  const dim = daysInMonth(viewYear.value, viewMonth.value);
-  for(let day=1; day<=dim; day++){
-    const d = new Date(viewYear.value, viewMonth.value, day);
-    const iso = toISO(d);
+  for (let d = 1; d <= daysInMonth.value; d++) {
+    const date = new Date(viewYear.value, viewMonth.value, d);
+    const iso  = toISO(date);
     out.push({
       key: iso,
-      date: d,
-      day,
-      isToday: d.toDateString() === today.toDateString(),
-      isSelected: selected.value ? d.toDateString() === selected.value.toDateString() : false,
+      day: d,
+      date,
+      isToday: sameYMD(date, today),
+      isSelected: selected.value ? sameYMD(date, selected.value) : false,
       hasConcert: availableSet.value.has(iso)
     });
   }
@@ -128,8 +132,12 @@ const menuRef = ref(null);
 const menuStyle = reactive({
   position:'fixed', top:'0px', left:'0px',
   width:'342px', minWidth:'180px',
-  zIndex: 1
+  maxHeight:'60vh',
+  overflow:'hidden',               // Inhalt scrollt in den Sections
+  zIndex: 1,
+  backgroundColor:'#1f1f1f',
 });
+
 const getContainerRect = (el) => {
   const container = el.closest('.mx-auto') || document.documentElement;
   return container.getBoundingClientRect();
@@ -138,7 +146,7 @@ const positionMenu = () => {
   const t = triggerRef.value, m = menuRef.value; if(!t||!m) return;
   const r = t.getBoundingClientRect();
   const cr = getContainerRect(t);
-  const vw = window.innerWidth, gap=6;
+  const vw = window.innerWidth, vh = window.innerHeight, gap=6;
   const isMobile = vw < 640;
 
   const top = r.bottom + gap;
@@ -147,6 +155,7 @@ const positionMenu = () => {
     menuStyle.left = `${cr.left}px`;
     menuStyle.width = `${cr.width}px`;
     menuStyle.minWidth = `${cr.width}px`;
+    menuStyle.maxHeight = '465px';
   } else {
     const desired = Math.max(r.width, 342);
     let left = r.left;
@@ -156,6 +165,10 @@ const positionMenu = () => {
     menuStyle.left = `${left}px`;
     menuStyle.width = `${desired}px`;
     menuStyle.minWidth = `${desired}px`;
+
+    const spaceBelow = vh - top - 8;
+    const clamped = Math.max(300, Math.min(560, spaceBelow));
+    menuStyle.maxHeight = `${clamped}px`;
   }
 
   menuStyle.top = `${top}px`;
@@ -163,26 +176,31 @@ const positionMenu = () => {
 
 const addListeners = ()=>{ window.addEventListener('resize', positionMenu, {passive:true}); window.addEventListener('scroll', positionMenu, {passive:true, capture:true}); };
 const removeListeners = ()=>{ window.removeEventListener('resize', positionMenu); window.removeEventListener('scroll', positionMenu, {capture:true}); };
+
 watch(()=>props.open, async o=>{ if(o){ await nextTick(); positionMenu(); addListeners(); } else { removeListeners(); } });
 
+/* Interaktionen */
 const onOpenClick = () => {
   emit('update:toggle', props.slug);
-  const wrap = document.querySelector('.filters-hs-wrap');
-  if (wrap && window.scrollY < wrap.getBoundingClientRect().top + window.scrollY - 20) {
-    const offset = (getComputedStyle(document.documentElement).getPropertyValue('--phm-navbar-h') || '64').replace('px', '');
-    const target = wrap.getBoundingClientRect().top + window.scrollY - (parseInt(offset, 10) || 64) - 8;
-    window.scrollTo({ top: target, behavior: 'smooth' });
-  }
+  requestAnimationFrame(() => {
+    positionMenu();
+    try {
+      if (window.scrollY < 120 && triggerRef.value) {
+        const r = triggerRef.value.getBoundingClientRect();
+        const y = r.top + window.scrollY - 88;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    } catch {}
+  });
 };
-const closeViaOverlay = () => emit('update:toggle', null);
-const confirmAndClose = () => emit('update:toggle', null);
 
 const prevMonth = () => { if(viewMonth.value===0){ viewMonth.value=11; viewYear.value-=1; } else viewMonth.value-=1; };
 const nextMonth = () => { if(viewMonth.value===11){ viewMonth.value=0; viewYear.value+=1; } else viewMonth.value+=1; };
 
-const select = (d)=>{ const iso = toISO(d); if(!availableSet.value.has(iso)) return; selected.value = new Date(d.getFullYear(), d.getMonth(), d.getDate()); emit('update:date', iso); };
-const clear = ()=>{ selected.value=null; emit('update:date',''); };
+const select = (d)=>{ const iso = toISO(d); if(!availableSet.value.has(iso)) return; selected.value = new Date(d.getFullYear(), d.getMonth(), d.getDate()); };
+const confirmAndClose = () => { emit('update:date', selected.value ? toISO(selected.value) : ''); emit('update:toggle', props.slug); };
 
+/* Sync von außen */
 watch(()=>props.selectedDate, (val)=>{
   if(!val){ selected.value=null; viewYear.value=today.getFullYear(); viewMonth.value=today.getMonth(); return; }
   const [y,m,d]=val.split('-').map(Number); const parsed=new Date(y,(m||1)-1,d||1);
@@ -196,66 +214,67 @@ const open = computed(()=>props.open);
 </script>
 
 <style scoped>
-/* ---------- Overlay ---------- */
-.phm-blur-overlay{
+/* ---------- Einheitliche Trigger-Höhe ---------- */
+.phm-filter-btn{
+  height:56px;
+  min-height:56px;
+  padding: 1rem 1.5rem;
+}
+@media (max-width: 639px){
+  .phm-filter-btn{
+    height:52px;
+    min-height:52px;
+    padding: 1rem 1.25rem;
+  }
+}
+
+/* ---------- Overlay (Blur) ---------- */
+.phm-overlay{
   position: fixed;
   inset: 0;
-  z-index: 170; /* über Content & Reset-Button, unter Menü */
-  backdrop-filter: blur(30px);
+  z-index: 220;
   -webkit-backdrop-filter: blur(30px);
-  background-color: rgba(19,19,19,0.60);
+  backdrop-filter: blur(30px);
+  background: rgba(19,19,19,.60);
 }
-.overlay-fade-enter-active,
-.overlay-fade-leave-active{ transition: opacity .18s ease; }
-.overlay-fade-enter-from,
-.overlay-fade-leave-to{ opacity: 0; }
+.fade-fast-enter-active, .fade-fast-leave-active{ transition: opacity .18s ease; }
+.fade-fast-enter-from, .fade-fast-leave-to{ opacity: 0; }
 
-/* ---------- Portal / Menü ---------- */
-.dropdown { display: inline-block; }
-.dropdown-portal { position: fixed; inset: 0; pointer-events: none; display:block; z-index: 230; }
+/* ---------- Portal ---------- */
+.dropdown-portal {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  display: block;
+  z-index: 230;
+}
 .dropdown-portal > .dropdown-menu { pointer-events: auto; }
 
 .dropdown-menu{
   position: fixed;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+  border-radius: .5rem;
   background: #1f1f1f;
-  border-radius: 12px;
-  border: 1px solid #1f1f1f;
-  box-shadow: 0 18px 40px rgba(0,0,0,0.35);
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Scrollbereich + Footer-Höhenlogik */
-.dropdown-scroll{
-  overflow-y: auto;
-  max-height: calc(var(--phm-dropdown-height, 520px) - 68px); /* 68px Footer */
-}
+/* Footer (ohne Border-Top, Blur, nur bottom corners) */
 .menu-footer{
   position: sticky;
   bottom: 0;
-  padding: 12px 16px 14px;
-  backdrop-filter: blur(30px);
+  padding: 12px 16px 14px 16px;
+  background: #1f1f1f;
   -webkit-backdrop-filter: blur(30px);
-  background: rgba(31,31,31,0.92);
+  backdrop-filter: blur(30px);
   border-top: none;
-  display: flex;
-  justify-content: center;
-}
-.btn-confirm{
-  border-radius: .25rem;
-  background-color: #E77000;
-  padding: .6rem 2rem;
-  color: #fff;
-  font-weight: 600;
-  transition: filter .15s ease;
-}
-.btn-confirm:hover{ filter: brightness(1.1); }
-
-/* Mobile: feste Höhe 465px */
-@media (max-width: 639px){
-  .dropdown-menu{ --phm-dropdown-height: 465px; width: 100% !important; min-width: 100% !important; left: 0 !important; }
+  border-bottom-left-radius: .5rem;
+  border-bottom-right-radius: .5rem;
 }
 
-/* Hover für Trigger identisch wie andere Filter */
+/* Button-Stil */
+.btn { border-radius: .25rem; background-color: rgba(231,112,0,1); padding: .5rem 2rem; color:#fff; transition: all .15s cubic-bezier(0.4,0,0.2,1); }
+
 .dropdown-hover{ border-radius:.5rem; transition:background-color .3s ease,color .3s ease; background:transparent; }
 .dropdown-hover:hover{ border-radius:.5rem; background:#242424; color:#fff; }
+.pt-1{ padding-top:1px; }
 </style>

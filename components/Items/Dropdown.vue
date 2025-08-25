@@ -1,8 +1,8 @@
 <template>
   <div class="dropdown relative text-lg font-thin" ref="triggerRef">
-    <!-- Trigger -->
+    <!-- Trigger (einheitliche Höhe) -->
     <button
-      class="p-4 sm:px-6 sm:py-4 bg-bg-light rounded-lg align-middle border inline-flex items-center font-medium dropdown-hover"
+      class="phm-filter-btn bg-bg-light rounded-lg align-middle border inline-flex items-center font-medium dropdown-hover"
       :class="{ 'border-primary': open, 'border-bg-light': !open }"
       @click="onOpenClick"
       type="button"
@@ -17,27 +17,20 @@
       </svg>
     </button>
 
-    <!-- TELEPORT: Overlay + Menü -->
+    <!-- Teleport: Overlay + Dropdown -->
     <teleport to="body">
-      <!-- Blur-Overlay (liegt über Seite, unter Menü) -->
-      <transition name="overlay-fade">
-        <div
-          v-if="open"
-          class="phm-blur-overlay"
-          @click="closeViaOverlay"
-          aria-hidden="true"
-        />
+      <transition name="fade-fast">
+        <div v-if="open" class="phm-overlay" @click="confirmAndClose(false)"></div>
       </transition>
 
-      <!-- Menü-Portal -->
       <div v-if="open" class="dropdown dropdown-portal">
         <div
           ref="menuRef"
-          class="dropdown-menu"
+          class="dropdown-menu rounded-lg border border-[#1f1f1f] p-0"
           :style="menuStyle"
         >
-          <!-- Liste -->
-          <div class="dropdown-scroll">
+          <!-- Inhalt -->
+          <div class="menu-content">
             <div v-for="item in items" :key="item.slug || item.name">
               <label class="dropdown-item dynamicFontSize">
                 <input
@@ -53,9 +46,9 @@
             </div>
           </div>
 
-          <!-- Footer: Bestätigen -->
+          <!-- Footer: fixer Bestätigen-Button -->
           <div class="menu-footer">
-            <button type="button" class="btn-confirm" @click="confirmAndClose">
+            <button type="button" class="btn w-full" @click="confirmAndClose(true)">
               Bestätigen
             </button>
           </div>
@@ -78,37 +71,36 @@ const emit = defineEmits(['update:selectedItems', 'update:toggle']);
 
 const triggerRef = ref(null);
 const menuRef = ref(null);
-
 const menuStyle = reactive({
   position: 'fixed',
   top: '0px',
   left: '0px',
   width: '342px',
   minWidth: '180px',
-  // Höhe/Scrollbereiche -> via CSS gesteuert; hier nur Fallback
-  zIndex: 1
+  maxHeight: '400px',
+  overflow: 'hidden',            // Inhalt scrollt in .menu-content
+  zIndex: 1,
+  backgroundColor: '#1f1f1f',
 });
 
 const toggleItem = (item) => emit('update:selectedItems', props.slug, item);
-const toggleDropdown = () => emit('update:toggle', props.slug);
+
 const onOpenClick = () => {
-  toggleDropdown();
-  // Smooth scroll zu den Filtern, wenn man noch weit oben ist
-  const wrap = document.querySelector('.filters-hs-wrap');
-  if (wrap && window.scrollY < wrap.getBoundingClientRect().top + window.scrollY - 20) {
-    const offset = (getComputedStyle(document.documentElement).getPropertyValue('--phm-navbar-h') || '64').replace('px', '');
-    const target = wrap.getBoundingClientRect().top + window.scrollY - (parseInt(offset, 10) || 64) - 8;
-    window.scrollTo({ top: target, behavior: 'smooth' });
-  }
+  emit('update:toggle', props.slug);
+  // sanft zu den Filtern scrollen, wenn sehr weit oben
+  requestAnimationFrame(() => {
+    positionMenu();
+    try {
+      if (window.scrollY < 120 && triggerRef.value) {
+        const r = triggerRef.value.getBoundingClientRect();
+        const y = r.top + window.scrollY - 88; // unter Navbar
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    } catch {}
+  });
 };
 
-const closeViaOverlay = () => {
-  // Overlay-Klick schließt Menü
-  emit('update:toggle', null);
-};
-const confirmAndClose = () => {
-  emit('update:toggle', null);
-};
+const confirmAndClose = () => emit('update:toggle', props.slug);
 
 const getContainerRect = (el) => {
   const container = el.closest('.mx-auto') || document.documentElement;
@@ -127,12 +119,13 @@ const positionMenu = () => {
   const gap = 6;
   const isMobile = vw < 640;
 
-  const top = rect.bottom + gap; // immer UNTER dem Trigger
+  const top = rect.bottom + gap;
 
   if (isMobile) {
     menuStyle.left = `${containerRect.left}px`;
     menuStyle.width = `${containerRect.width}px`;
     menuStyle.minWidth = `${containerRect.width}px`;
+    menuStyle.maxHeight = '465px'; // Mobile-Vorgabe
   } else {
     const desired = Math.max(rect.width, 342);
     let left = rect.left;
@@ -142,9 +135,12 @@ const positionMenu = () => {
     menuStyle.left = `${left}px`;
     menuStyle.width = `${desired}px`;
     menuStyle.minWidth = `${desired}px`;
+    // Desktop: Platz nach unten clampen (ohne hartes Limit)
+    const spaceBelow = vh - top - 8;
+    const clamped = Math.max(200, Math.min(520, spaceBelow));
+    menuStyle.maxHeight = `${clamped}px`;
   }
 
-  // Höhe: Desktop automatisch, Mobile per CSS 465px
   menuStyle.top = `${top}px`;
 };
 
@@ -161,29 +157,38 @@ watch(() => props.open, async (isOpen) => {
   if (isOpen) { await nextTick(); positionMenu(); addListeners(); }
   else { removeListeners(); }
 });
-
 onMounted(() => { if (props.open) { nextTick(positionMenu); addListeners(); } });
 onBeforeUnmount(removeListeners);
 </script>
 
 <style scoped>
-/* ---------- Overlay ---------- */
-.phm-blur-overlay{
+/* ---------- Einheitliche Trigger-Höhe ---------- */
+.phm-filter-btn{
+  height:56px;
+  min-height:56px;
+  padding: 1rem 1.5rem;
+}
+@media (max-width: 639px){
+  .phm-filter-btn{
+    height:52px;
+    min-height:52px;
+    padding: 1rem 1.25rem;
+  }
+}
+
+/* ---------- Overlay (Blur) ---------- */
+.phm-overlay{
   position: fixed;
   inset: 0;
-  z-index: 170; /* über Seiten-Content & Reset-Button, unter Menü */
-  backdrop-filter: blur(30px);
+  z-index: 220; /* unterhalb des Menüs (230), über Content/Sticky-Dates */
   -webkit-backdrop-filter: blur(30px);
-  background-color: rgba(19,19,19,0.60);
+  backdrop-filter: blur(30px);
+  background: rgba(19,19,19,.60);
 }
-.overlay-fade-enter-active,
-.overlay-fade-leave-active{ transition: opacity .18s ease; }
-.overlay-fade-enter-from,
-.overlay-fade-leave-to{ opacity: 0; }
+.fade-fast-enter-active, .fade-fast-leave-active{ transition: opacity .18s ease; }
+.fade-fast-enter-from, .fade-fast-leave-to{ opacity: 0; }
 
-/* ---------- Portal / Menü ---------- */
-.dropdown { display: inline-block; }
-
+/* ---------- Portal ---------- */
 .dropdown-portal {
   position: fixed; inset: 0;
   pointer-events: none;
@@ -192,64 +197,52 @@ onBeforeUnmount(removeListeners);
 }
 .dropdown-portal > .dropdown-menu { pointer-events: auto; }
 
+/* Container: Inhalt scrollt */
 .dropdown-menu{
   position: fixed;
+  box-shadow: 0 8px 16px rgba(0,0,0,.25);
+  border-radius: .5rem;
   background: #1f1f1f;
-  border-radius: 12px;
-  border: 1px solid #1f1f1f;
-  box-shadow: 0 18px 40px rgba(0,0,0,0.35);
-  overflow: hidden; /* damit Footer-Radius greift */
+  display: flex;
+  flex-direction: column;
 }
-
-/* Scrollbereich + Footer-Höhenlogik */
-.dropdown-scroll{
+.menu-content{
   overflow-y: auto;
-  max-height: calc(var(--phm-dropdown-height, 520px) - 68px); /* 68px Footer */
   padding: 16px;
 }
+
+/* Footer (ohne Border-Top, mit Blur, nur bottom corners) */
 .menu-footer{
   position: sticky;
   bottom: 0;
-  padding: 12px 16px 14px;
-  backdrop-filter: blur(30px);
+  padding: 12px 16px;
+  background: #1f1f1f;
   -webkit-backdrop-filter: blur(30px);
-  background: rgba(31,31,31,0.92);
+  backdrop-filter: blur(30px);
   border-top: none;
-  display: flex;
-  justify-content: center;
+  border-bottom-left-radius: .5rem;
+  border-bottom-right-radius: .5rem;
 }
-.btn-confirm{
-  border-radius: .25rem;
-  background-color: #E77000;
-  padding: .6rem 2rem;
-  color: #fff;
-  font-weight: 600;
-  transition: filter .15s ease;
-}
-.btn-confirm:hover{ filter: brightness(1.1); }
 
-/* Mobile: feste Höhe 465px */
-@media (max-width: 639px){
-  .dropdown-menu{ --phm-dropdown-height: 465px; width: 100% !important; min-width: 100% !important; left: 0 !important; }
-  .mobile-chevron { margin-left: 10px; margin-top: 3px; }
-}
+/* Button-Stil */
+.btn { border-radius: .25rem; background-color: rgba(231,112,0,1); padding: .5rem 2rem; color:#fff; transition: all .15s cubic-bezier(0.4,0,0.2,1); }
 
 /* Items */
-.dropdown-item{ display:flex; justify-content:space-between; padding:8px; background:transparent; transition:background-color .3s,color .3s; cursor:pointer; border-radius:8px;}
-.dropdown-item:hover{ background:#242424; }
+.dropdown-item{ display:flex; justify-content:space-between; padding:8px; background:transparent; transition:background-color .3s,color .3s; cursor:pointer; }
+.dropdown-item:hover{ background:#242424; border-radius:8px; }
 .item-count{ margin-left:auto; padding-left:24px; right:5px; position:relative; }
 
-/* Trigger Hover */
 .dropdown-hover{ border-radius:.5rem; transition:background-color .3s ease,color .3s ease; background:transparent; }
 .dropdown-hover:hover{ border-radius:.5rem; background:#242424; color:#fff; }
-
 .pt-1{ padding-top:1px; }
 
 /* Checkbox */
 .custom-checkbox{ width:16px; height:16px; appearance:none; background:#fff; border:none; outline:none; cursor:pointer; position:relative; margin-right:14px; }
 .custom-checkbox:checked{ background:#e77000; }
 .custom-checkbox:checked::after{ content:''; position:absolute; top:46%; left:50%; width:6px; height:10px; border:solid #fff; border-width:0 2px 2px 0; transform:translate(-50%,-50%) rotate(45deg); }
-
 .position{ display:inline; position:relative; top:.06rem; }
 .positionHover{ top:6px; position:relative; left:4px; }
+
+/* Mobile Chevron offsets */
+@media (max-width: 639px){ .mobile-chevron { margin-left: 10px; margin-top: 3px; } }
 </style>

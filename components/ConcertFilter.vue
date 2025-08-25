@@ -3,7 +3,7 @@
     <!-- ⬇️ Anker + z-Boost wenn irgendwas offen ist -->
     <div
       ref="filtersAnchor"
-      class="xl:col-start-2 xl:col-end-12 flex flex-row flex-wrap items-center mb-6 mt-6"
+      class="xl:col-start-2 xl:col-end-12 flex flex-row flex-wrap items-center mb-8 mt-10"
       :class="overlayVisible ? 'relative z-[240]' : ''"
     >
       <div class="text-2xl mr-3 sm:mr-4 md:mr-8 xl:mr-12 flex-none shrink-0 max-[414px]:hidden">
