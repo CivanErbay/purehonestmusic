@@ -8,19 +8,11 @@
           :key="`${date}-${group[0]?.id || ''}`"
           :class="!hideDateHeaders ? 'mb-2' : 'mb-2'"
         >
-          <!-- Datumstitel -->
+          <!-- Datumstitel (sticky) -->
           <p
             v-if="!hideDateHeaders"
-            class="md:text-2xl font-semibold mb-2 sticky top-0 z-10 pt-4 pb-2 fs-mobile-13"
-            style="
-              display: flex;
-              align-items: center;
-              -webkit-backdrop-filter: blur(30px);
-              backdrop-filter: blur(30px);
-              background-color: rgba(19, 19, 19, 0.6);
-              width: 100%;
-              will-change: opacity, transform;
-            "
+            class="md:text-2xl font-semibold mb-2 sticky z-[100] pt-4 pb-2 fs-mobile-13"
+            :style="stickyStyle"
           >
             <template v-if="weekDay(group[0].date) === 'Heute'">
               <span class="underline text-[#E77000]">Heute,</span>
@@ -55,6 +47,21 @@ const { items, hideDateHeaders = false } = defineProps({
   items: { type: Array, required: true, default: () => [] },
   hideDateHeaders: { type: Boolean, default: false },
 })
+
+/* Sticky-Top: bewusst KEIN Navbar-Offset mehr.
+   So rutscht der Datumstitel beim Hochscrollen HINTER die Navbar.
+   Safe-Area bleibt berücksichtigt. */
+const stickyStyle = computed(() => ({
+  top: 'env(safe-area-inset-top, 0px)',
+  display: 'flex',
+  alignItems: 'center',
+  WebkitBackdropFilter: 'blur(30px)',
+  backdropFilter: 'blur(30px)',
+  backgroundColor: 'rgba(19, 19, 19, 0.6)',
+  width: '100%',
+  willChange: 'opacity, transform',
+  transform: 'translateZ(0)',
+}))
 
 // Abkürzungen ohne Punkt: So, Mo, Di, Mi, Do, Fr, Sa (Heute bleibt speziell)
 function weekDay(dateStr) {

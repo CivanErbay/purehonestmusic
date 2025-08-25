@@ -1,6 +1,7 @@
 <template>
   <div
-    class="sticky top-0 z-50 w-full py-0 will-change-[opacity,transform] full-bleed"
+    ref="navRef"
+    class="sticky top-0 z-[160] w-full py-0 will-change-[opacity,transform] full-bleed"
     :class="{
       'bg-[#131313]/60 backdrop-blur-[30px] transition-all duration-300 ease-in-out': true,
       'transform -translate-y-full': !isVisible,
@@ -27,7 +28,7 @@
         </div>
       </div>
 
-      <!-- Suche: auf Unterseiten /concerts/* deaktiviert -->
+      <!-- Suche -->
       <form
         class="hidden lg:block relative order-last md:order-none w-full md:col-start-4 md:col-end-10 xl:col-start-4 xl:col-end-11 xl:justify-self-center xl:max-w-[980px] my-1 min-w-0"
         :class="{ 'opacity-50': searchDisabled }"
@@ -53,7 +54,6 @@
           aria-label="Suche nach Location oder Musikgenre"
         />
 
-        <!-- Clear-Button: erscheint bei Inhalt, blendet smooth ein/aus -->
         <Transition name="fade-zoom">
           <button
             v-if="showClear"
@@ -77,7 +77,6 @@
           </button>
         </Transition>
 
-        <!-- Lupe (dekorativ: default Cursor, nicht klickbar/fokussierbar, feste Größe) -->
         <div
           aria-hidden="true"
           tabindex="-1"
@@ -112,143 +111,98 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
+import { ref, onMounted, onUnmounted, watch, computed, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 const router = useRouter()
 const { user } = useUserStore()
 
-// --- Suche deaktivieren auf Unterseiten /concerts/*
 const searchDisabled = computed(() => {
   const p = route.path || ''
   return p.startsWith('/concerts/') && p !== '/concerts'
 })
 
-// --- Suche: lokale State + URL-Sync (debounced, min length, IME-sicher) ---
 const localSearchQuery = ref('')
 const isComposing = ref(false)
-
 const MIN_QUERY_LEN = 2
 const DEBOUNCE_MS = 400
-
 const getQueryString = (q) => (Array.isArray(q) ? q[0] : (q ?? ''))
 
-onMounted(() => {
-  localSearchQuery.value = getQueryString(route.query.q)
-})
-
+onMounted(() => { localSearchQuery.value = getQueryString(route.query.q) })
 watch(() => route.query.q, (q) => {
   const incoming = getQueryString(q)
-  if (incoming !== localSearchQuery.value) {
-    localSearchQuery.value = incoming
-  }
+  if (incoming !== localSearchQuery.value) localSearchQuery.value = incoming
 })
-
-function debounce(fn, wait) {
-  let t
-  return (...args) => {
-    clearTimeout(t)
-    t = setTimeout(() => fn(...args), wait)
-  }
-}
-
+function debounce(fn, wait) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), wait) } }
 const pushQueryDebounced = debounce((newQuery) => {
   const current = getQueryString(route.query.q)
   const q = (newQuery || '').trim()
-
   const nextQuery = { ...route.query }
-  if (q && q.length >= MIN_QUERY_LEN) nextQuery.q = q
-  else delete nextQuery.q
-
+  if (q && q.length >= MIN_QUERY_LEN) nextQuery.q = q; else delete nextQuery.q
   if (q === current) return
   router.replace({ query: nextQuery })
 }, DEBOUNCE_MS)
-
-watch(localSearchQuery, (newQuery) => {
-  if (searchDisabled.value) return
-  if (isComposing.value) return
-  pushQueryDebounced(newQuery)
-})
-
-// IME fertig -> sofort übernehmen
-const onCompositionEnd = (e) => {
-  isComposing.value = false
-  pushQueryDebounced(e.target?.value ?? localSearchQuery.value)
-}
-
+watch(localSearchQuery, (newQuery) => { if (!searchDisabled.value && !isComposing.value) pushQueryDebounced(newQuery) })
+const onCompositionEnd = (e) => { isComposing.value = false; pushQueryDebounced(e.target?.value ?? localSearchQuery.value) }
 const onSubmit = () => {
   if (searchDisabled.value) return
   const q = (localSearchQuery.value || '').trim()
   const nextQuery = { ...route.query }
-  if (q && q.length >= MIN_QUERY_LEN) nextQuery.q = q
-  else delete nextQuery.q
+  if (q && q.length >= MIN_QUERY_LEN) nextQuery.q = q; else delete nextQuery.q
   router.replace({ query: nextQuery })
 }
-
-// Clear-Button nur anzeigen, wenn tatsächlicher Inhalt (keine reinen Spaces)
-const showClear = computed(() => {
-  if (searchDisabled.value) return false
-  return ((localSearchQuery.value || '').trim().length > 0)
-})
-
-// Eingabe leeren & Suche resetten
+const showClear = computed(() => !searchDisabled.value && ((localSearchQuery.value || '').trim().length > 0))
 const clearSearch = (focus = true) => {
   localSearchQuery.value = ''
-  const nextQuery = { ...route.query }
-  delete nextQuery.q
+  const nextQuery = { ...route.query }; delete nextQuery.q
   router.replace({ query: nextQuery })
-  if (focus) {
-    const el = document.getElementById('search-dropdown')
-    if (el) el.focus()
-  }
+  if (focus) { const el = document.getElementById('search-dropdown'); if (el) el.focus() }
 }
 
-// --- StickyNavigation Logic ---
+/* ---------- Sticky-Offset als CSS-Variable setzen ---------- */
+const navRef = ref(null)
 const isVisible = ref(true)
 let lastScroll = 0
 
-const handleScroll = () => {
-  const currentScroll = window.scrollY
-  if (currentScroll > lastScroll && currentScroll > 50) {
-    isVisible.value = false
-  } else if (currentScroll < lastScroll || currentScroll <= 50) {
-    isVisible.value = true
-  }
-  lastScroll = currentScroll <= 0 ? 0 : currentScroll
+const setStickyOffset = () => {
+  const h = navRef.value?.offsetHeight || 64
+  // Wenn Navbar sichtbar -> Offset = Höhe, sonst 0
+  const val = isVisible.value ? `${h}px` : '0px'
+  document.documentElement.style.setProperty('--sticky-offset', val)
 }
 
-onMounted(() => { window.addEventListener('scroll', handleScroll, { passive: true }) })
-onUnmounted(() => { window.removeEventListener('scroll', handleScroll) })
+const handleScroll = () => {
+  const current = window.scrollY
+  if (current > lastScroll && current > 50) {
+    if (isVisible.value) { isVisible.value = false; setStickyOffset() }
+  } else if (current < lastScroll || current <= 50) {
+    if (!isVisible.value) { isVisible.value = true; setStickyOffset() }
+  }
+  lastScroll = current <= 0 ? 0 : current
+}
 
-const terms = computed(() => {
-  const qs = normalize(qString.value)
-  if (qs.length < 2) return []
-  return qs.split(/\s+/).filter(Boolean)
+onMounted(async () => {
+  await nextTick()
+  setStickyOffset()
+  window.addEventListener('scroll', handleScroll, { passive: true })
+  window.addEventListener('resize', setStickyOffset, { passive: true })
+})
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('resize', setStickyOffset)
 })
 </script>
 
 <style>
 /* Smooth Ein-/Ausblenden des Clear-Buttons */
 .fade-zoom-enter-active,
-.fade-zoom-leave-active {
-  transition: opacity 250ms ease, transform 250ms ease;
-}
+.fade-zoom-leave-active { transition: opacity 250ms ease, transform 250ms ease; }
 .fade-zoom-enter-from,
-.fade-zoom-leave-to {
-  opacity: 0;
-  transform: scale(0.95);
-}
+.fade-zoom-leave-to { opacity: 0; transform: scale(0.95); }
 .fade-zoom-enter-to,
-.fade-zoom-leave-from {
-  opacity: 1;
-  transform: scale(1);
-}
+.fade-zoom-leave-from { opacity: 1; transform: scale(1); }
 
-/* Native Browser-Clear-Buttons ausblenden, damit nur unser Button sichtbar ist */
-.search-input::-webkit-search-cancel-button {
-  -webkit-appearance: none;
-  appearance: none;
-  display: none;
-}
+/* Native Browser-Clear-Buttons ausblenden */
+.search-input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; display: none; }
 </style>

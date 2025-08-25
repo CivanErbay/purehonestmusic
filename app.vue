@@ -1,4 +1,5 @@
 <template>
+  <!-- overflow-x-hidden ENTFERNT -->
   <div class="mx-4 lg:mx-0 font-montserrat relative">
     <div class="max-w-[2056px] mx-auto lg:px-16">
       <Navbar />
@@ -27,7 +28,6 @@ useSeoMeta({
   ogTitle: settings.value.seoTitle,
   description: settings.value.seoDescription,
   ogDescription: settings.value.seoDescription,
-  // ogImage: '',
 });
 
 useHead({
@@ -61,18 +61,16 @@ useHead({
 
 const showBanner = ref(false);
 const loading = ref(true);
-const usersStore = useUserStore(); // needd to load the store
+const usersStore = useUserStore();
 
 onMounted(() => {
-  if (import.meta.client) {
-    loading.value = false;
-  }
+  if (import.meta.client) loading.value = false;
   usersStore.loadFavorites();
 
   if (localStorage.getItem('acceptedCookies')) {
     showBanner.value = false;
+    window.dispatchEvent(new CustomEvent('consent:analytics-granted'));
     loadGoogleAnalytics();
-    // Mouseflow wird beim Start vom Plugin geladen (weil acceptedCookies vorhanden)
   } else if (localStorage.getItem('declinedCookies')) {
     showBanner.value = false;
   } else {
@@ -83,10 +81,7 @@ onMounted(() => {
 const acceptCookies = () => {
   showBanner.value = false;
   localStorage.setItem('acceptedCookies', new Date());
-
-  // >>> NEU: Plugin informieren – lädt Mouseflow sofort
   window.dispatchEvent(new CustomEvent('consent:analytics-granted'));
-
   loadGoogleAnalytics();
 };
 
@@ -104,8 +99,6 @@ const loadGoogleAnalytics = () => {
   window.dataLayer = window.dataLayer || [];
   function gtag(){ window.dataLayer.push(arguments); }
   gtag('js', new Date());
-  gtag('config', 'G-BWMWPYMSMH', {
-    page_path: window.location.pathname,
-  });
+  gtag('config', 'G-BWMWPYMSMH', { page_path: window.location.pathname });
 };
 </script>
