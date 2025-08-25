@@ -1,11 +1,15 @@
 <template>
   <div class="dropdown relative text-lg font-thin" ref="triggerRef">
-    <!-- Trigger (einheitliche Höhe) -->
+    <!-- Trigger -->
     <button
       class="phm-filter-btn bg-bg-light rounded-lg align-middle border inline-flex items-center font-medium dropdown-hover"
       :class="{ 'border-primary': open, 'border-bg-light': !open }"
       @click="onOpenClick"
       type="button"
+      :id="triggerId"
+      :aria-expanded="open ? 'true' : 'false'"
+      aria-haspopup="dialog"
+      :aria-controls="menuId"
       v-bind="$attrs"
     >
       <span class="pt-1">{{ title }}</span>
@@ -17,17 +21,18 @@
       </svg>
     </button>
 
-    <!-- Teleport: Overlay + Dropdown -->
+    <!-- Teleport: nur das Menü -->
     <teleport to="body">
-      <transition name="fade-fast">
-        <div v-if="open" class="phm-overlay" @click="confirmAndClose(false)"></div>
-      </transition>
-
       <div v-if="open" class="dropdown dropdown-portal">
         <div
           ref="menuRef"
           class="dropdown-menu rounded-lg border border-[#1f1f1f] p-0"
           :style="menuStyle"
+          :id="menuId"
+          role="dialog"
+          aria-modal="true"
+          :aria-labelledby="triggerId"
+          tabindex="-1"
         >
           <!-- Inhalt -->
           <div class="menu-content">
@@ -48,7 +53,7 @@
 
           <!-- Footer: fixer Bestätigen-Button -->
           <div class="menu-footer">
-            <button type="button" class="btn w-full" @click="confirmAndClose(true)">
+            <button type="button" class="btn w-full" @click="confirmAndClose(true)" aria-label="Auswahl bestätigen und schließen">
               Bestätigen
             </button>
           </div>
@@ -59,7 +64,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch, nextTick, onMounted, onBeforeUnmount } from 'vue';
+import { ref, reactive, watch, nextTick, onMounted, onBeforeUnmount, computed } from 'vue';
 
 const props = defineProps({
   title: String,
@@ -83,11 +88,13 @@ const menuStyle = reactive({
   backgroundColor: '#1f1f1f',
 });
 
+const triggerId = computed(() => `filter-${props.slug}-btn`);
+const menuId    = computed(() => `filter-${props.slug}-menu`);
+
 const toggleItem = (item) => emit('update:selectedItems', props.slug, item);
 
 const onOpenClick = () => {
   emit('update:toggle', props.slug);
-  // sanft zu den Filtern scrollen, wenn sehr weit oben
   requestAnimationFrame(() => {
     positionMenu();
     try {
@@ -135,13 +142,62 @@ const positionMenu = () => {
     menuStyle.left = `${left}px`;
     menuStyle.width = `${desired}px`;
     menuStyle.minWidth = `${desired}px`;
-    // Desktop: Platz nach unten clampen (ohne hartes Limit)
     const spaceBelow = vh - top - 8;
     const clamped = Math.max(200, Math.min(520, spaceBelow));
     menuStyle.maxHeight = `${clamped}px`;
   }
 
   menuStyle.top = `${top}px`;
+};
+
+/* ---------- A11y: Focus-Management & ESC + Focus-Trap ---------- */
+let prevFocused = null;
+const focusableSelector = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+const trapKeydown = (e) => {
+  if (!menuRef.value) return;
+  if (e.key === 'Escape') {
+    e.stopPropagation();
+    confirmAndClose();
+    return;
+  }
+  if (e.key !== 'Tab') return;
+
+  const nodes = Array.from(menuRef.value.querySelectorAll(focusableSelector));
+  if (nodes.length === 0) return;
+
+  const first = nodes[0];
+  const last  = nodes[nodes.length - 1];
+
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
+};
+
+const startFocusManagement = () => {
+  prevFocused = document.activeElement;
+  // Fokus ins Menü setzen
+  const nodes = menuRef.value?.querySelectorAll(focusableSelector);
+  if (nodes && nodes.length) {
+    nodes[0].focus();
+  } else {
+    menuRef.value?.focus();
+  }
+  menuRef.value?.addEventListener('keydown', trapKeydown, true);
+};
+
+const stopFocusManagement = () => {
+  menuRef.value?.removeEventListener('keydown', trapKeydown, true);
+  if (prevFocused && typeof prevFocused.focus === 'function') {
+    prevFocused.focus();
+  } else {
+    triggerRef.value?.focus();
+  }
+  prevFocused = null;
 };
 
 const addListeners = () => {
@@ -154,14 +210,29 @@ const removeListeners = () => {
 };
 
 watch(() => props.open, async (isOpen) => {
-  if (isOpen) { await nextTick(); positionMenu(); addListeners(); }
-  else { removeListeners(); }
+  if (isOpen) {
+    await nextTick();
+    positionMenu();
+    addListeners();
+    startFocusManagement();
+  } else {
+    removeListeners();
+    stopFocusManagement();
+  }
 });
-onMounted(() => { if (props.open) { nextTick(positionMenu); addListeners(); } });
-onBeforeUnmount(removeListeners);
+onMounted(() => { if (props.open) { nextTick(positionMenu); addListeners(); startFocusManagement(); } });
+onBeforeUnmount(() => { removeListeners(); stopFocusManagement(); });
 </script>
 
 <style scoped>
+/* ---------- Montserrat in dieser Komponente erzwingen ---------- */
+.phm-filter-btn,
+.dropdown-menu,
+.dropdown-item,
+.menu-footer .btn{
+  font-family: "Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+}
+
 /* ---------- Einheitliche Trigger-Höhe ---------- */
 .phm-filter-btn{
   height:56px;
@@ -176,28 +247,16 @@ onBeforeUnmount(removeListeners);
   }
 }
 
-/* ---------- Overlay (Blur) ---------- */
-.phm-overlay{
-  position: fixed;
-  inset: 0;
-  z-index: 220; /* unterhalb des Menüs (230), über Content/Sticky-Dates */
-  -webkit-backdrop-filter: blur(30px);
-  backdrop-filter: blur(30px);
-  background: rgba(19,19,19,.60);
-}
-.fade-fast-enter-active, .fade-fast-leave-active{ transition: opacity .18s ease; }
-.fade-fast-enter-from, .fade-fast-leave-to{ opacity: 0; }
-
-/* ---------- Portal ---------- */
+/* ---------- Portal (Menü) ---------- */
 .dropdown-portal {
   position: fixed; inset: 0;
   pointer-events: none;
   display: block;
-  z-index: 230; /* über Overlay */
+  z-index: 230; /* über zentralem Overlay */
 }
 .dropdown-portal > .dropdown-menu { pointer-events: auto; }
 
-/* Container: Inhalt scrollt */
+/* Container/ Menü */
 .dropdown-menu{
   position: fixed;
   box-shadow: 0 8px 16px rgba(0,0,0,.25);
@@ -208,10 +267,10 @@ onBeforeUnmount(removeListeners);
 }
 .menu-content{
   overflow-y: auto;
-  padding: 16px;
+  padding: 16px;                /* <-- fehlende Abstände wieder da */
 }
 
-/* Footer (ohne Border-Top, mit Blur, nur bottom corners) */
+/* Footer */
 .menu-footer{
   position: sticky;
   bottom: 0;
@@ -219,7 +278,6 @@ onBeforeUnmount(removeListeners);
   background: #1f1f1f;
   -webkit-backdrop-filter: blur(30px);
   backdrop-filter: blur(30px);
-  border-top: none;
   border-bottom-left-radius: .5rem;
   border-bottom-right-radius: .5rem;
 }
@@ -227,11 +285,12 @@ onBeforeUnmount(removeListeners);
 /* Button-Stil */
 .btn { border-radius: .25rem; background-color: rgba(231,112,0,1); padding: .5rem 2rem; color:#fff; transition: all .15s cubic-bezier(0.4,0,0.2,1); }
 
-/* Items */
+/* Items + Hover + Counter */
 .dropdown-item{ display:flex; justify-content:space-between; padding:8px; background:transparent; transition:background-color .3s,color .3s; cursor:pointer; }
 .dropdown-item:hover{ background:#242424; border-radius:8px; }
 .item-count{ margin-left:auto; padding-left:24px; right:5px; position:relative; }
 
+/* Trigger Hover */
 .dropdown-hover{ border-radius:.5rem; transition:background-color .3s ease,color .3s ease; background:transparent; }
 .dropdown-hover:hover{ border-radius:.5rem; background:#242424; color:#fff; }
 .pt-1{ padding-top:1px; }
